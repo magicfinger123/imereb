@@ -1,4 +1,4 @@
-import 'package:bs_educativo/Screens/messagesScreen/test.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -6,6 +6,7 @@ import '../../utility/colors.dart';
 import '../../utility/iconsAndImages.dart';
 import '../../utility/widgets.dart';
 import '../2_main_menu_screen.dart';
+import 'messageTab.dart';
 
 
 class MessageScreen extends StatefulWidget {
@@ -26,7 +27,7 @@ class _MessageScreenState extends State<MessageScreen> {
           Expanded(
             child: Column(
               children: [
-                Expanded(child: MessagingScreenV2()),
+                Expanded(child: MessageTab()),
                   backAndIcon((){
                     Navigator.pop(context);
                   },

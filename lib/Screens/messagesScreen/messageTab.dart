@@ -6,14 +6,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../utility/text_widgets.dart';
-class MessagingScreenV2 extends StatefulWidget {
-  const MessagingScreenV2({super.key});
+class MessageTab extends StatefulWidget {
+  const MessageTab({super.key});
 
   @override
-  _MessagingScreenV2State createState() => _MessagingScreenV2State();
+  _MessageTabState createState() => _MessageTabState();
 }
 
-class _MessagingScreenV2State extends State<MessagingScreenV2> {
+class _MessageTabState extends State<MessageTab> {
   int unreadMessages = 5; // Example count for unread messages
   String selectedCategory = 'Entrada'; // Default category
   final List<String> categories = ['Entrada', 'Salida', 'Eliminados', 'No leídos', 'Leídos'];

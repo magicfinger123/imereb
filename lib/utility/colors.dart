@@ -9,6 +9,8 @@ class AppColors {
   static const black00 = Color(0xFF1D1B20);
   static const txt1 = Color(0xFF565656);
 
+  static const bgDc = Color(0xFFDCDCDC);
+
   static const blueBa = Color(0xFF2A7FBA);
 
   static const border = Color(0xFF343232);

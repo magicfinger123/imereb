@@ -1,3 +1,4 @@
+import 'package:bs_educativo/Screens/detailedRatingsScreen/1_ratingsScreen.dart';
 import 'package:bs_educativo/Screens/messagesScreen/1_message_screen.dart';
 import 'package:bs_educativo/Screens/qRScreen/1_qrScreen.dart';
 import 'package:bs_educativo/utility/iconsAndImages.dart';
@@ -22,7 +23,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   Widget build(BuildContext context) {
     return BgScaffold(
       body: MenuDesign(
-
+        institution: 'Colegio Internacional de Panamá',
         selectedUser: selectedUser, group: group, counselor: counselor,
         selectUserTap: () {  },
         container:
@@ -45,7 +46,10 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                   Navigator.push(context, MaterialPageRoute(builder: (context) =>
                   const MessageScreen()));
                 },
-                threetap: (){}, fourTap: (){},
+                threetap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                  const RatingsScreen()));
+                }, fourTap: (){},
                 calendarTap: (){}, clockTap:(){},
                 documentTap: (){}, matricTap: (){},
                 alertTap: (){}, tipsTap: (){},
@@ -53,7 +57,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
             ),),
           ),
         ),
-        isBiosLogo: false
+        isBiosLogo: false,
       ),);
   }
 

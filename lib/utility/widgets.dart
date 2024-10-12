@@ -250,14 +250,14 @@ Widget menuListItem(title,icon,onTap) {
 
 class MenuDesign extends StatefulWidget {
   final Widget container;
-  final String selectedUser,group,counselor;
+  final String institution,selectedUser,group,counselor;
   final Function() selectUserTap;
   final bool isBiosLogo;
 
   const MenuDesign({
     super.key,required this.container, required this.selectedUser,
     required this.group, required this.counselor, required this.selectUserTap,
-    this.isBiosLogo = true,
+    this.isBiosLogo = true, required this.institution,
   });
 
   @override
@@ -301,7 +301,7 @@ class _MenuDesignState extends State<MenuDesign> {
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          txtB("Colegio Internacional de Panamá", 20.sp),
+          txtB(widget.institution, 20.sp),
           sp(),
           Row(crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -343,9 +343,9 @@ class _MenuDesignState extends State<MenuDesign> {
 
 
         ],),
-      gapH(20.h),
-      widget.container,
       gapH(10.h),
+      widget.container,
+      gapH(5.h),
 
 
     ],);
@@ -358,12 +358,50 @@ Padding backAndIcon(backTap,iconTap,icon,{double size=48}) {
       GestureDetector(onTap: backTap,
           child: Icon(Icons.arrow_back,color: AppColors.black00,size: 45.r,)),
       const Spacer(),
+      icon != null?
       GestureDetector(onTap: iconTap,
           child: Image.asset(icon,
             width: size.h,height:size.h,
-            fit: BoxFit.fitHeight,)),
+            fit: BoxFit.fitHeight,)):SizedBox(),
 
 
     ],),
+  );
+}
+Widget msgDropListItemsWidget(title,icon,onTap) {
+  return GestureDetector(onTap: onTap,
+    child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 10.h),
+      child: Row(crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset(icon,width: 25.w,height: 24.h,
+            fit: BoxFit.contain,),
+          gapW(10.w),
+          txtR(title, 15.sp),
+        ],),
+    ),
+  );
+}
+Widget messageItemWidget({required Function() onTap,required String title,required String description,required String date}) {
+  return GestureDetector(onTap: onTap,
+    child: Container(
+      margin: EdgeInsets.only(bottom: 15.h,left: 16.w,right: 16.w),
+      child: Row(children: [
+        Image.asset(AppAssets.profile,
+          width: 20.h,height: 20.h,fit: BoxFit.contain,),
+        gapW(20.w),
+        SizedBox(width: 220.w,
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              txtB(title, 12.sp),
+              txtR(description, 12.sp),
+            ],),
+        ),
+        const Spacer(),
+        txtB(date, 12.sp,textAlign: TextAlign.end),
+
+      ],),
+
+    ),
   );
 }

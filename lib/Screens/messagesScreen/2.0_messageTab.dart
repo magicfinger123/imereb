@@ -1,4 +1,5 @@
 import 'package:bs_educativo/utility/colors.dart';
+import 'package:bs_educativo/utility/demoInfos.dart';
 import 'package:bs_educativo/utility/iconsAndImages.dart';
 import 'package:bs_educativo/utility/widgets.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../utility/text_widgets.dart';
 class MessageTab extends StatefulWidget {
-  const MessageTab({super.key});
+  final Function(int) onScreenChange;
+  const MessageTab({super.key, required this.onScreenChange});
 
   @override
   _MessageTabState createState() => _MessageTabState();
@@ -16,7 +18,7 @@ class MessageTab extends StatefulWidget {
 class _MessageTabState extends State<MessageTab> {
   int unreadMessages = 5; // Example count for unread messages
   String selectedCategory = 'Entrada'; // Default category
-  final List<String> categories = ['Entrada', 'Salida', 'Eliminados', 'No leídos', 'Leídos'];
+  final List<String> categories = ['Entrada', 'Salida','Eliminados', 'No leídos', 'Leídos'];
   bool _isDropdownVisible = false;
   String selectedMsgType = "Entrada";
   @override
@@ -103,54 +105,17 @@ class _MessageTabState extends State<MessageTab> {
                 ),
                 gapH(10.h),
                 Expanded(
-                  child: ListView(
-                    padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
-                    children: [
-                      messageItemWidget(onTap: (){},title:"Alvaro Macías (Docente)",
-                          description: "Solicitud de reunión",date: "09:25   Sep 5"
-                      ),
-                      messageItemWidget(onTap: (){},title:"Alvaro Macías (Docente)",
-                          description: "Solicitud de reunión",date: "09:25   Sep 5"
-                      ),
-                      messageItemWidget(onTap: (){},title:"Alvaro Macías (Docente)",
-                          description: "Solicitud de reunión",date: "09:25   Sep 5"
-                      ),
-                      messageItemWidget(onTap: (){},title:"Alvaro Macías (Docente)",
-                          description: "Solicitud de reunión",date: "09:25   Sep 5"
-                      ),
-                      messageItemWidget(onTap: (){},title:"Alvaro Macías (Docente)",
-                          description: "Solicitud de reunión",date: "09:25   Sep 5"
-                      ),messageItemWidget(onTap: (){},title:"Alvaro Macías (Docente)",
-                          description: "Solicitud de reunión",date: "09:25   Sep 5"
-                      ),messageItemWidget(onTap: (){},title:"Alvaro Macías (Docente)",
-                          description: "Solicitud de reunión",date: "09:25   Sep 5"
-                      ),
-                      messageItemWidget(onTap: (){},title:"Alvaro Macías (Docente)",
-                          description: "Solicitud de reunión",date: "09:25   Sep 5"
-                      ),
-                      messageItemWidget(onTap: (){},title:"Alvaro Macías (Docente)",
-                          description: "Solicitud de reunión",date: "09:25   Sep 5"
-                      ),
-                      messageItemWidget(onTap: (){},title:"Alvaro Macías (Docente)",
-                          description: "Solicitud de reunión",date: "09:25   Sep 5"
-                      ),messageItemWidget(onTap: (){},title:"Alvaro Macías (Docente)",
-                          description: "Solicitud de reunión",date: "09:25   Sep 5"
-                      ),
-                      messageItemWidget(onTap: (){},title:"Alvaro Macías (Docente)",
-                          description: "Solicitud de reunión",date: "09:25   Sep 5"
-                      ),
-                      messageItemWidget(onTap: (){},title:"Alvaro Macías (Docente)",
-                          description: "Solicitud de reunión",date: "09:25   Sep 5"
-                      ),
-                      messageItemWidget(onTap: (){},title:"Alvaro Macías (Docente)",
-                          description: "Solicitud de reunión",date: "09:25   Sep 5"
-                      ),
-
-
-
-
-
-                    ],
+                  child:ListView.builder(
+                    padding: EdgeInsets.only(top: 10.h,bottom: 10.h),
+                    itemCount: messageItems.length,
+                    itemBuilder: (context, index) {
+                    final msgs = messageItems?[index];
+                    return  messageItemWidget(onTap:
+                        (){
+                          widget.onScreenChange(1);
+                      },title:msgs?.title??'',
+                      description: msgs?.description??'',date: msgs?.date??''
+                      );}
                   ),
                 ),
               ],
@@ -212,44 +177,9 @@ class _MessageTabState extends State<MessageTab> {
     );
   }
 
-  Widget msgDropListItemsWidget(title,icon,onTap) {
-    return GestureDetector(onTap: onTap,
-      child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 10.h),
-                  child: Row(crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                    Image.asset(icon,width: 25.w,height: 24.h,
-                      fit: BoxFit.contain,),
-                    gapW(10.w),
-                    txtR(title, 15.sp),
-                  ],),
-                ),
-    );
-  }
 
-  Widget messageItemWidget({required Function() onTap,required String title,required String description,required String date}) {
-    return GestureDetector(onTap: onTap,
-      child: Container(
-                  margin: EdgeInsets.only(bottom: 15.h),
-                  child: Row(children: [
-                    Image.asset(AppAssets.profile,
-                      width: 20.h,height: 20.h,fit: BoxFit.contain,),
-                    gapW(20.w),
-                    SizedBox(width: 220.w,
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                        txtB(title, 12.sp),
-                        txtR(description, 12.sp),
-                      ],),
-                    ),
-                    const Spacer(),
-                    txtB(date, 12.sp,textAlign: TextAlign.end),
 
-                  ],),
 
-                ),
-    );
-  }
   // Function to return icons based on category
   Widget _getCategoryIcon(String category) {
     switch (category) {

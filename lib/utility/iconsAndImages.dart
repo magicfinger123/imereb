@@ -29,6 +29,11 @@ class AppAssets {
   static const String send = 'assets/icons/send.png';
   static const String trash = 'assets/icons/trash.png';
   static const String openInbox = 'assets/icons/open_inbox.png';
+  static const String replyAll = 'assets/icons/reply_all.png';
+  static const String replyLeft = 'assets/icons/reply_left.png';
+  static const String replyRight = 'assets/icons/reply_right.png';
+  static const String attach = 'assets/icons/attach.png';
+  static const String plus = 'assets/icons/plus.png';
 
 
 

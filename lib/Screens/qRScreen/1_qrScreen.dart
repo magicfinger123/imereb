@@ -27,6 +27,7 @@ class _QRScreenState extends State<QRScreen> {
   Widget build(BuildContext context) {
     return BgScaffold(
       body: MenuDesign(
+        institution: "",
       selectedUser: selectedUser, group: group, counselor: counselor,
       selectUserTap: () {  },
       container:

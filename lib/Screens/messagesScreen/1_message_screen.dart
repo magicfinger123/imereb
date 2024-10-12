@@ -1,4 +1,6 @@
 
+import 'package:bs_educativo/Screens/messagesScreen/2.1_MessageView.dart';
+import 'package:bs_educativo/Screens/messagesScreen/2.2_composeMessageView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -6,7 +8,9 @@ import '../../utility/colors.dart';
 import '../../utility/iconsAndImages.dart';
 import '../../utility/widgets.dart';
 import '../2_main_menu_screen.dart';
-import 'messageTab.dart';
+import '2.0_messageTab.dart';
+
+
 
 
 class MessageScreen extends StatefulWidget {
@@ -17,57 +21,71 @@ class MessageScreen extends StatefulWidget {
 }
 
 class _MessageScreenState extends State<MessageScreen> {
+ String secondIcon = AppAssets.compose;
+
+  void _onScreenSelected(int index) {
+    setState(() {
+      _currentIndex = index;
+
+      if(_currentIndex == 0){
+        secondIcon = AppAssets.compose;
+      }else if(_currentIndex == 1){
+        secondIcon = AppAssets.trash;
+      }else if(_currentIndex == 2){
+        secondIcon = AppAssets.send;
+      }
+    });
+  }
+
+  int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return BgScaffold(
         body: MenuDesign(
+          institution: "Colegio Internacional de Panamá",
           selectedUser: selectedUser, group: group, counselor: counselor,
           selectUserTap: () {  },
           container:
           Expanded(
             child: Column(
               children: [
-                Expanded(child: MessageTab()),
+                Expanded(
+                  child: IndexedStack(
+                    index: _currentIndex, // Switch between screens
+                    children: [
+                      MessageTab(onScreenChange: _onScreenSelected),
+                      MessageView(onScreenChange: _onScreenSelected),
+                      ComposeMessageView(onScreenChange:_onScreenSelected),
+                    ] // Screens to switch between
+                  ),
+                ),
+                gapH(10.h),
                   backAndIcon((){
-                    Navigator.pop(context);
-                  },
-                  (){
-            
+                        checkBackTap();
                     },
-                      AppAssets.compose,size: 61.0),
+                  ()
+                    {
+                     checkSecondBtnActions();
+                    },
+                      secondIcon,size: 61.0),
               ],
             ),
           ),
-          // Expanded(child: Column(children: [
-          //   Expanded(
-          //       child: Container(width: double.infinity,
-          //           padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 10.h),
-          //           decoration: BoxDecoration(
-          //               borderRadius: BorderRadius.circular(6.r),
-          //               color: AppColors.white,
-          //
-          //           ),
-          //           child: SingleChildScrollView(child:Column(children: [
-          //             gapH(40.h),
-          //
-          //
-          //           ],)))
-          //   ),
-          //   gapH(20.h),
-          //
-          //   backAndIcon((){
-          //     Navigator.pop(context);
-          //   },
-          //   (){
-          //
-          //     },
-          //       AppAssets.compose,size: 61.0),
-          // ],
-          // ),
-          // ),
-
-
-
         ));
   }
+  checkBackTap(){
+     if(_currentIndex == 0){
+          Navigator.pop(context);
+     }else if(_currentIndex == 1){
+       _onScreenSelected(0);
+     }else if(_currentIndex == 2){
+       _onScreenSelected(0);
+     }
+  }
+  checkSecondBtnActions(){
+    if(_currentIndex == 0){
+      _onScreenSelected(2);
+    }
+  }
 }
+

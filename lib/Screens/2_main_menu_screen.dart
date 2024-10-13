@@ -1,4 +1,7 @@
+import 'package:bs_educativo/Screens/agendaScreen/1_agendaScreen.dart';
 import 'package:bs_educativo/Screens/detailedRatingsScreen/1_ratingsScreen.dart';
+import 'package:bs_educativo/Screens/documentScreen/1_document_screen.dart';
+import 'package:bs_educativo/Screens/ecScreen/eCScreen.dart';
 import 'package:bs_educativo/Screens/messagesScreen/1_message_screen.dart';
 import 'package:bs_educativo/Screens/qRScreen/1_qrScreen.dart';
 import 'package:bs_educativo/utility/iconsAndImages.dart';
@@ -49,9 +52,23 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                 threetap: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) =>
                   const RatingsScreen()));
-                }, fourTap: (){},
-                calendarTap: (){}, clockTap:(){},
-                documentTap: (){}, matricTap: (){},
+                },
+                fourTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                  const EcScreen()));
+                 },
+                calendarTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                  const AgendaScreen()));
+                },
+                clockTap:(){
+
+                },
+                documentTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                  const DocumentScreen()));
+                },
+                matricTap: (){},
                 alertTap: (){}, tipsTap: (){},
                 couponTap: (){}
             ),),

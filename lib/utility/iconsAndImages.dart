@@ -34,6 +34,8 @@ class AppAssets {
   static const String replyRight = 'assets/icons/reply_right.png';
   static const String attach = 'assets/icons/attach.png';
   static const String plus = 'assets/icons/plus.png';
+  static const String share = 'assets/icons/share.png';
+  static const String info = 'assets/icons/info.png';
 
 
 

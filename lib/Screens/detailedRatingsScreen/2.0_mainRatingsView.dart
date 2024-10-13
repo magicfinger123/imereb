@@ -60,7 +60,10 @@ class _MainRatingsViewState extends State<MainRatingsView> {
               itemCount:subjectsItem.length,
               itemBuilder: (context, index) {
                 final sub= subjectsItem?[index];
-                return GestureDetector(
+                return GestureDetector(onTap: (){
+                  widget.onScreenChange(1);
+
+                 },
                   child: subjectAndRatingItemWidget(
                       subject:sub?.name??"",
                       rating: sub?.grade.toString()??""),
@@ -73,16 +76,5 @@ class _MainRatingsViewState extends State<MainRatingsView> {
     );
   }
 
-  Widget subjectAndRatingItemWidget({required String subject, required String rating}) {
-    return Column(children: [
-        Row(children: [
-          Expanded(child:
-          txtR(subject,15.sp,weight: FontWeight.w600)),
-          gapW(20.w),
-          txtB(rating,15.sp,weight: FontWeight.w500,color:Colors.green,textAlign: TextAlign.left),
-        ],),
-        gapH(10.h),
-        Divider(color: AppColors.black.withOpacity(0.25),thickness: 1.25,),
-      ],);
-  }
+
 }

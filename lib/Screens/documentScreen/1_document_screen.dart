@@ -1,25 +1,31 @@
-import 'package:bs_educativo/Screens/detailedRatingsScreen/2.0_mainRatingsView.dart';
-import 'package:bs_educativo/Screens/detailedRatingsScreen/2.1_ratingsDetailsView.dart';
+import 'package:bs_educativo/Screens/documentScreen/2.0_documentListView.dart';
+import 'package:bs_educativo/Screens/documentScreen/2.1_documentDetailsView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../utility/iconsAndImages.dart';
 import '../../utility/widgets.dart';
 import '../2_main_menu_screen.dart';
 
-
-
-class RatingsScreen extends StatefulWidget {
-  const RatingsScreen({super.key});
+class DocumentScreen extends StatefulWidget {
+  const DocumentScreen({super.key});
 
   @override
-  State<RatingsScreen> createState() => _RatingsScreenState();
+  State<DocumentScreen> createState() => _DocumentScreenState();
 }
 
-class _RatingsScreenState extends State<RatingsScreen> {
+class _DocumentScreenState extends State<DocumentScreen> {
+  String? secondIcon;
   void _onScreenSelected(int index) {
     setState(() {
       _currentIndex = index;
     });
+
+    if(_currentIndex == 0){
+      secondIcon = null;
+    }else if(_currentIndex == 1){
+      secondIcon = AppAssets.share;
+    }
   }
 
   int _currentIndex = 0;
@@ -38,8 +44,9 @@ class _RatingsScreenState extends State<RatingsScreen> {
                   child: IndexedStack(
                       index: _currentIndex, // Switch between screens
                       children: [
-                        MainRatingsView(onScreenChange: _onScreenSelected),
-                        RatingsDetailView(onScreenChange: _onScreenSelected,)
+                        DocumentListView(onScreenChange: _onScreenSelected),
+                        DocumentDetailsScreen(onScreenChange:_onScreenSelected)
+
                       ] // Screens to switch between
                   ),
                 ),
@@ -51,7 +58,7 @@ class _RatingsScreenState extends State<RatingsScreen> {
                     {
 
                     },
-                    null,size: 61.0),
+                    secondIcon,size: 61.0),
               ],
             ),
           ),
@@ -62,6 +69,11 @@ class _RatingsScreenState extends State<RatingsScreen> {
       Navigator.pop(context);
     }else if(_currentIndex == 1){
       _onScreenSelected(0);
+    }
   }
+  checkSecondBtnActions(){
+    if(_currentIndex == 1){
+
+    }
   }
 }

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 List<MessageItem> messageItems = [
   MessageItem(
     title: "Alvaro Macías (Docente)",
@@ -52,4 +54,69 @@ class Subjects {
 
   Subjects({required this.name, required this.grade});
 }
+class SubjectsRating {
+  final String name;
+  final String grade;
 
+  SubjectsRating({required this.name, required this.grade});
+}
+
+final List<MapEntry<DateTimeRange, List<String>>> agendaData = [
+  MapEntry(
+    DateTimeRange(
+    start: DateTime(2024, 10, 08),
+    end: DateTime(2024, 10, 12),
+    ),
+    ['Meeting with team', 'Code review'],
+    ),
+  MapEntry(
+    DateTimeRange(
+    start: DateTime(2024, 10, 14),
+    end: DateTime(2024, 10, 18),
+    ),
+    ['Project planning'],
+    ),
+  MapEntry(
+    DateTimeRange(
+    start: DateTime(2024, 10, 20),
+    end: DateTime(2024, 10, 24),
+    ),
+    ['Client follow-up', 'Feedback session'],
+  ),
+];
+
+
+
+class Document {
+  final String title;
+  final DateTime date;
+
+  Document({required this.title, required this.date});
+}
+
+List<Document> documents = [
+  Document(title: "Manual de Disciplina", date: DateTime.parse("2024-02-03")),
+  Document(title: "Contrato de Matrícula", date: DateTime.parse("2024-03-01")),
+  Document(title: "Circular día civil", date: DateTime.parse("2024-04-20")),
+];
+
+
+class FinancialEntry {
+  final String description;
+  final double amount;
+
+  FinancialEntry({required this.description, required this.amount});
+}
+
+List<FinancialEntry> financialEntries = [
+  FinancialEntry(description: "Matrícula", amount: 500.00),
+  FinancialEntry(description: "Pago Matrícula", amount: -500.00),
+  FinancialEntry(description: "Cuota 1", amount: 300.00),
+  FinancialEntry(description: "Pago Cuota 1", amount: -300.00),
+  FinancialEntry(description: "Cuota 2", amount: 300.00),
+  FinancialEntry(description: "Recargo Cuota 2", amount: 30.00),
+  FinancialEntry(description: "Cuota 3", amount: 300.00),
+  FinancialEntry(description: "Pago Cuota 2", amount: -300.00),
+  FinancialEntry(description: "Pago recargo 2", amount: -30.00),
+  FinancialEntry(description: "Saldo", amount: 0.00),
+];

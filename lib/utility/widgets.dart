@@ -382,7 +382,8 @@ Widget msgDropListItemsWidget(title,icon,onTap) {
     ),
   );
 }
-Widget messageItemWidget({required Function() onTap,required String title,required String description,required String date}) {
+Widget messageItemWidget({required Function() onTap,required String title,
+  required String description,required String date}) {
   return GestureDetector(onTap: onTap,
     child: Container(
       margin: EdgeInsets.only(bottom: 15.h,left: 16.w,right: 16.w),
@@ -404,4 +405,59 @@ Widget messageItemWidget({required Function() onTap,required String title,requir
 
     ),
   );
+}
+Widget subjectAndRatingItemWidget({required String subject, required String rating}) {
+  return Column(children: [
+    Row(children: [
+      Expanded(child:
+      txtR(subject,15.sp,weight: FontWeight.w600)),
+      gapW(20.w),
+      txtB(rating,15.sp,weight: FontWeight.w500,color:Colors.green,textAlign: TextAlign.left),
+    ],),
+    gapH(10.h),
+    Divider(color: AppColors.black.withOpacity(0.25),thickness: 1.25,),
+  ],);
+}
+Widget documentAndDates({required String title, required String date}) {
+  return Column(children: [
+    Row(children: [
+      Expanded(child:
+      txtR(title,15.sp,weight: FontWeight.w600)),
+
+      gapW(20.w),
+      Container(
+          width: 120.w,child: txtB(date,15.sp,weight: FontWeight.w400,textAlign: TextAlign.left)),
+    ],),
+    gapH(10.h),
+    Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Divider(color: AppColors.black.withOpacity(0.25),thickness: 1.25,),
+    ),
+  ],);
+}
+Widget finEcWidget({required String title, required String amount,isCredit=true}) {
+  return Column(children: [
+    Row(crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+      SizedBox(width: 200.w,
+          child:
+      txtR(title,15.sp,weight: FontWeight.w600)),
+
+      Spacer(),
+      SizedBox(
+          width: 90.w,
+          child: txtB(amount,15.sp,
+              weight: FontWeight.w500,color: isCredit?null:const Color(0xFF950707),textAlign: TextAlign.right)
+      ),
+      GestureDetector(
+          child: Image.asset(AppAssets.info,width: 30.w,height: 30.h,fit: BoxFit.contain,))
+
+
+    ],),
+    gapH(10.h),
+    Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Divider(color: AppColors.black.withOpacity(0.25),thickness: 1.25,),
+    ),
+  ],);
 }

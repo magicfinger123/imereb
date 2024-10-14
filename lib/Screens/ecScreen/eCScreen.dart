@@ -28,29 +28,33 @@ class _EcScreenState extends State<EcScreen> {
           Expanded(
             child: Column(
               children: [
-                Container(
-                  decoration: deco(),
-                  child: Column(children: [
-                    heading(),
-                    gapH(10.h),
-                    SizedBox(height: 510.h,
-                      child:
-                      ListView.builder(
-                          padding: EdgeInsets.symmetric(horizontal: 18.w,vertical: 16.h),
-                          itemCount:financialEntries.length,
-                          itemBuilder: (context, index) {
-                            final fin = financialEntries?[index];
-                            return GestureDetector(onTap: (){
+                Expanded(
+                  child: Container(
+                    decoration: deco(),
+                    child: Column(children: [
+                      heading(),
+                      gapH(10.h),
+                      Expanded(
+                        child: SizedBox(
+                          child:
+                          ListView.builder(
+                              padding: EdgeInsets.symmetric(horizontal: 18.w,vertical: 16.h),
+                              itemCount:financialEntries.length,
+                              itemBuilder: (context, index) {
+                                final fin = financialEntries?[index];
+                                return GestureDetector(onTap: (){
 
-                            },
-                              child: finEcWidget(title: fin?.description??"",
-                                  amount:fin?.amount.toString()??"0.0",isCredit: false),
-                            );
-                          }
+                                },
+                                  child: finEcWidget(title: fin?.description??"",
+                                      amount:fin?.amount.toString()??"0.0",isCredit: false),
+                                );
+                              }
+                          ),
+                        ),
                       ),
-                    ),
 
-                  ],),
+                    ],),
+                  ),
                 ),
                 gapH(10.h),
                 backAndIcon((){

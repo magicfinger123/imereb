@@ -65,8 +65,8 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
 
                 },
                 documentTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                  const DocumentScreen()));
+                  // Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                  // const DocumentScreen()));
                 },
                 matricTap: (){},
                 alertTap: (){}, tipsTap: (){},

@@ -1,9 +1,13 @@
 import 'package:bs_educativo/Screens/agendaScreen/1_agendaScreen.dart';
+import 'package:bs_educativo/Screens/alertsScreen/alertScreen.dart';
+import 'package:bs_educativo/Screens/citasothersScreen/1_citasOthersScreen.dart';
+import 'package:bs_educativo/Screens/couponScreen/1_coupon_screen.dart';
 import 'package:bs_educativo/Screens/detailedRatingsScreen/1_ratingsScreen.dart';
 import 'package:bs_educativo/Screens/documentScreen/1_document_screen.dart';
 import 'package:bs_educativo/Screens/ecScreen/eCScreen.dart';
 import 'package:bs_educativo/Screens/messagesScreen/1_message_screen.dart';
 import 'package:bs_educativo/Screens/qRScreen/1_qrScreen.dart';
+import 'package:bs_educativo/Screens/tipsScreen/1_tips_screen.dart';
 import 'package:bs_educativo/utility/iconsAndImages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -62,15 +66,26 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                   const AgendaScreen()));
                 },
                 clockTap:(){
-
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                  const CitasOthersScreen()));
                 },
                 documentTap: (){
                   // Navigator.push(context, MaterialPageRoute(builder: (context) =>
                   // const DocumentScreen()));
                 },
                 matricTap: (){},
-                alertTap: (){}, tipsTap: (){},
-                couponTap: (){}
+                alertTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                  const AlertScreen()));
+                },
+                tipsTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                  const TipsScreen()));
+                  },
+                couponTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                  const CouponScreen()));
+                }
             ),),
           ),
         ),

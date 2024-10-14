@@ -120,3 +120,67 @@ List<FinancialEntry> financialEntries = [
   FinancialEntry(description: "Pago recargo 2", amount: -30.00),
   FinancialEntry(description: "Saldo", amount: 0.00),
 ];
+
+class DisciplinaryRecord {
+  final String description;
+  final DateTime date;
+
+  DisciplinaryRecord({required this.description, required this.date});
+}
+
+List<DisciplinaryRecord> disciplinaryRecords = [
+  DisciplinaryRecord(description: "Bajo Rendimiento Escolar", date: DateTime.parse("2024-07-03")),
+  DisciplinaryRecord(description: "Ausencia", date: DateTime.parse("2024-06-01")),
+  DisciplinaryRecord(description: "Amonestación", date: DateTime.parse("2024-05-20")),
+  DisciplinaryRecord(description: "Suspensión de Clases", date: DateTime.parse("2024-05-01")),
+];
+final String qrData = "James Watts\n8-888-8888";
+
+
+class User {
+  String name;
+
+  User({required this.name,});
+}
+
+class Category {
+  String categoryName;
+  List<User> users;
+
+  Category({required this.categoryName, required this.users});
+}
+
+List<Category> categories = [
+  Category(categoryName: "Directivos", users: [
+    User(name: "Ozil Mendoza"),
+    User(name: "Marisol Montenegro"),
+  ]),
+  Category(categoryName: "Docentes", users: [
+    User(name: "Marielis Hurtado"),
+    User(name: "Pedro Santo"),
+    User(name: "Reinaldo Achurra"),
+  ]),
+  Category(categoryName: "Secretaría", users: [
+    User(name: "Lucia Rodriguez"),
+  ]),
+  Category(categoryName: "Enfermería", users: [
+    User(name: "Carla Gomez"),
+  ]),
+];
+
+enum Status { Accepted, Pending, Cancelled }
+
+// Create a model for the user info
+class UserStatusInfo {
+  final String name;
+  final String date;
+  Status status;
+
+  UserStatusInfo({required this.name, required this.date, required this.status});
+}
+
+List<UserStatusInfo> usersStatusList = [
+  UserStatusInfo(name: 'Felix Gonzáles', date: '2024-08-10', status: Status.Accepted),
+  UserStatusInfo(name: 'María Pérez', date: '2024-07-01', status: Status.Pending),
+  UserStatusInfo(name: 'Robert Arthur', date: '2024-06-20', status: Status.Cancelled),
+];

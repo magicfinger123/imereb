@@ -30,7 +30,7 @@ class _ComposeMessageViewState extends State<ComposeMessageView> {
     ),
       child:SingleChildScrollView(
         child: Column(children: [
-         Container(
+          Container(
            padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 16.h),
            decoration: BoxDecoration(
              borderRadius: BorderRadius.circular(6.r),
@@ -138,7 +138,7 @@ class _ComposeMessageViewState extends State<ComposeMessageView> {
                 Image.asset(AppAssets.attach,width: 29.w,height: 29.h,fit: BoxFit.contain,),
                 gapW(1.w),
                 GestureDetector(onTap: (){},
-                    child: Expanded(child: txtB("Cargar archivo adjunto",13.sp,textAlign: TextAlign.left))),
+                    child: SizedBox(child: txtB("Cargar archivo adjunto",13.sp,textAlign: TextAlign.left))),
               ],
             ),
           ),

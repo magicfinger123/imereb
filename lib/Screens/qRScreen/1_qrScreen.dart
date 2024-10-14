@@ -10,6 +10,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 import '../../utility/colors.dart';
+import '../../utility/demoInfos.dart';
 import '../../utility/widgets.dart';
 import '../2_main_menu_screen.dart';
 
@@ -22,7 +23,7 @@ class QRScreen extends StatefulWidget {
 }
 
 class _QRScreenState extends State<QRScreen> {
-  final String qrData = "James Watts\n8-888-8888"; // Name and phone number
+
   @override
   Widget build(BuildContext context) {
     return BgScaffold(

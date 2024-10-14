@@ -5,6 +5,7 @@ class AppAssets {
   static const String bios = 'assets/images/bios.png';
   static const String print = 'assets/images/print.png';
   static const String boy = 'assets/images/boy.png';
+  static const String blade = 'assets/images/blade.png';
 
 
   static const String user = 'assets/icons/user.png';
@@ -36,6 +37,15 @@ class AppAssets {
   static const String plus = 'assets/icons/plus.png';
   static const String share = 'assets/icons/share.png';
   static const String info = 'assets/icons/info.png';
+
+  static const String bag = 'assets/icons/bag.png';
+  static const String homeTwo = 'assets/icons/home_two.png';
+  static const String speaker = 'assets/icons/speaker.png';
+  static const String trips = 'assets/icons/trips.png';
+  static const String watch = 'assets/icons/watch.png';
+
+  static const String refresh = 'assets/icons/refresh.png';
+  static const String close = 'assets/icons/close.png';
 
 
 

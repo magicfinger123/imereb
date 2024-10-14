@@ -53,9 +53,9 @@ class _MessageScreenState extends State<MessageScreen> {
                   child: IndexedStack(
                     index: _currentIndex, // Switch between screens
                     children: [
-                      MessageTab(onScreenChange: _onScreenSelected),
-                      MessageView(onScreenChange: _onScreenSelected),
-                      ComposeMessageView(onScreenChange:_onScreenSelected),
+                       MessageTab(onScreenChange: _onScreenSelected),
+                       MessageView(onScreenChange: _onScreenSelected),
+                       ComposeMessageView(onScreenChange:_onScreenSelected),
                     ] // Screens to switch between
                   ),
                 ),
@@ -67,7 +67,7 @@ class _MessageScreenState extends State<MessageScreen> {
                     {
                      checkSecondBtnActions();
                     },
-                      secondIcon,size: 61.0),
+                    secondIcon,size: 61.0),
               ],
             ),
           ),

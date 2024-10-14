@@ -21,7 +21,7 @@ class MessageView extends StatefulWidget {
 class _MessageViewState extends State<MessageView> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Container(height: 600.h,width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 16.h),
         decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6.r),
@@ -35,7 +35,7 @@ class _MessageViewState extends State<MessageView> {
             toAddresses: "toAddresses",
             copiedAddresses: "copiedAddresses",
             message: demoText,
-            fileTitle: "",
+            fileTitle: "Cargar archivo adjunto",
             replyAllTap: (){},
             replyLeftTap: (){},
             replyRightTap: (){},
@@ -45,7 +45,7 @@ class _MessageViewState extends State<MessageView> {
     );
   }
 
-  Column messageViewWidget({
+  Widget messageViewWidget({
     required String title,
     required String sender,
     required String toAddresses,
@@ -106,19 +106,20 @@ class _MessageViewState extends State<MessageView> {
                   child: txtR(message,15.sp,
                       textAlign: TextAlign.left,color: AppColors.black,
                       maxLines: 1000000000000000000))),
-          gapH(10.h),
+           gapH(10.h),
           Row(
             children: [
               Image.asset(AppAssets.attach,width: 29.w,height: 29.h,fit: BoxFit.contain,),
               gapW(1.w),
               GestureDetector(onTap: fileTap,
-                  child: Expanded(child: txtB(fileTitle,13.sp,textAlign: TextAlign.left))),
+                  child:SizedBox(
+                      child:
+                  txtB(fileTitle,13.sp,textAlign: TextAlign.left)
+                  )
+              ),
             ],
           ),
           gapH(2.h),
-
-
-
       ]
     );
   }

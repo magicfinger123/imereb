@@ -156,29 +156,8 @@ Container titleCard2(title,date) {
   );
 }
 
-Container agendaMarkCircle() {
-  return Container(
-    margin: EdgeInsets.only(bottom: 10.h),
-    width: 40.w,
-    height: 40.w,
-    decoration: BoxDecoration(
-      border: Border.all(
-          color: AppColors.blueBa,
-          width: 1.r// Marker border color
-      ),
-      color: AppColors.blueBa.withOpacity(0.20), // Marker color
-      shape: BoxShape.circle,
-    ),
-    alignment: Alignment.center,
-    // child: Text(
-    //   date.day.toString(),
-    //   style: const TextStyle(
-    //     color: Colors.black, // Text color for days with events
-    //     fontWeight: FontWeight.bold,
-    //   ),
-    // ),
-  );
-}
+
+
 
 BoxDecoration deco2() {
   return BoxDecoration(

@@ -44,7 +44,8 @@ class _EcScreenState extends State<EcScreen> {
 
                             },
                               child: finEcWidget(title: fin?.description??"",
-                                  amount:fin?.amount.toString()??"0.0",isCredit: false),
+                                  amount:fin?.amount.toString()??"0.0",isCredit: false,
+                                  onIconTap: () {  }),
                             );
                           }
                       ),

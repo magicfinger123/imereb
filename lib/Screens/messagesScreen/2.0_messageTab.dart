@@ -29,7 +29,6 @@ class _MessageTabState extends State<MessageTab> {
             decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6.r),
             color: AppColors.white,),
-
             child: Column(
               children: [
                 Container(height: 70.h,

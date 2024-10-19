@@ -4,6 +4,7 @@ import 'package:bs_educativo/Screens/messagesScreen/2.2_composeMessageView.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../apiService/api_service.dart';
 import '../../utility/colors.dart';
 import '../../utility/iconsAndImages.dart';
 import '../../utility/widgets.dart';
@@ -42,8 +43,10 @@ class _MessageScreenState extends State<MessageScreen> {
   Widget build(BuildContext context) {
     return BgScaffold(
         body: MenuDesign(
-          institution: "Colegio Internacional de Panamá",
-          selectedUser: selectedUser, group: group, counselor: counselor,
+          institution:  appUserType == "Admin"?
+          adminLoginResponse?.collegeName??'':
+          userLoginResponse?.colegio??'',
+          selectedUser: selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
           selectUserTap: () {  },
           container:
           Expanded(

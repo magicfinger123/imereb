@@ -14,4 +14,7 @@ class AppColors {
   static const blueBa = Color(0xFF2A7FBA);
 
   static const border = Color(0xFF343232);
+
+  static const primary = Color(0xFF2A7FBA);
+  static const redColor = Color(0xFFF75555);
 }

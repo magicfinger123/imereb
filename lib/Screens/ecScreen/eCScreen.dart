@@ -2,6 +2,7 @@ import 'package:bs_educativo/utility/iconsAndImages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../apiService/api_service.dart';
 import '../../utility/colors.dart';
 import '../../utility/demoInfos.dart';
 import '../../utility/text_widgets.dart';
@@ -22,7 +23,7 @@ class _EcScreenState extends State<EcScreen> {
     return BgScaffold(
         body: MenuDesign(
           institution: "Colegio Internacional de Panamá",
-          selectedUser: selectedUser, group: group, counselor: counselor,
+          selectedUser: selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
           selectUserTap: () {  },
           container:
           Column(

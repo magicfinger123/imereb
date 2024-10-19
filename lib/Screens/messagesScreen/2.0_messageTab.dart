@@ -21,6 +21,8 @@ class _MessageTabState extends State<MessageTab> {
   final List<String> categories = ['Entrada', 'Salida','Eliminados', 'No leídos', 'Leídos'];
   bool _isDropdownVisible = false;
   String selectedMsgType = "Entrada";
+
+
   @override
   Widget build(BuildContext context) {
     return Stack(

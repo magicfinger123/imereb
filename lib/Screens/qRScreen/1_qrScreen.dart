@@ -9,6 +9,7 @@ import 'dart:typed_data';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
+import '../../apiService/api_service.dart';
 import '../../utility/colors.dart';
 import '../../utility/demoInfos.dart';
 import '../../utility/widgets.dart';
@@ -29,7 +30,7 @@ class _QRScreenState extends State<QRScreen> {
     return BgScaffold(
       body: MenuDesign(
         institution: "",
-      selectedUser: selectedUser, group: group, counselor: counselor,
+      selectedUser: selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
       selectUserTap: () {  },
       container:
       Expanded(child: Column(children: [

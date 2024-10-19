@@ -11,13 +11,18 @@ import 'package:bs_educativo/Screens/tipsScreen/1_tips_screen.dart';
 import 'package:bs_educativo/utility/iconsAndImages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
+import '../apiService/api_service.dart';
+import '../model/response/LoginResponse.dart';
+import '../model/response/family.dart';
 import '../utility/colors.dart';
 import '../utility/text_widgets.dart';
 import '../utility/widgets.dart';
-String selectedUser = 'James Watts';
-String group = 'I - A';
-String counselor = 'Cristina Arcia';
+
+
+
+
 class MainMenuScreen extends StatefulWidget {
   const MainMenuScreen({super.key});
 
@@ -30,9 +35,18 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   Widget build(BuildContext context) {
     return BgScaffold(
       body: MenuDesign(
-        institution: 'Colegio Internacional de Panamá',
-        selectedUser: selectedUser, group: group, counselor: counselor,
-        selectUserTap: () {  },
+        institution: appUserType == "Admin"?
+        adminLoginResponse?.collegeName??'':
+        userLoginResponse?.colegio??'',
+
+        selectedUser: selectedMember?.nombreCompleto??"",
+        group: "", counselor: "",
+        selectUserTap: () {
+          _selectStudent();
+        },
+        isAdmin: appUserType == "Admin",
+        userName: appUserType == "Admin"? adminLoginResponse?.usuario??'':"",
+        role: appUserType == "Admin"? 'Login: ${adminLoginResponse?.nombre??''}':"",
         container:
         Expanded(
           child: Container(
@@ -43,7 +57,9 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
               color: AppColors.white,
               border: Border.all(color: AppColors.border,width: 2.5.r)
             ),
-            child: SingleChildScrollView(child:
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(top: 30.h),
+              child:
             menuItems(
                 qrTap: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) =>
@@ -89,10 +105,58 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
             ),),
           ),
         ),
-        isBiosLogo: false,
+        isBiosLogo: true,
       ),);
   }
+  _selectStudent()async{
+    if(userLoginResponse?.familyMembers != null){
+      var result =  await showModalBottomSheet(
+          isDismissible: true,
+          isScrollControlled: true,
+          context: context,
+          builder: (context) => Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child:  SelectFamilyMemberBottomSheet(userFamilyMembers: userLoginResponse?.familyMembers??[],),
+          )
+      );
+      if(result is FamilyMember){
+        setState(() {
+          selectedMember = result;
+        });
+      }
+    }
+
+    // var result =  await showModalBottomSheet(
+    //     isDismissible: true,
+    //     isScrollControlled: true,
+    //     context: context,
+    //     builder: (context) => Padding(
+    //       padding: EdgeInsets.only(
+    //           bottom: MediaQuery.of(context).viewInsets.bottom),
+    //       child:  SelectFamilyMemberBottomSheet(userFamilyMembers: userLoginResponse.familyMembers,),
+    //     )
+    // );
+    // if(result is Bank){
+    //   setState(() {
+    //     selectedBank = result;
+    //     bankController.text = selectedBank?.bankname ?? "";
+    //     if (accountNumberController.text.length == 10){
+    //       bloc.add(
+    //           TransactionAccountVerificationEvent(
+    //               AccountVerification(
+    //                   accountNumber: accountNumberController.text,
+    //                   bankCode: selectedBank?.bankCode ?? ""))
+    //       );
+    //     }
+    //   });
+    // }
+  }
+
+
 }
+
+
 
 
 

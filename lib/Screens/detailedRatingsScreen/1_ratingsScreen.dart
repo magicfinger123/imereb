@@ -3,6 +3,7 @@ import 'package:bs_educativo/Screens/detailedRatingsScreen/2.1_ratingsDetailsVie
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../apiService/api_service.dart';
 import '../../utility/widgets.dart';
 import '../2_main_menu_screen.dart';
 
@@ -28,7 +29,7 @@ class _RatingsScreenState extends State<RatingsScreen> {
     return BgScaffold(
         body: MenuDesign(
           institution: "Colegio Internacional de Panamá",
-          selectedUser: selectedUser, group: group, counselor: counselor,
+          selectedUser: selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
           selectUserTap: () {  },
           container:
           Expanded(

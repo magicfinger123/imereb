@@ -25,45 +25,43 @@ class _EcScreenState extends State<EcScreen> {
           selectedUser: selectedUser, group: group, counselor: counselor,
           selectUserTap: () {  },
           container:
-          Expanded(
-            child: Column(
-              children: [
-                Container(
-                  decoration: deco(),
-                  child: Column(children: [
-                    heading(),
-                    gapH(10.h),
-                    SizedBox(height: 510.h,
-                      child:
-                      ListView.builder(
-                          padding: EdgeInsets.symmetric(horizontal: 18.w,vertical: 16.h),
-                          itemCount:financialEntries.length,
-                          itemBuilder: (context, index) {
-                            final fin = financialEntries?[index];
-                            return GestureDetector(onTap: (){
+          Column(
+            children: [
+              Container(
+                decoration: deco(),
+                child: Column(children: [
+                  heading(),
+                  gapH(10.h),
+                  SizedBox(height: 470.h,
+                    child:
+                    ListView.builder(
+                        padding: EdgeInsets.symmetric(horizontal: 18.w,vertical: 16.h),
+                        itemCount:financialEntries.length,
+                        itemBuilder: (context, index) {
+                          final fin = financialEntries?[index];
+                          return GestureDetector(onTap: (){
 
-                            },
-                              child: finEcWidget(title: fin?.description??"",
-                                  amount:fin?.amount.toString()??"0.0",isCredit: false,
-                                  onIconTap: () {  }),
-                            );
-                          }
-                      ),
+                          },
+                            child: finEcWidget(title: fin?.description??"",
+                                amount:fin?.amount.toString()??"0.0",isCredit: false,
+                                onIconTap: () {  }),
+                          );
+                        }
                     ),
+                  ),
 
-                  ],),
-                ),
-                gapH(10.h),
-                backAndIcon((){
-                  Navigator.pop(context);
+                ],),
+              ),
+              gapH(10.h),
+              backAndIcon((){
+                Navigator.pop(context);
+                },
+                      ()
+                  {
+
                   },
-                        ()
-                    {
-
-                    },
-                    AppAssets.share,size: 61.0),
-              ],
-            ),
+                  AppAssets.share,size: 61.0),
+            ],
           ),
         ));
   }

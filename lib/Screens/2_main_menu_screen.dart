@@ -70,8 +70,8 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                   const CitasOthersScreen()));
                 },
                 documentTap: (){
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                  // const DocumentScreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                  const DocumentScreen()));
                 },
                 matricTap: (){},
                 alertTap: (){
@@ -92,8 +92,6 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
         isBiosLogo: false,
       ),);
   }
-
-
 }
 
 

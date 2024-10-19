@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../utility/colors.dart';
 import '../../utility/demoInfos.dart';
-import '../../utility/iconsAndImages.dart';
 import '../../utility/text_widgets.dart';
 import '../../utility/widgets.dart';
 import '../2_main_menu_screen.dart';
@@ -25,47 +23,44 @@ class _AlertScreenState extends State<AlertScreen> {
           selectedUser: selectedUser, group: group, counselor: counselor,
           selectUserTap: () {  },
           container:
-          Expanded(
-            child: Column(
-              children: [
-                Container(
-                  decoration: deco(),
-                  child: Column(children: [
-                    heading(),
-                    gapH(10.h),
-                    SizedBox(height: 510.h,
-                      child:
-                      ListView.builder(
-                          padding: EdgeInsets.symmetric(horizontal: 18.w,vertical: 16.h),
-                          itemCount:disciplinaryRecords.length,
-                          itemBuilder: (context, index) {
-                            final rec = disciplinaryRecords?[index];
-                            return GestureDetector(onTap: (){
+          Column(
+            children: [
+              Container(
+                decoration: deco(),
+                child: Column(children: [
+                  heading(),
+                  gapH(10.h),
+                  SizedBox(height: 490.h,
+                    child:
+                    ListView.builder(
+                        padding: EdgeInsets.symmetric(horizontal: 18.w,vertical: 16.h),
+                        itemCount:disciplinaryRecords.length,
+                        itemBuilder: (context, index) {
+                          final rec = disciplinaryRecords?[index];
+                          return GestureDetector(onTap: (){
 
-                            },
-                              child: alertWidget(title:rec?.description??"",
-                                  amount:rec?.date.toString()??"",
-                                  onIconTap: () {
+                          },
+                            child: alertWidget(title:rec?.description??"",
+                                amount:rec?.date.toString()??"",
+                                onIconTap: () {
 
-                                  }),
-                            );
-                          }
-                      ),
+                                }),
+                          );
+                        }
                     ),
+                  ),
 
-                  ],),
-                ),
-                gapH(10.h),
-                backAndIcon((){
-                  Navigator.pop(context);
-                },
-                        ()
-                    {
+                ],),
+              ),
+              gapH(10.h),
+              backAndIcon((){
+                Navigator.pop(context);
+              },()
+                  {
 
-                    },
-                    null,size: 61.0),
-              ],
-            ),
+                  },
+                  null,size: 61.0),
+            ],
           ),
         ));
   }

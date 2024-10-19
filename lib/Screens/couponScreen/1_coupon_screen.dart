@@ -4,6 +4,7 @@ import 'package:bs_educativo/Screens/couponScreen/2.2_selectedCouponDetailsScree
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../apiService/api_service.dart';
 import '../../utility/widgets.dart';
 import '../2_main_menu_screen.dart';
 
@@ -28,7 +29,7 @@ class _CouponScreenState extends State<CouponScreen> {
     return BgScaffold(
         body: MenuDesign(
           institution: "Colegio Internacional de Panamá",
-          selectedUser: selectedUser, group: group, counselor: counselor,
+          selectedUser: selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
           selectUserTap: () {  },
           container:
           Expanded(

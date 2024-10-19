@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../apiService/api_service.dart';
 import '../../utility/colors.dart';
 import '../../utility/demoInfos.dart';
 import '../../utility/iconsAndImages.dart';
@@ -22,7 +23,7 @@ class _AlertScreenState extends State<AlertScreen> {
     return BgScaffold(
         body: MenuDesign(
           institution: "Colegio Internacional de Panamá",
-          selectedUser: selectedUser, group: group, counselor: counselor,
+          selectedUser: selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
           selectUserTap: () {  },
           container:
           Expanded(

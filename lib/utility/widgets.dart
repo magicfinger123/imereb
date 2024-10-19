@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../model/response/LoginResponse.dart';
+import '../model/response/family.dart';
 import 'colors.dart';
 import 'demoInfos.dart';
 import 'iconsAndImages.dart';
@@ -294,6 +296,10 @@ class MenuDesign extends StatefulWidget {
   final String institution, selectedUser, group, counselor;
   final Function() selectUserTap;
   final bool isBiosLogo;
+  final bool isAdmin;
+  final String? userName;
+  final String? role;
+
 
   const MenuDesign({
     super.key,
@@ -304,6 +310,9 @@ class MenuDesign extends StatefulWidget {
     required this.selectUserTap,
     this.isBiosLogo = true,
     required this.institution,
+    this.isAdmin = false,
+    this.userName = "",
+    this.role = "",
   });
 
   @override
@@ -349,14 +358,22 @@ class _MenuDesignState extends State<MenuDesign> {
           children: [
             txtB(widget.institution, 20.sp),
             sp(),
+            widget.isAdmin
+                ? Row(children: [
+              SizedBox(width: 250.w,
+                  child:
+              txtR(widget.userName, 18.sp,weight: FontWeight.w600)),
+               gapW(10.w),
+              txtR(widget.role, 15.sp,weight: FontWeight.w600),
+            ],):
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 GestureDetector(
                   onTap: widget.selectUserTap,
                   child: Container(
-                      width: 144.w,
-                      height: 40.h,
+                      width: 154.w,
+                      height: 50.h,
                       decoration: BoxDecoration(
                           color: AppColors.white,
                           borderRadius: BorderRadius.circular(6.4.r),
@@ -365,12 +382,12 @@ class _MenuDesignState extends State<MenuDesign> {
                       child: Row(children: [
                         gapW(5.w),
                         Expanded(
-                            child: txtR(widget.selectedUser, 16.sp,
-                                weight: FontWeight.w600)),
-                        gapW(5.w),
+                            child: txtR(widget.selectedUser, 13.sp,
+                                weight: FontWeight.w600,maxLines: 2)),
+                        gapW(1.w),
                         Icon(
                           Icons.keyboard_arrow_down,
-                          size: 25.sp,
+                          size: 20.sp,
                           color: AppColors.blueBa,
                         )
                       ])),
@@ -903,129 +920,125 @@ Container commentPopWidget({required String title,required String date,required 
 
       ],),);
 }
-// void showUserSelectionDialog(BuildContext context) {
-//   showDialog(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return Dialog(
-//         insetPadding: EdgeInsets.only(bottom: 100.h),
-//         alignment: Alignment.bottomCenter,
-//         backgroundColor: AppColors.white,
-//         elevation: 1.0,
-//         child: Container(
-//           height: 500.h,
-//           width: 358.w,
-//           padding: EdgeInsets.symmetric(horizontal: 18.w,vertical: 20.h),
-//           decoration: BoxDecoration(
-//             borderRadius: BorderRadius.circular(6.3.r),
-//             color: AppColors.white,
-//             border: Border.all(color: AppColors.txt1,width: 3.5.r)
-//           ),
-//           child: Column(
-//             children: [
-//               colapseableWidget(),
-//              ]
-//           ),
-//         ),
-//       );
-//     },
-//   );
-// }
-//
-// class colapseableWidget extends StatefulWidget {
-//   const colapseableWidget({
-//     super.key,
-//   });
-//
-//   @override
-//   State<colapseableWidget> createState() => _colapseableWidgetState();
-// }
-//
-// class _colapseableWidgetState extends State<colapseableWidget> {
-//   bool _isExpanded = false;
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       height: !_isExpanded?45.h:214.h,width: double.infinity,
-//       padding: EdgeInsets.symmetric(horizontal: 13.w,),
-//       decoration: BoxDecoration(
-//         border: Border.all(color: AppColors.blueBa,width: 2.5.r),
-//         borderRadius: BorderRadius.circular(6.3.r),
-//         color: AppColors.bgDc,
-//         boxShadow: [
-//           BoxShadow(
-//               color: AppColors.black.withOpacity(0.25),
-//               spreadRadius: 0,
-//               blurRadius: 4.h,
-//               offset:  Offset(0, 4.h)
-//           )
-//         ]
-//       ),
-//       child: _isExpanded?
-//       Column(children: [
-//         gapH(10.h),
-//         GestureDetector(onTap: (){
-//           setState(() {
-//             _isExpanded = !_isExpanded;
-//           });
-//         },
-//           child: Row(crossAxisAlignment: CrossAxisAlignment.center,
-//             children: [
-//               txtB("Category",15.sp),
-//               const Spacer(),
-//               Icon(Icons.keyboard_arrow_down,color: AppColors.blueBa,size: 30.r,)
-//             ],),
-//         ),
-//         gapH(10.h),
-//           Expanded(
-//             child: ListView.builder(
-//             shrinkWrap: true,
-//             itemCount: categories.length,
-//             itemBuilder: (context, categoryIndex) {
-//               final user = categories[categoryIndex];
-//               return selectUserWidget(
-//                   title: user.categoryName,
-//                   isSelected: false
-//               );
-//             }),
-//           )
-//       ]):
-//       GestureDetector(onTap: (){
-//         setState(() {
-//           _isExpanded = !_isExpanded;
-//         });
-//       },
-//         child: Row(crossAxisAlignment: CrossAxisAlignment.center,
-//           children: [
-//           txtB("title",15.sp),
-//           const Spacer(),
-//           Icon(Icons.keyboard_arrow_down,color: AppColors.blueBa,size: 30.r,)
-//         ],),
-//       ),
-//
-//     );
-//   }
-//
-//   Row selectUserWidget({required String title,required bool isSelected}) {
-//     return Row(children: [
-//           Image.asset(AppAssets.profile,width: 20.h,height: 20.h,),
-//           gapW(10.w),
-//           Expanded(child: txtB(title,15.sp)),
-//           Container(
-//             width: 15.w,height: 15.w,
-//             decoration: BoxDecoration(
-//               shape: BoxShape.circle,
-//               border: Border.all(color: AppColors.black,width: 1.5.r),
-//             ),
-//             child: isSelected?Center(
-//               child: Container(width: 7.w,height: 7.w,decoration: BoxDecoration(
-//                 shape: BoxShape.circle,color: AppColors.black
-//               ),),
-//             ):SizedBox()
-//           )
-//
-//         ],);
-//   }
-// }
+class SelectFamilyMemberBottomSheet extends StatefulWidget {
+  final List<FamilyMember> userFamilyMembers;
+  const SelectFamilyMemberBottomSheet({required this.userFamilyMembers, super.key});
+
+  @override
+  State<SelectFamilyMemberBottomSheet> createState() => _SelectFamilyMemberBottomSheetState();
+}
+
+class _SelectFamilyMemberBottomSheetState extends State<SelectFamilyMemberBottomSheet> {
+  TextEditingController searchControl = TextEditingController();
+  List<FamilyMember> filteredList = [];
+
+  @override
+  void initState() {
+    filteredList = widget.userFamilyMembers;
+    super.initState();
+  }
+  void filterItems(String query) {
+    setState(() {
+      filteredList = widget.userFamilyMembers.where((item) =>
+          item.nombreCompleto!.toLowerCase().contains(query.toLowerCase())).toList();
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: (){ FocusManager.instance.primaryFocus?.unfocus();},
+      child: Container(
+        width: double.infinity,height: 742.h,
+        color: AppColors.d9,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            (MediaQuery.of(context).viewInsets.bottom != 0)?
+            gapH(30.h):gapH(30.h),
+            Container(height: 40.h,width: 350.w,
+              padding: EdgeInsets.only(left: 20.w),
+              child: TextField(
+                  controller: searchControl,
+                  onChanged: filterItems,
+                  style: GoogleFonts.inter(
+                    color: AppColors.txt1,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  cursorHeight: 10.h,
+                  cursorColor: AppColors.blueBa,
+                  decoration: InputDecoration(
+                    fillColor: AppColors.d9,
+                    filled: true,
+                    hintText: "Search",
+                    hintStyle: GoogleFonts.inter(
+                      color: AppColors.txt1,
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    contentPadding: EdgeInsets.only(bottom: 0,top: 0,left: 10.w,right: 10.w),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6.r),
+                      borderSide: BorderSide(color: AppColors.blueBa,width: 1.27.r),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6.r),
+                      borderSide: BorderSide(color: AppColors.blueBa,width: 1.27.r),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6.r),
+                      borderSide: BorderSide(color: AppColors.blueBa,width: 1.27.r),
+                    ),
+                  )
+              ),
+            ),
+            gapH(20.h),
+            Expanded(
+              child: ListView.builder(
+                  padding: EdgeInsets.only(top: 20.h),
+                  itemCount: filteredList.length,
+                  itemBuilder: (context, index) {
+                    return iconAndTextWidget(
+                        filteredList[index].nombreCompleto ?? "",(){
+                      Navigator.pop(context,  filteredList[index]);
+                    });
+                  }
+              ),
+            ),
+            gapH(22.h),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget iconAndTextWidget(String title,tap) {
+    return GestureDetector(onTap: tap,
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 10.w,vertical: 15.5.h),
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(horizontal: 15.w),
+        // decoration: BoxDecoration(
+        //   color: AppColors.whiteFA,borderRadius: BorderRadius.circular(10.r),
+        // ),
+        child: Row(crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Container(
+            //   width: 34.w,height: 32.h,
+            //   decoration: const BoxDecoration(
+            //       shape: BoxShape.circle, color: AppColors.green24
+            //   ),
+            //   child: Center(child: ctmTxtCrtB(title[0].toUpperCase(),color: AppColors.white,12.5.sp),),
+            // ),
+            // gapW(15.w),
+            Image.asset(AppAssets.profile,width: 20.w,height: 20.h,fit: BoxFit.contain,),
+            gapW(23.w),
+            Expanded(
+                child: txtB(title,15.sp,maxLines: 1)),
+          ],),
+      ),
+    );
+  }
+}
+
 
 

@@ -4,8 +4,6 @@
 
 import 'dart:convert';
 
-import 'family.dart';
-
 LoginResponse loginResponseFromJson(String str) => LoginResponse.fromJson(json.decode(str));
 
 String loginResponseToJson(LoginResponse data) => json.encode(data.toJson());
@@ -28,13 +26,13 @@ class LoginResponse {
   int? grupoUsuario;
   int? cambiarpass;
   int? idioma;
-  int? idxMaestro;
+  num? idxUsuario;
+  num? idxMaestro;
   String? codFamilia;
   int? produccion;
+  int? idxAdministrativo;
   List<FamilyMember>? familyMembers;
-  List<String>? familyOptions;
-  List<Contacto>? contactos;
-  dynamic permisos;
+  List<Permiso>? permisos;
   int? loginXFamilia;
   String? imagenUrl;
   String? tokenapp;
@@ -57,12 +55,12 @@ class LoginResponse {
     this.grupoUsuario,
     this.cambiarpass,
     this.idioma,
+    this.idxUsuario,
     this.idxMaestro,
     this.codFamilia,
     this.produccion,
+    this.idxAdministrativo,
     this.familyMembers,
-    this.familyOptions,
-    this.contactos,
     this.permisos,
     this.loginXFamilia,
     this.imagenUrl,
@@ -79,7 +77,7 @@ class LoginResponse {
     ano: json["Ano"],
     periodo: json["Periodo"],
     idColegio: json["idColegio"],
-    colegio: json["Colegio"],
+    colegio: json["Colegio"] ?? json["CollegeName"],
     bloqueado: json["Bloqueado"],
     aviso: json["Aviso"],
     periodoPre: json["Periodo_pre"],
@@ -87,13 +85,13 @@ class LoginResponse {
     grupoUsuario: json["GrupoUsuario"],
     cambiarpass: json["Cambiarpass"],
     idioma: json["Idioma"],
+    idxUsuario: json["IdxUsuario"],
     idxMaestro: json["IdxMaestro"],
     codFamilia: json["CodFamilia"],
     produccion: json["Produccion"],
+    idxAdministrativo: json["IdxAdministrativo"],
     familyMembers: json["FamilyMembers"] == null ? [] : List<FamilyMember>.from(json["FamilyMembers"]!.map((x) => FamilyMember.fromJson(x))),
-    familyOptions: json["FamilyOptions"] == null ? [] : List<String>.from(json["FamilyOptions"]!.map((x) => x)),
-    contactos: json["Contactos"] == null ? [] : List<Contacto>.from(json["Contactos"]!.map((x) => Contacto.fromJson(x))),
-    permisos: json["Permisos"],
+    permisos: json["Permisos"] == null ? [] : List<Permiso>.from(json["Permisos"]!.map((x) => Permiso.fromJson(x))),
     loginXFamilia: json["LoginXFamilia"],
     imagenUrl: json["imagenUrl"],
     tokenapp: json["tokenapp"],
@@ -117,115 +115,117 @@ class LoginResponse {
     "GrupoUsuario": grupoUsuario,
     "Cambiarpass": cambiarpass,
     "Idioma": idioma,
+    "IdxUsuario": idxUsuario,
     "IdxMaestro": idxMaestro,
     "CodFamilia": codFamilia,
     "Produccion": produccion,
+    "IdxAdministrativo": idxAdministrativo,
     "FamilyMembers": familyMembers == null ? [] : List<dynamic>.from(familyMembers!.map((x) => x.toJson())),
-    "FamilyOptions": familyOptions == null ? [] : List<dynamic>.from(familyOptions!.map((x) => x)),
-    "Contactos": contactos == null ? [] : List<dynamic>.from(contactos!.map((x) => x.toJson())),
-    "Permisos": permisos,
+    "Permisos": permisos == null ? [] : List<dynamic>.from(permisos!.map((x) => x.toJson())),
     "LoginXFamilia": loginXFamilia,
     "imagenUrl": imagenUrl,
     "tokenapp": tokenapp,
   };
 }
 
-class Contacto {
-  String? codigoContacto;
-  String? nombreContacto;
-  GrupoContacto? grupoContacto;
-  int? idGrupo;
-  String? cargo;
+class FamilyMember {
+  String? nombreCompleto;
+  String? nombre1;
+  String? nombre2;
+  String? apellido1;
+  String? apellido2;
+  String? cedula;
+  int? anocursa;
+  int? idxEstudiante;
 
-  Contacto({
-    this.codigoContacto,
-    this.nombreContacto,
-    this.grupoContacto,
-    this.idGrupo,
-    this.cargo,
+  FamilyMember({
+    this.nombreCompleto,
+    this.nombre1,
+    this.nombre2,
+    this.apellido1,
+    this.apellido2,
+    this.cedula,
+    this.anocursa,
+    this.idxEstudiante,
   });
 
-  factory Contacto.fromJson(Map<String, dynamic> json) => Contacto(
-    codigoContacto: json["CodigoContacto"],
-    nombreContacto: json["NombreContacto"],
-    grupoContacto: grupoContactoValues.map[json["GrupoContacto"]]!,
-    idGrupo: json["IdGrupo"],
-    cargo: json["Cargo"],
+  factory FamilyMember.fromJson(Map<String, dynamic> json) => FamilyMember(
+    nombreCompleto: json["NombreCompleto"],
+    nombre1: json["Nombre1"],
+    nombre2: json["Nombre2"],
+    apellido1: json["Apellido1"],
+    apellido2: json["Apellido2"],
+    cedula: json["Cedula"],
+    anocursa: json["anocursa"],
+    idxEstudiante: json["IdxEstudiante"],
   );
 
   Map<String, dynamic> toJson() => {
-    "CodigoContacto": codigoContacto,
-    "NombreContacto": nombreContacto,
-    "GrupoContacto": grupoContactoValues.reverse[grupoContacto],
-    "IdGrupo": idGrupo,
-    "Cargo": cargo,
+    "NombreCompleto": nombreCompleto,
+    "Nombre1": nombre1,
+    "Nombre2": nombre2,
+    "Apellido1": apellido1,
+    "Apellido2": apellido2,
+    "Cedula": cedula,
+    "anocursa": anocursa,
+    "IdxEstudiante": idxEstudiante,
   };
 }
 
-enum GrupoContacto {
-  DIRECTIVOS,
-  OTROS_MIEMBROS,
-  SEC_ACADMICA
-}
+class Permiso {
+  int? idxusuario;
+  int? idcolegio;
+  int? idxmaestro;
+  String? tipomaestro;
+  int? x001;
+  int? x002;
+  int? x003;
+  int? x004;
+  int? x005;
+  int? x006;
+  int? x007;
+  int? x008;
 
-final grupoContactoValues = EnumValues({
-  "Directivos": GrupoContacto.DIRECTIVOS,
-  "Otros Miembros": GrupoContacto.OTROS_MIEMBROS,
-  "Sec. Académica": GrupoContacto.SEC_ACADMICA
-});
-
-// class FamilyMember {
-//   String? nombreCompleto;
-//   String? nombre1;
-//   String? nombre2;
-//   String? apellido1;
-//   String? apellido2;
-//   String? cedula;
-//   int? anocursa;
-//   int? idxEstudiante;
-//
-//   FamilyMember({
-//     this.nombreCompleto,
-//     this.nombre1,
-//     this.nombre2,
-//     this.apellido1,
-//     this.apellido2,
-//     this.cedula,
-//     this.anocursa,
-//     this.idxEstudiante,
-//   });
-//
-//   factory FamilyMember.fromJson(Map<String, dynamic> json) => FamilyMember(
-//     nombreCompleto: json["NombreCompleto"],
-//     nombre1: json["Nombre1"],
-//     nombre2: json["Nombre2"],
-//     apellido1: json["Apellido1"],
-//     apellido2: json["Apellido2"],
-//     cedula: json["Cedula"],
-//     anocursa: json["anocursa"],
-//     idxEstudiante: json["IdxEstudiante"],
-//   );
-//
-//   Map<String, dynamic> toJson() => {
-//     "NombreCompleto": nombreCompleto,
-//     "Nombre1": nombre1,
-//     "Nombre2": nombre2,
-//     "Apellido1": apellido1,
-//     "Apellido2": apellido2,
-//     "Cedula": cedula,
-//     "anocursa": anocursa,
-//     "IdxEstudiante": idxEstudiante,
-//   };
-// }
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
+  Permiso({
+    this.idxusuario,
+    this.idcolegio,
+    this.idxmaestro,
+    this.tipomaestro,
+    this.x001,
+    this.x002,
+    this.x003,
+    this.x004,
+    this.x005,
+    this.x006,
+    this.x007,
+    this.x008,
+  });
+  factory Permiso.fromJson(Map<String, dynamic> json) => Permiso(
+    idxusuario: json["idxusuario"],
+    idcolegio: json["idcolegio"],
+    idxmaestro: json["idxmaestro"],
+    tipomaestro: json["tipomaestro"],
+    x001: json["X001"],
+    x002: json["X002"],
+    x003: json["X003"],
+    x004: json["X004"],
+    x005: json["X005"],
+    x006: json["X006"],
+    x007: json["X007"],
+    x008: json["X008"],
+  );
+  Map<String, dynamic> toJson() => {
+    "idxusuario": idxusuario,
+    "idcolegio": idcolegio,
+    "idxmaestro": idxmaestro,
+    "tipomaestro": tipomaestro,
+    "X001": x001,
+    "X002": x002,
+    "X003": x003,
+    "X004": x004,
+    "X005": x005,
+    "X006": x006,
+    "X007": x007,
+    "X008": x008,
+  };
 }

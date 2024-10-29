@@ -1,3 +1,4 @@
+import 'package:bs_educativo/utility/AppConstant.dart';
 import 'package:bs_educativo/utility/iconsAndImages.dart';
 import 'package:bs_educativo/utility/text_widgets.dart';
 import 'package:flutter/material.dart';
@@ -29,8 +30,11 @@ class _QRScreenState extends State<QRScreen> {
   Widget build(BuildContext context) {
     return BgScaffold(
       body: MenuDesign(
+        isAdmin: AppConstant.appUserType == "Admin",
         institution: "",
-      selectedUser: selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
+      selectedUser: AppConstant.selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
+        userName: AppConstant.appUserType == "Admin"? AppConstant.userLoginResponse?.usuario??'':"",
+        role: AppConstant.appUserType == "Admin"? 'Login: ${AppConstant.userLoginResponse?.nombre??''}':"",
       selectUserTap: () {  },
       container:
       Expanded(child: Column(children: [

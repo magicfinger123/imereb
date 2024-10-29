@@ -1,5 +1,6 @@
 import 'package:bs_educativo/Screens/detailedRatingsScreen/2.0_mainRatingsView.dart';
 import 'package:bs_educativo/Screens/detailedRatingsScreen/2.1_ratingsDetailsView.dart';
+import 'package:bs_educativo/utility/AppConstant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -28,8 +29,11 @@ class _RatingsScreenState extends State<RatingsScreen> {
   Widget build(BuildContext context) {
     return BgScaffold(
         body: MenuDesign(
-          institution: "Colegio Internacional de Panamá",
-          selectedUser: selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
+          isAdmin: AppConstant.appUserType == "Admin",
+          institution: AppConstant.collegeName ?? "",
+          selectedUser: AppConstant.selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
+          userName: AppConstant.appUserType == "Admin"? AppConstant.userLoginResponse?.usuario??'':"",
+          role: AppConstant.appUserType == "Admin"? 'Login: ${AppConstant.userLoginResponse?.nombre??''}':"",
           selectUserTap: () {  },
           container:
           Expanded(
@@ -47,8 +51,7 @@ class _RatingsScreenState extends State<RatingsScreen> {
                 gapH(10.h),
                 backAndIcon((){
                   _checkBackTap();
-                },
-                        ()
+                }, ()
                     {
 
                     },

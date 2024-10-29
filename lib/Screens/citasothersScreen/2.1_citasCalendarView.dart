@@ -1,4 +1,8 @@
+import 'package:bs_educativo/cubit/meet/meet_cubit.dart';
+import 'package:bs_educativo/model/request/MeetRequest.dart';
+import 'package:bs_educativo/model/response/meet/MeetAllResponse.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:popover/popover.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -20,8 +24,26 @@ class _CitasCalendarViewState extends State<CitasCalendarView> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? normalizedSelectedDay;
+
+
+  late MeetCubit cubit;
+  TextEditingController controller = TextEditingController();
+  List<MeetAllResponse>? selectedItem;
+
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      cubit = context.read<MeetCubit>();
+    //  cubit.fetchMeetRecords(MeetRequest(idxEstudiante: AppConstant.selectedMember?.idxEstudiante ?? 0));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<MeetCubit, MeetState>(
+  builder: (context, state) {
     return Container(height: 490.h,
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 15.w),
@@ -72,7 +94,7 @@ class _CitasCalendarViewState extends State<CitasCalendarView> {
             }
           }
         },
-        calendarStyle: CalendarStyle(
+        calendarStyle: const CalendarStyle(
           isTodayHighlighted: false,
           todayDecoration: BoxDecoration(
             color: Colors.green,
@@ -92,7 +114,7 @@ class _CitasCalendarViewState extends State<CitasCalendarView> {
               .expand((entry) => entry.value)
               .toList();
         },
-        headerStyle: HeaderStyle(
+        headerStyle: const HeaderStyle(
           formatButtonVisible: false,
         ),
         calendarBuilders: CalendarBuilders(
@@ -107,6 +129,8 @@ class _CitasCalendarViewState extends State<CitasCalendarView> {
 
       ),
     );
+  },
+);
   }
 
 

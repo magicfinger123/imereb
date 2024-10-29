@@ -8,6 +8,7 @@ import 'package:bs_educativo/Screens/ecScreen/eCScreen.dart';
 import 'package:bs_educativo/Screens/messagesScreen/1_message_screen.dart';
 import 'package:bs_educativo/Screens/qRScreen/1_qrScreen.dart';
 import 'package:bs_educativo/Screens/tipsScreen/1_tips_screen.dart';
+import 'package:bs_educativo/utility/AppConstant.dart';
 import 'package:bs_educativo/utility/iconsAndImages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,7 +16,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../apiService/api_service.dart';
 import '../model/response/LoginResponse.dart';
-import '../model/response/family.dart';
 import '../utility/colors.dart';
 import '../utility/text_widgets.dart';
 import '../utility/widgets.dart';
@@ -35,18 +35,19 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   Widget build(BuildContext context) {
     return BgScaffold(
       body: MenuDesign(
-        institution: appUserType == "Admin"?
-        adminLoginResponse?.collegeName??'':
-        userLoginResponse?.colegio??'',
+        institution:
+        // appUserType == "Admin"?
+        // adminLoginResponse?.collegeName??'':
+        AppConstant.collegeName ?? "",
 
-        selectedUser: selectedMember?.nombreCompleto??"",
+        selectedUser: AppConstant.selectedMember?.nombreCompleto??"",
         group: "", counselor: "",
         selectUserTap: () {
           _selectStudent();
         },
-        isAdmin: appUserType == "Admin",
-        userName: appUserType == "Admin"? adminLoginResponse?.usuario??'':"",
-        role: appUserType == "Admin"? 'Login: ${adminLoginResponse?.nombre??''}':"",
+        isAdmin: AppConstant.appUserType == "Admin",
+        userName: AppConstant.appUserType == "Admin"? AppConstant.userLoginResponse?.usuario??'':"",
+        role: AppConstant.appUserType == "Admin"? 'Login: ${AppConstant.userLoginResponse?.nombre??''}':"",
         container:
         Expanded(
           child: Container(
@@ -60,7 +61,52 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
             child: SingleChildScrollView(
               padding: EdgeInsets.only(top: 30.h),
               child:
-            menuItems(
+              AppConstant.userLoginResponse?.idxAdministrativo != null ?
+              menuItemsAdmin(
+                  qrTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                    const QRScreen()));
+                  },
+                  messageTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                    const MessageScreen()));
+                  },
+                  threetap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                    const RatingsScreen()));
+                  },
+                  fourTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                    const EcScreen()));
+                  },
+                  agenderTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                    const AgendaScreen()));
+                  },
+                  clockTap:(){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                    const CitasOthersScreen()));
+                  },
+                  documentTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                    const DocumentScreen()));
+                  },
+                  califioriTap: (){},
+                  alertTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                    const AlertScreen()));
+                  },
+                  tipsTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                    const TipsScreen()));
+                  },
+                  couponTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                    const CouponScreen()));
+                  },
+                estatusTap: (){}
+              ):
+             menuItems(
                 qrTap: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) =>
                   const QRScreen()));
@@ -109,7 +155,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
       ),);
   }
   _selectStudent()async{
-    if(userLoginResponse?.familyMembers != null){
+    if(AppConstant.userLoginResponse?.familyMembers != null){
       var result =  await showModalBottomSheet(
           isDismissible: true,
           isScrollControlled: true,
@@ -117,12 +163,12 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
           builder: (context) => Padding(
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
-            child:  SelectFamilyMemberBottomSheet(userFamilyMembers: userLoginResponse?.familyMembers??[],),
+            child:  SelectFamilyMemberBottomSheet(userFamilyMembers: AppConstant.userLoginResponse?.familyMembers??[],),
           )
       );
       if(result is FamilyMember){
         setState(() {
-          selectedMember = result;
+          AppConstant.selectedMember = result;
         });
       }
     }

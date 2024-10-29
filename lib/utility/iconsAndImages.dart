@@ -21,6 +21,10 @@ class AppAssets {
   static const String calendar = 'assets/icons/calendar.png';
   static const String dollar = 'assets/icons/dollar.png';
   static const String playList = 'assets/icons/play_list.png';
+  static const String report = 'assets/icons/reportes.png';
+  static const String supervisor = 'assets/icons/supervisor.png';
+  static const String estatus = 'assets/icons/estatus.png';
+  static const String califiori = 'assets/icons/califiori.png';
   static const String qr = 'assets/icons/qr.png';
   static const String compose = 'assets/icons/compose_message.png';
   static const String profile = 'assets/icons/profile.png';

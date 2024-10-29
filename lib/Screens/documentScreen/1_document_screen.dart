@@ -1,5 +1,6 @@
 import 'package:bs_educativo/Screens/documentScreen/2.0_documentListView.dart';
 import 'package:bs_educativo/Screens/documentScreen/2.1_documentDetailsView.dart';
+import 'package:bs_educativo/utility/AppConstant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,7 +18,9 @@ class DocumentScreen extends StatefulWidget {
 
 class _DocumentScreenState extends State<DocumentScreen> {
   String? secondIcon;
-  void _onScreenSelected(int index) {
+  String? path;
+  void _onScreenSelected(int index, {String? path}) {
+    this.path = path;
     setState(() {
       _currentIndex = index;
     });
@@ -34,8 +37,11 @@ class _DocumentScreenState extends State<DocumentScreen> {
   Widget build(BuildContext context) {
     return BgScaffold(
         body: MenuDesign(
-          institution: "Colegio Internacional de Panamá",
-          selectedUser: selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
+          isAdmin: AppConstant.appUserType == "Admin",
+          institution: AppConstant.collegeName ?? "",
+          selectedUser: AppConstant.selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
+          userName: AppConstant.appUserType == "Admin"? AppConstant.userLoginResponse?.usuario??'':"",
+          role: AppConstant.appUserType == "Admin"? 'Login: ${AppConstant.userLoginResponse?.nombre??''}':"",
           selectUserTap: () {  },
           container:
           Expanded(
@@ -45,8 +51,8 @@ class _DocumentScreenState extends State<DocumentScreen> {
                   child: IndexedStack(
                       index: _currentIndex, // Switch between screens
                       children: [
-                        DocumentListView(onScreenChange: _onScreenSelected),
-                        DocumentDetailsScreen(onScreenChange:_onScreenSelected)
+                        DocumentListView(onScreenChange: _onScreenSelected ),
+                        DocumentDetailsScreen(onScreenChange:_onScreenSelected, path: path,)
 
                       ] // Screens to switch between
                   ),
@@ -54,11 +60,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
                 gapH(10.h),
                 backAndIcon((){
                   _checkBackTap();
-                },
-                        ()
-                    {
-
-                    },
+                }, () {},
                     secondIcon,size: 61.0),
               ],
             ),

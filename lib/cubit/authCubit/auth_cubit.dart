@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:bs_educativo/LocalStorage/UserUtils.dart';
+import 'package:bs_educativo/utility/AppConstant.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:meta/meta.dart';
@@ -15,52 +17,21 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepo authRepository;
-
-
-  AuthCubit({required this.authRepository}) : super(AuthInitial())  {
-  }
-
-  // void login(LoginRequest request) async {
-  //   emit(ApiLoadingState());
-  //   try {
-  //     final response = await authRepository.loginDifferentTypesOfUsers(request);
-  //     if (response is LoginResponse) {
-  //       accessToken = response.token??"";
-  //       emit(LoginSuccessState(response));
-  //       AppUtils.debug("Login Validated parent");
-  //     }else if(response is LoginAdminResponse){
-  //       accessToken = response.token??"";
-  //       emit(LoginAdminSuccessState(response));
-  //       AppUtils.debug("Login Validated admin");
-  //     }
-  //     else{
-  //       emit(AuthStateErrorState(response as String));
-  //       AppUtils.debug("error1");
-  //     }
-  //   }catch(e){
-  //     emit(AuthStateErrorState(AppUtils.defaultErrorResponse()));
-  //     AppUtils.debug("error caught2");
-  //   }
-  // }
+  AuthCubit({required this.authRepository}) : super(AuthInitial());
   void login(LoginRequest request) async {
-    emit(ApiLoadingState());
+    emit(AuthLoadingState());
     try {
       final response = await authRepository.loginDifferentTypesOfUsers(request);
 
       if (response is LoginResponse) {
         accessToken = response.token ?? "";
+        AppConstant.appUserType = AppConstant.userLoginResponse?.idxAdministrativo != null ? "Admin" : "Individual";
+        SharedPref.save(SharedPrefKeys.loginRequestInfo,
+            request.toJson());
         emit(LoginSuccessState(response));
         AppUtils.debug("Login Validated for regular user.");
-      } else if(response is LoginIndividualResponse){
-        accessToken = response.token ?? "";
-        emit(LoginIndividualSuccessState(response));
-        AppUtils.debug("Login Validated for Individual user.");
       }
-      else if (response is LoginAdminResponse) {
-        accessToken = response.token ?? "";
-        emit(LoginAdminSuccessState(response));
-        AppUtils.debug("Login Validated for admin user.");
-      } else {
+      else {
         emit(AuthStateErrorState(response as String));
         AppUtils.debug("Error: Response not recognized as admin or parent.");
       }

@@ -12,6 +12,8 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>NSFaceIDUsageDescription</key>
+    <string>This app uses your biometric to log in and perform transactions</string>
 	<key>CFBundleName</key>
 	<string>bs_educativo</string>
 	<key>CFBundlePackageType</key>
@@ -45,5 +47,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>io.flutter.embedded_views_preview</key>
+    <string>YES</string>
 </dict>
 </plist>

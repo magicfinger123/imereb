@@ -1,5 +1,7 @@
 import 'package:bs_educativo/Screens/agendaScreen/2.0_agendaCalendarView.dart';
 import 'package:bs_educativo/Screens/agendaScreen/2.1_agendaDetailsView.dart';
+import 'package:bs_educativo/model/response/agenda/AgendaDetailItem.dart';
+import 'package:bs_educativo/utility/AppConstant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -18,7 +20,9 @@ class AgendaScreen extends StatefulWidget {
 
 class _AgendaScreenState extends State<AgendaScreen> {
   String? secondIcon;
-  void _onScreenSelected(int index) {
+  List<AgentDetailItem>? agendaDetails;
+  void _onScreenSelected(int index, {List<AgentDetailItem>? agendaDetails}) {
+    this.agendaDetails = agendaDetails;
     setState(() {
       _currentIndex = index;
     });
@@ -35,8 +39,11 @@ class _AgendaScreenState extends State<AgendaScreen> {
   Widget build(BuildContext context) {
     return BgScaffold(
         body: MenuDesign(
-          institution: "Colegio Internacional de Panamá",
-          selectedUser: selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
+          isAdmin: AppConstant.appUserType == "Admin",
+          institution:  AppConstant.collegeName ?? "",
+          selectedUser: AppConstant.selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
+          userName: AppConstant.appUserType == "Admin"? AppConstant.userLoginResponse?.usuario??'':"",
+          role: AppConstant.appUserType == "Admin"? 'Login: ${AppConstant.userLoginResponse?.nombre??''}':"",
           selectUserTap: () {  },
           container:
           Expanded(
@@ -47,7 +54,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
                       index: _currentIndex, // Switch between screens
                       children: [
                         AgendaCalendarView(onScreenChange: _onScreenSelected),
-                        AgendaDetailsView(onScreenChange: _onScreenSelected,)
+                        AgendaDetailsView(onScreenChange: _onScreenSelected, agendaDetails: agendaDetails,)
                       ] // Screens to switch between
                   ),
                 ),

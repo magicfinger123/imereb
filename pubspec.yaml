@@ -48,6 +48,11 @@ dependencies:
   loading_overlay:
   provider: ^6.0.2
   shared_preferences:
+  intl:
+  flutter_pdfview: 1.3.2
+  path_provider:
+  local_auth:
+
 
 
   # The following adds the Cupertino Icons font to your application.

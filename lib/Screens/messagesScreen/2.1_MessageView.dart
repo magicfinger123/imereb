@@ -1,5 +1,6 @@
 
 
+import 'package:bs_educativo/model/response/message/MessageData.dart';
 import 'package:bs_educativo/utility/iconsAndImages.dart';
 import 'package:bs_educativo/utility/text_widgets.dart';
 import 'package:bs_educativo/utility/widgets.dart';
@@ -12,7 +13,8 @@ import '../../utility/demoInfos.dart';
 
 class MessageView extends StatefulWidget {
   final Function(int) onScreenChange;
-  const MessageView({super.key, required this.onScreenChange});
+  final MessageData? messageData;
+  const MessageView({required this.messageData, super.key, required this.onScreenChange});
 
   @override
   State<MessageView> createState() => _MessageViewState();
@@ -30,11 +32,11 @@ class _MessageViewState extends State<MessageView> {
     ),
       child: SingleChildScrollView(
         child: messageViewWidget(
-            title: "title",
-            sender: "sender",
-            toAddresses: "toAddresses",
-            copiedAddresses: "copiedAddresses",
-            message: demoText,
+            title: widget.messageData?.asunto ?? "",
+            sender: widget.messageData?.remNombre ?? "",
+            toAddresses: widget.messageData?.desNombre ?? "",
+            copiedAddresses: widget.messageData?.desNombreCc ?? "",
+            message: widget.messageData?.contenido ?? "",
             fileTitle: "Cargar archivo adjunto",
             replyAllTap: (){},
             replyLeftTap: (){},

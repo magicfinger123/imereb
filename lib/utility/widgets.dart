@@ -1,10 +1,13 @@
+import 'package:bs_educativo/model/response/EC/PaymentData.dart';
+import 'package:bs_educativo/model/response/meet/MeetEliglibleList.dart';
+import 'package:bs_educativo/utility/app_util.dart';
 import 'package:bs_educativo/utility/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../model/response/LoginResponse.dart';
-import '../model/response/family.dart';
+import 'AppConstant.dart';
 import 'colors.dart';
 import 'demoInfos.dart';
 import 'iconsAndImages.dart';
@@ -178,7 +181,40 @@ Row fingerWidget() {
     ],
   );
 }
-
+Future<dynamic> openBottomSheet2( BuildContext context,Widget bottomScreen, {bool? isDismissible}) {
+  return showModalBottomSheet(
+      isDismissible: isDismissible ?? true,
+      isScrollControlled: true,
+      context: context,
+      enableDrag: isDismissible ?? true,
+      backgroundColor: AppColors.white,
+      shape:RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topRight: Radius.circular(12.r),topLeft: Radius.circular(12.r)),
+      ),
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom),
+        child:  bottomScreen,
+      )
+  );
+}
+Text ctmTxtAct(title,
+    color,size,
+    {weight = FontWeight.normal,maxLines = 1, textAlign = TextAlign.start}) {
+  return Text(title,
+    style:
+    TextStyle(
+        color: color,
+        fontSize: size,
+        fontFamily: 'actionSansRegular',
+        fontWeight: weight,
+        letterSpacing: -0.25.sp
+    ),
+    maxLines: maxLines,
+    overflow: TextOverflow.ellipsis,
+    textAlign: textAlign,
+  );
+}
 Center blueBtn(title, onTap) {
   return Center(
     child: GestureDetector(
@@ -271,6 +307,74 @@ Column menuItems(
   );
 }
 
+Column menuItemsAdmin(
+    {required Function() qrTap,
+      required Function() messageTap,
+      required Function() threetap,
+      required Function() fourTap,
+      required Function() agenderTap,
+      required Function() clockTap,
+      required Function() documentTap,
+      required Function() califioriTap,
+      required Function() alertTap,
+      required Function() tipsTap,
+      required Function() couponTap,
+      required Function() estatusTap,
+    }) {
+  return Column(
+    children: [
+      Row(
+        children: [
+          menuListItem("QR", AppAssets.qr, qrTap),
+          const Spacer(),
+          menuListItem("Mensajería", AppAssets.mail, messageTap),
+        ],
+      ),
+      sp(),
+      Row(
+        children: [
+          menuListItem("Reportes", AppAssets.playList, threetap),
+          const Spacer(),
+          menuListItem("Supervisar Mensajería", AppAssets.supervisor, fourTap),
+        ],
+      ),
+      sp(),
+      Row(
+        children: [
+          menuListItem("Agenda", AppAssets.calendar, agenderTap),
+          const Spacer(),
+          menuListItem("Citas", AppAssets.clock, clockTap),
+        ],
+      ),
+      sp(),
+      Row(
+        children: [
+          menuListItem("Documentos", AppAssets.book, documentTap),
+          const Spacer(),
+          menuListItem("Calificaciones", AppAssets.califiori, califioriTap),
+        ],
+      ),
+      sp(),
+      Row(
+        children: [
+          menuListItem("Alertas", AppAssets.bell, alertTap),
+          const Spacer(),
+          menuListItem("Tips", AppAssets.pointer, tipsTap)
+        ],
+      ),
+      sp(),
+      Row(
+        children: [
+          menuListItem("Estatus Libretas", AppAssets.estatus, estatusTap),
+          const Spacer(),
+          menuListItem("Cupones", AppAssets.tag, couponTap),
+        ],
+      ),
+      gapH(40.h),
+    ],
+  );
+}
+
 SizedBox sp() => gapH(10.h);
 
 Widget menuListItem(title, icon, onTap) {
@@ -330,7 +434,7 @@ class _MenuDesignState extends State<MenuDesign> {
             Container(
                 width: 80.w,
                 height: 80.w,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: AppColors.blueBa,
                   shape: BoxShape.circle,
                   // border: Border.all(color: AppColors.blueBa,width: 4.r)
@@ -342,8 +446,8 @@ class _MenuDesignState extends State<MenuDesign> {
                     decoration: BoxDecoration(
                       color: AppColors.white,
                       shape: BoxShape.circle,
-                      image: const DecorationImage(
-                          image: AssetImage(AppAssets.boy)),
+                      image:  DecorationImage(
+                          image: NetworkImage(AppConstant.userLoginResponse?.imagenUrl ?? "")),
                       // border: Border.all(color: AppColors.blueBa,width: 4.r)
                     ),
                   ),
@@ -424,7 +528,7 @@ class _MenuDesignState extends State<MenuDesign> {
 
 Padding backAndIcon(backTap, iconTap, icon, {double size = 48}) {
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 0.h),
+    padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 0.h),
     child: Row(
       children: [
         GestureDetector(
@@ -557,8 +661,8 @@ Widget documentAndDates({required String title, required String date}) {
 }
 
 Widget finEcWidget(
-    {required String title,
-    required String amount,
+    { required PaymentData paymentData,
+      required String amount,
     isCredit = true,
     required Function() onIconTap}) {
   return Column(
@@ -567,7 +671,7 @@ Widget finEcWidget(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-              width: 200.w, child: txtR(title, 15.sp, weight: FontWeight.w600)),
+              width: 200.w, child: txtR(paymentData.description, 15.sp, weight: FontWeight.w600)),
           const Spacer(),
           SizedBox(
               width: 90.w,
@@ -575,14 +679,31 @@ Widget finEcWidget(
                   weight: FontWeight.w500,
                   color: isCredit ? null : const Color(0xFF950707),
                   textAlign: TextAlign.right)),
-          GestureDetector(
-              onTap: onIconTap,
-              child: Image.asset(
-                AppAssets.info,
-                width: 30.w,
-                height: 30.h,
-                fit: BoxFit.contain,
-              ))
+          gapW(10.0),
+          Tooltip(
+            padding: const EdgeInsets.all(5),
+            triggerMode: TooltipTriggerMode.tap,
+            decoration: const BoxDecoration(color: Colors.transparent),
+            richMessage: WidgetSpan(
+              alignment: PlaceholderAlignment.baseline,
+              baseline: TextBaseline.alphabetic,
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                constraints: const BoxConstraints(maxWidth: 300, minWidth: 200),
+                child:  commentPopWidget(
+                    title: paymentData.description ??"",
+                    date: "Fecha: ${AppUtils.getDate(paymentData.date.toString(), "yyyy-MMM-dd")}",
+                    comment: "Monto: ${paymentData.balance}",
+                ),
+              ),
+            ),
+            child: Image.asset(
+                    AppAssets.info,
+                    width: 30.w,
+                    height: 30.h,
+                    fit: BoxFit.contain,
+                  )
+          ),
         ],
       ),
       gapH(10.h),
@@ -629,7 +750,7 @@ Widget alertWidget(
   );
 }
 
-void showUserSelectionDialog(BuildContext context, List<Category> categories) {
+void showUserSelectionDialog(BuildContext context, List<GroupMeetEliglibleList> categories) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -669,9 +790,9 @@ void showUserSelectionDialog(BuildContext context, List<Category> categories) {
 
 
 class CollapsibleCategoryWidget extends StatefulWidget {
-  final Category category;
+  final GroupMeetEliglibleList category;
 
-  CollapsibleCategoryWidget({required this.category});
+  const CollapsibleCategoryWidget({required this.category});
 
   @override
   _CollapsibleCategoryWidgetState createState() => _CollapsibleCategoryWidgetState();
@@ -684,12 +805,13 @@ class _CollapsibleCategoryWidgetState extends State<CollapsibleCategoryWidget> {
   @override
   void initState() {
     super.initState();
-    _selectedUsers = List<bool>.filled(widget.category.users.length, false);
+    _selectedUsers = List<bool>.filled(widget.category.list.length, false);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return
+      Container(
       margin: EdgeInsets.only(bottom: 30.h),
       padding: EdgeInsets.symmetric(horizontal: 13.w,vertical: 13.h),
       decoration: BoxDecoration(
@@ -716,7 +838,7 @@ class _CollapsibleCategoryWidgetState extends State<CollapsibleCategoryWidget> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(widget.category.categoryName, style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(widget.category.name ?? "", style: TextStyle(fontWeight: FontWeight.bold)),
                 const Spacer(),
                 Icon(
                   _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
@@ -732,14 +854,15 @@ class _CollapsibleCategoryWidgetState extends State<CollapsibleCategoryWidget> {
                 padding: EdgeInsets.symmetric(vertical: 10.h),
                 //shrinkWrap: true,
                 //physics: NeverScrollableScrollPhysics(),
-                itemCount: widget.category.users.length,
+                itemCount: widget.category.list.length,
                 itemBuilder: (context, index) {
                   return _selectUserWidget(
-                    userName: widget.category.users[index].name,
+                    userName: widget.category.list[index].nombre ?? "",
                     isSelected: _selectedUsers[index],
                     onTap: () {
                       setState(() {
                         _selectedUsers[index] = !_selectedUsers[index];
+                        Navigator.pop(context, widget.category.list[index]);
                       });
                     },
                   );

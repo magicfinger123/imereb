@@ -1,3 +1,4 @@
+import 'package:bs_educativo/utility/AppConstant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -35,9 +36,12 @@ class _TipsScreenState extends State<TipsScreen> {
   Widget build(BuildContext context) {
     return BgScaffold(
         body: MenuDesign(
-          institution: "Colegio Internacional de Panamá",
-          selectedUser: selectedMember?.nombreCompleto??"",
+          isAdmin: AppConstant.appUserType == "Admin",
+          institution: AppConstant.collegeName ?? "",
+          selectedUser: AppConstant.selectedMember?.nombreCompleto??"",
           group: group, counselor: counselor,
+          userName: AppConstant.appUserType == "Admin"? AppConstant.userLoginResponse?.usuario??'':"",
+          role: AppConstant.appUserType == "Admin"? 'Login: ${AppConstant.userLoginResponse?.nombre??''}':"",
           selectUserTap: () {  },
           container:
           Expanded(

@@ -1,6 +1,7 @@
 import 'package:bs_educativo/Screens/couponScreen/2.0_couponGroupList.dart';
 import 'package:bs_educativo/Screens/couponScreen/2.1_SelectedCouponTypeView.dart';
 import 'package:bs_educativo/Screens/couponScreen/2.2_selectedCouponDetailsScreen.dart';
+import 'package:bs_educativo/utility/AppConstant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -28,8 +29,11 @@ class _CouponScreenState extends State<CouponScreen> {
   Widget build(BuildContext context) {
     return BgScaffold(
         body: MenuDesign(
-          institution: "Colegio Internacional de Panamá",
-          selectedUser: selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
+          isAdmin: AppConstant.appUserType == "Admin",
+          institution: AppConstant.collegeName ?? "",
+          selectedUser: AppConstant.selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
+          userName: AppConstant.appUserType == "Admin"? AppConstant.userLoginResponse?.usuario??'':"",
+          role: AppConstant.appUserType == "Admin"? 'Login: ${AppConstant.userLoginResponse?.nombre??''}':"",
           selectUserTap: () {  },
           container:
           Expanded(

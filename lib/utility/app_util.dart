@@ -1,6 +1,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 import 'colors.dart';
@@ -70,7 +71,22 @@ class AppUtils{
   }
 
 
+  static String customDateFormatter( inFormat, date, outFormat){
+    var inputFormat = DateFormat(inFormat);
+    var date1 = inputFormat.parse(date);
+    var outputFormat = DateFormat(outFormat);
+    var date2 = outputFormat.format(date1);
+    print("ad: ${date2}");
+    return date2;
+  }
 
+
+
+  static String getDate(String isoDate, String outFormat) {
+    DateTime dateTime = DateTime.parse(isoDate);
+    DateFormat formatter = DateFormat(outFormat);
+    return formatter.format(dateTime);
+  }
 // static String? parseHtmlString(String htmlString) {
 //   final document = parse(htmlString);
 //   final String? parsedString = parse(document.body?.text).documentElement?.text;

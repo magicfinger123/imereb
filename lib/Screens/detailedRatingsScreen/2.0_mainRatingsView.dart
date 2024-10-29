@@ -1,7 +1,12 @@
+import 'package:bs_educativo/cubit/Notes/note_cubit.dart';
+import 'package:bs_educativo/model/request/NotasDetailer.dart';
+import 'package:bs_educativo/utility/AppConstant.dart';
 import 'package:bs_educativo/utility/text_widgets.dart';
 import 'package:bs_educativo/utility/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 
 import '../../utility/colors.dart';
 import '../../utility/demoInfos.dart';
@@ -15,6 +20,8 @@ class MainRatingsView extends StatefulWidget {
 }
 
 class _MainRatingsViewState extends State<MainRatingsView> {
+
+  late NoteCubit cubit;
   List<Subjects> subjectsItem = [
     Subjects(name: 'Español', grade: "4.9"),
     Subjects(name: 'Matemáticas', grade: "4.8"),
@@ -23,56 +30,78 @@ class _MainRatingsViewState extends State<MainRatingsView> {
     Subjects(name: 'Educación Física', grade: "5.0"),
     Subjects(name: 'Estudios Sociales', grade: "4.9"),
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      cubit.getNotes(NotasDetailerRequest(
+          ano: DateTime.now().year,
+          idColegio: AppConstant.userLoginResponse?.idColegio,
+          idioma: 1,
+          cedula: AppConstant.userLoginResponse?.cedula
+      ));
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(6.r),
-          color: AppColors.white,
-          border: Border.all(color: AppColors.blueBa,width: 2.5.r)
-      ),
-      child: Column(children: [
-        Container(width: double.infinity,height: 65.h,
-          padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 16.h),
-          decoration: BoxDecoration(
-            color: AppColors.bgDc,
-            borderRadius: BorderRadius.circular(6.r),
-          border: Border(bottom: BorderSide(color: AppColors.border,width: 1.5.r)),
-            boxShadow: [
-              BoxShadow(
-                  color: AppColors.black.withOpacity(0.25),
-                  spreadRadius: 0,
-                  blurRadius: 5,
-                  offset: Offset(0, 5))
-            ]
-        ),
-          child: Row(children: [
-            txtR("Materia",15.sp,weight: FontWeight.w600),
-            Spacer(),
-            txtR("Promedio",15.sp,weight: FontWeight.w600),
-          ]),
-        ),
-        gapH(10.h),
-        Expanded(
-          child:
-          ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 18.w,vertical: 16.h),
-              itemCount:subjectsItem.length,
-              itemBuilder: (context, index) {
-                final sub= subjectsItem?[index];
-                return GestureDetector(onTap: (){
-                  widget.onScreenChange(1);
+    cubit = context.read<NoteCubit>();
+    return BlocBuilder<NoteCubit, NoteState>(
+      builder: (context, state) {
+        return LoadingOverlay(
+          isLoading:  state is NoteLoadingState,
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6.r),
+                color: AppColors.white,
+                border: Border.all(color: AppColors.blueBa,width: 2.5.r)
+            ),
+            child: Column(children: [
+              Container(width: double.infinity,height: 65.h,
+                padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 16.h),
+                decoration: BoxDecoration(
+                    color: AppColors.bgDc,
+                    borderRadius: BorderRadius.circular(6.r),
+                    border: Border(bottom: BorderSide(color: AppColors.border,width: 1.5.r)),
+                    boxShadow: [
+                      BoxShadow(
+                          color: AppColors.black.withOpacity(0.25),
+                          spreadRadius: 0,
+                          blurRadius: 5,
+                          offset: Offset(0, 5))
+                    ]
+                ),
+                child: Row(children: [
+                  txtR("Materia",15.sp,weight: FontWeight.w600),
+                  Spacer(),
+                  txtR("Promedio",15.sp,weight: FontWeight.w600),
+                ]),
+              ),
+              gapH(10.h),
+              Expanded(
+                child:
+                ListView.builder(
+                    padding: EdgeInsets.symmetric(horizontal: 18.w,vertical: 16.h),
+                    itemCount:cubit.notes.length,
+                    itemBuilder: (context, index) {
+                      final sub= cubit.notes[index];
+                      return GestureDetector(onTap: (){
+                        widget.onScreenChange(1);
 
-                 },
-                  child: subjectAndRatingItemWidget(
-                      subject:sub?.name??"",
-                      rating: sub?.grade.toString()??""),
-                );
-              }
+                      },
+                        child: subjectAndRatingItemWidget(
+                            subject:sub.materia??"",
+                            rating: sub.codmat.toString()),
+                      );
+                    }
+                ),
+              ),
+
+            ],),
           ),
-        ),
-
-      ],),
+        );
+      },
     );
   }
 

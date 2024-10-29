@@ -7,7 +7,7 @@ class AuthInitial extends AuthState {
   @override
   List<Object> get props => [];
 }
-class ApiLoadingState extends AuthState {
+class AuthLoadingState extends AuthState {
   @override
   List<Object?> get props => [];
 }
@@ -18,18 +18,18 @@ class LoginSuccessState extends AuthState {
   @override
   List<Object> get props => [response];
 }
-class LoginIndividualSuccessState extends AuthState {
-  final LoginIndividualResponse response;
-  LoginIndividualSuccessState(this.response);
-  @override
-  List<Object> get props => [response];
-}
-class LoginAdminSuccessState extends AuthState {
-  final LoginAdminResponse response;
-  LoginAdminSuccessState(this.response);
-  @override
-  List<Object> get props => [response];
-}
+// class LoginIndividualSuccessState extends AuthState {
+//   final LoginIndividualResponse response;
+//   LoginIndividualSuccessState(this.response);
+//   @override
+//   List<Object> get props => [response];
+// }
+// class LoginAdminSuccessState extends AuthState {
+//   final LoginAdminResponse response;
+//   LoginAdminSuccessState(this.response);
+//   @override
+//   List<Object> get props => [response];
+// }
 
 
 class AuthStateErrorState extends AuthState {

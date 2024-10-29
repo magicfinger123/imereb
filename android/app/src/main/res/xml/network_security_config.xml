@@ -1,0 +1,4 @@
+<domain-config cleartextTrafficPermitted="true">
+    <domain includeSubdomains="true">app.bseducativo.com</domain>
+    <domain includeSubdomains="true">https://app.bseducativo.com</domain>
+</domain-config>

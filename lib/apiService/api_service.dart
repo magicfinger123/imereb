@@ -1,26 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bs_educativo/model/response/LoginAdminResponse.dart';
 import 'package:bs_educativo/model/response/LoginResponse.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_logging_interceptor/dio_logging_interceptor.dart';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
-
-import '../model/response/family.dart';
-import '../model/response/loginIndividualResponse.dart';
 import '../utility/app_util.dart';
 import 'api_status.dart';
 import 'api_url.dart';
 
 String accessToken = "";
-LoginResponse? userLoginResponse;
-LoginIndividualResponse? individualLoginResponse;
-LoginAdminResponse? adminLoginResponse;
-String appUserType = "";
-
-FamilyMember? selectedMember;
 String group = 'I - A';
 String counselor = 'Cristina Arcia';
 
@@ -91,35 +81,48 @@ class ApiService{
           AppUtils.debug("method: delete");
           break;
       }
-      if (response.statusCode != null) {
-        AppUtils.debug("status code: ${response.statusCode}");
-        AppUtils.debug("body: $body");
-        if (response.statusCode == ApiResponseCodes.success ) {
-          return Success(response.statusCode!,response.data as String);
-        }
-        if (  399 <= (response.statusCode ?? 400) && (response.statusCode ?? 400)  <= 500){
-          if ( response.data is String ) {
-            try {
-             // var apiRes = apiResponseFromJson(response.data as String);
-              return Failure(response.statusCode ?? 400,
-                  "Error Occurred"
-              );
-            }///
-            catch(e){
-              print("error: $e");
-            }
-          }else {
-            return ForbiddenAccess();
-          }
-        }
-        if (ApiResponseCodes.authorizationError == response.statusCode){
-          return ForbiddenAccess();
-        }
-        else{
-          return  Failure(response.statusCode!,"Error Occurred");
-        }
-      }else{
-        return  UnExpectedError();
+      // if (response.statusCode != null) {
+      //   AppUtils.debug("status code: ${response.statusCode}");
+      //   AppUtils.debug("body: $body");
+      //   if (response.statusCode == ApiResponseCodes.success ) {
+      //     return Success(response.statusCode!,response.data as String);
+      //   }
+      //   if (  399 <= (response.statusCode ?? 400) && (response.statusCode ?? 400)  <= 500){
+      //     if ( response.data is String ) {
+      //       try {
+      //        // var apiRes = apiResponseFromJson(response.data as String);
+      //         return Failure(response.statusCode ?? 400,
+      //             "Error Occurred"
+      //         );
+      //       }///
+      //       catch(e){
+      //         print("error: $e");
+      //       }
+      //     }else {
+      //       return ForbiddenAccess();
+      //     }
+      //   }
+      //   if (ApiResponseCodes.authorizationError == response.statusCode){
+      //     return ForbiddenAccess();
+      //   }
+      //   else{
+      //     return  Failure(response.statusCode!,"Error Occurred");
+      //   }
+      // }else{
+      //   return  UnExpectedError();
+      // }
+
+      if (ApiResponseCodes.success == response.statusCode){
+        return Success(response.statusCode!,response.data as String);
+      }
+      if (ApiResponseCodes.error == response.statusCode || ApiResponseCodes.internalServerError == response.statusCode){
+        return  Failure(response.statusCode!,"Error occurred");
+      }
+      if (ApiResponseCodes.authorizationError == response.statusCode){
+        return ForbiddenAccess();
+      }
+      else{
+        return  Failure(response.statusCode!,"Error Occurred");
       }
     } on DioError catch (e){
       AppUtils.debug(e.message);

@@ -10,7 +10,7 @@ import '../apiService/api_service.dart';
 class AlertRepository extends ApiRepository {
   Future<Object> getAlerts(GeneralRequest request) async {
     var response = await postRequest(
-        request, AppUrls.note, true, HttpMethods.get);
+        request, AppUrls.studentAlerts, true, HttpMethods.get);
     if (response is String) {
       var r = studentAlertFromJson(response);
       print("alertsResponse: ${r}");

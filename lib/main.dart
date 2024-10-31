@@ -7,10 +7,12 @@ import 'package:bs_educativo/cubit/Message/message_cubit.dart';
 import 'package:bs_educativo/cubit/Notes/note_cubit.dart';
 import 'package:bs_educativo/cubit/QR/qr_cubit.dart';
 import 'package:bs_educativo/cubit/Tips/tips_cubit.dart';
+import 'package:bs_educativo/cubit/coupon/coupon_cubit.dart';
 import 'package:bs_educativo/cubit/meet/meet_cubit.dart';
-import 'package:bs_educativo/model/request/MeetRequest.dart';
+import 'package:bs_educativo/model/response/LoginResponse.dart';
 import 'package:bs_educativo/repository/AgendaRepository.dart';
 import 'package:bs_educativo/repository/AlertRepository.dart';
+import 'package:bs_educativo/repository/CuponRepository.dart';
 import 'package:bs_educativo/repository/DocumentRepository.dart';
 import 'package:bs_educativo/repository/EcRepository.dart';
 import 'package:bs_educativo/repository/MeetRepository.dart';
@@ -20,13 +22,13 @@ import 'package:bs_educativo/repository/messageRepository.dart';
 import 'package:bs_educativo/utility/iconsAndImages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'Screens/1_login_Inicio_de_sesión.dart';
 import 'cubit/authCubit/auth_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'repository/NoteRepository.dart';
 import 'repository/TipsRepository.dart';
+import 'utility/AppConstant.dart';
+import 'utility/widgets.dart';
 
 void main() {
   runApp(const MyApp());
@@ -47,6 +49,7 @@ class MyApp extends StatelessWidget {
       BlocProvider(create: (BuildContext context) => TipsCubit(TipsRepository())),
       BlocProvider(create: (BuildContext context) => QrCubit(QrRepository())),
       BlocProvider(create: (BuildContext context) => AlertCubit(AlertRepository())),
+      BlocProvider(create: (BuildContext context) => CouponCubit(CuponRepository())),
     ],
       child: ScreenUtilInit(
           designSize: const Size(424, 932),
@@ -68,7 +71,7 @@ Widget splashScreen() {
         duration: 3000,
         splashIconSize: 1000,
         splash: Container(width: double.infinity,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Color(0xFFF7F7F7),
                 image: DecorationImage(
                     image: AssetImage(AppAssets.bg),
@@ -92,3 +95,22 @@ Widget splashScreen() {
 }
 
 
+selectStudent(BuildContext context)async{
+  if(AppConstant.userLoginResponse?.familyMembers != null){
+    var result =  await showModalBottomSheet(
+        isDismissible: true,
+        isScrollControlled: true,
+        context: context,
+        builder: (context) => Padding(
+          padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom),
+          child:  SelectFamilyMemberBottomSheet(userFamilyMembers: AppConstant.userLoginResponse?.familyMembers??[],),
+        )
+    );
+    if(result is FamilyMember){
+   //   setState(() {
+        AppConstant.selectedMember = result;
+  //    });
+    }
+  }
+  }

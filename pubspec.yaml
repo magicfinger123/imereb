@@ -52,12 +52,11 @@ dependencies:
   flutter_pdfview: 1.3.2
   path_provider:
   local_auth:
-
-
-
+  flutter_page_lifecycle:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
+  html:
 
 dev_dependencies:
   flutter_test:

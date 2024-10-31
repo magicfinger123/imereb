@@ -1,5 +1,6 @@
 
 
+import 'package:bs_educativo/model/response/cupon/Coupon.dart';
 import 'package:bs_educativo/utility/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +13,8 @@ import '../agendaScreen/2.0_agendaCalendarView.dart';
 
 class SelectedCouponTypeView extends StatefulWidget {
   final Function(int) onScreenChange;
-  const SelectedCouponTypeView({super.key, required this.onScreenChange});
+  final List<Cupon>? couponList;
+  SelectedCouponTypeView({this.couponList, super.key, required this.onScreenChange});
 
   @override
   State<SelectedCouponTypeView> createState() => _SelectedCouponTypeViewState();
@@ -30,47 +32,61 @@ class _SelectedCouponTypeViewState extends State<SelectedCouponTypeView> {
             titleCard("Electrónica"),
             gapH(10.h),
             Expanded(
-              child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 10.h),
-                  child:
-                  Column(children: [
+              child:
+              ListView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: 18.w,vertical: 16.h),
+                  itemCount:(widget.couponList ?? []).length,
 
-                    couponCard(
-                        percent: "50%",
-                        title: 'Electrónica Japonesa', date: 'de Aug 8 al oct  31 2024.',
-                        color: Color(0xFF950707),
-                      gradientColor:[
-                      Color(0xFF950707),
-                      Color(0xFF2F0202)
-                     ], onTap: () { widget.onScreenChange(2); },
-                    ),
-                    couponCard(
-                      percent: "30%",
-                      title: 'Cupón de prueba', date: 'de Aug 8 al oct  31 2024.',
-                      color: Color(0xFFFF5900),
-                      gradientColor:[
-                        Color(0xFFFF5900),
-                        Color(0xFF993500)
-                      ],
-                      onTap: () { widget.onScreenChange(2); },
-                    ),
-                    couponCard(
-                      percent: "20%",
-                      title: 'Cupón de prueba', date: 'de Aug 8 al oct  31 2024.',
-                      color: Color(0xFF073095),
-                      gradientColor:[
-                        Color(0xFF073095),
-                        Color(0xFF020F2F)
-                      ],
-                      onTap: () { widget.onScreenChange(2); },
-                    ),
-
-
-
-
-
-                  ],)
+                  itemBuilder: (context, index) {
+                    final rec = widget.couponList![index];
+                    return GestureDetector(onTap: (){
+                    },
+                      child:
+                           Column(
+                             children: [
+                               Image.network(rec.cupon ?? ""),
+                               const SizedBox(height: 5,)
+                             ],
+                           )
+                    );
+                  }
               ),
+              // SingleChildScrollView(
+              //     padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 10.h),
+              //     child:
+              //     Column(children: [
+              //
+              //       couponCard(
+              //           percent: "50%",
+              //           title: 'Electrónica Japonesa', date: 'de Aug 8 al oct  31 2024.',
+              //           color: Color(0xFF950707),
+              //         gradientColor:[
+              //         Color(0xFF950707),
+              //         Color(0xFF2F0202)
+              //        ], onTap: () { widget.onScreenChange(2); },
+              //       ),
+              //       couponCard(
+              //         percent: "30%",
+              //         title: 'Cupón de prueba', date: 'de Aug 8 al oct  31 2024.',
+              //         color: Color(0xFFFF5900),
+              //         gradientColor:[
+              //           Color(0xFFFF5900),
+              //           Color(0xFF993500)
+              //         ],
+              //         onTap: () { widget.onScreenChange(2); },
+              //       ),
+              //       couponCard(
+              //         percent: "20%",
+              //         title: 'Cupón de prueba', date: 'de Aug 8 al oct  31 2024.',
+              //         color: Color(0xFF073095),
+              //         gradientColor:[
+              //           Color(0xFF073095),
+              //           Color(0xFF020F2F)
+              //         ],
+              //         onTap: () { widget.onScreenChange(2); },
+              //       ),
+              //     ],)
+              // ),
             ),
           ],
         ));

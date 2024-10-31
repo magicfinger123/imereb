@@ -30,13 +30,13 @@ class Messages {
   });
 
   factory Messages.fromJson(Map<String, dynamic> json) => Messages(
-    idmensaje: json["idmensaje"],
+    idmensaje: json["idmensaje"] ?? json["idxMensaje"] ,
     remitenteCedula: json["REMITENTE_CEDULA"],
     remitenteTipo: json["REMITENTE_TIPO"],
-    remitenteNombre: json["REMITENTE_NOMBRE"],
-    fechaenvio: json["FECHAENVIO"] == null ? null : DateTime.parse(json["FECHAENVIO"]),
+    remitenteNombre: json["REMITENTE_NOMBRE"] ?? json["RemNombre"],
+    fechaenvio: json["FECHAENVIO"] != null ? DateTime.parse(json["FECHAENVIO"]) : json["FechaEnvio"] != null ? DateTime.parse(json["FechaEnvio"]) : null,
     f: json["F"] == null ? null : DateTime.parse(json["F"]),
-    asunto: json["asunto"],
+    asunto: json["asunto"] ?? json["Asunto"] ,
     estado: json["estado"],
   );
 

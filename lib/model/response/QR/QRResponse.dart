@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 List<Qr> qrFromJson(String str) => List<Qr>.from(json.decode(str).map((x) => Qr.fromJson(x)));
@@ -7,7 +8,7 @@ List<Qr> qrFromJson(String str) => List<Qr>.from(json.decode(str).map((x) => Qr.
 String qrToJson(List<Qr> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Qr {
-  int? idxEstudiante;
+  num? idxEstudiante;
   String? nombre1;
   String? nombre2;
   String? apellido1;
@@ -53,11 +54,11 @@ class Qr {
     "CodigoBase64": codigoBase64,
   };
 
-  Image? getQRCodeImage() {
+  Uint8List? getQRCodeImage() {
     if (codigoBase64 == null){
       return null;
     }
     var base64String =  base64Decode(codigoBase64!);
-    return Image.memory(base64String);
+    return base64String;
   }
 }

@@ -1,6 +1,8 @@
 import 'package:bs_educativo/cubit/Tips/tips_cubit.dart';
 import 'package:bs_educativo/model/request/GeneralRequest.dart';
+import 'package:bs_educativo/model/response/tips/tips.dart';
 import 'package:bs_educativo/utility/AppConstant.dart';
+import 'package:bs_educativo/utility/app_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,7 +15,7 @@ import '../../utility/widgets.dart';
 
 
 class TipListView extends StatefulWidget {
-  final Function(int) onScreenChange;
+  final Function(int, {TipResponse? tips}) onScreenChange;
   const TipListView({super.key, required this.onScreenChange});
 
   @override
@@ -73,11 +75,11 @@ class _TipListViewState extends State<TipListView> {
                     itemBuilder: (context, index) {
                       final doc = cubit.tips[index];
                       return GestureDetector(onTap: (){
-                        widget.onScreenChange(1);
+                        widget.onScreenChange(1, tips: doc);
                       },
                         child: documentAndDates(
                             title:doc.titulo??"",
-                            date: doc.fechaFin.toString()??""),
+                            date:  AppUtils.getDate(doc.fechaFin.toString().toString(), "yyyy-MM-dd")),
                       );
                     }
                 ),

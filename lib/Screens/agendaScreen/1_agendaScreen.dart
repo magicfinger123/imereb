@@ -44,7 +44,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
           selectedUser: AppConstant.selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
           userName: AppConstant.appUserType == "Admin"? AppConstant.userLoginResponse?.usuario??'':"",
           role: AppConstant.appUserType == "Admin"? 'Login: ${AppConstant.userLoginResponse?.nombre??''}':"",
-          selectUserTap: () {  },
+          // selectUserTap: () {  },
           container:
           Expanded(
             child: Column(
@@ -61,12 +61,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
                 gapH(10.h),
                 backAndIcon((){
                   _checkBackTap();
-                },
-                        ()
-                    {
-
-                    },
-                    secondIcon,size: 61.0),
+                }, (){},secondIcon,size: 61.0),
               ],
             ),
           ),

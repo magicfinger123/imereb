@@ -1,6 +1,7 @@
 import 'package:bs_educativo/Screens/couponScreen/2.0_couponGroupList.dart';
 import 'package:bs_educativo/Screens/couponScreen/2.1_SelectedCouponTypeView.dart';
 import 'package:bs_educativo/Screens/couponScreen/2.2_selectedCouponDetailsScreen.dart';
+import 'package:bs_educativo/model/response/cupon/Coupon.dart';
 import 'package:bs_educativo/utility/AppConstant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,15 +13,17 @@ import '../2_main_menu_screen.dart';
 class CouponScreen extends StatefulWidget {
   const CouponScreen({super.key});
 
+
   @override
   State<CouponScreen> createState() => _CouponScreenState();
 }
 
 class _CouponScreenState extends State<CouponScreen> {
-
-  void _onScreenSelected(int index) {
+  List<Cupon> couponList = [];
+  void _onScreenSelected(int index, {List<Cupon>? couponList}) {
     setState(() {
       _currentIndex = index;
+      this.couponList = couponList ?? [];
     });
   }
 
@@ -34,7 +37,7 @@ class _CouponScreenState extends State<CouponScreen> {
           selectedUser: AppConstant.selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
           userName: AppConstant.appUserType == "Admin"? AppConstant.userLoginResponse?.usuario??'':"",
           role: AppConstant.appUserType == "Admin"? 'Login: ${AppConstant.userLoginResponse?.nombre??''}':"",
-          selectUserTap: () {  },
+          // selectUserTap: () {  },
           container:
           Expanded(
             child: Column(
@@ -44,7 +47,7 @@ class _CouponScreenState extends State<CouponScreen> {
                       index: _currentIndex, // Switch between screens
                       children: [
                         CouponGroupListView(onScreenChange: _onScreenSelected),
-                        SelectedCouponTypeView(onScreenChange:_onScreenSelected),
+                        SelectedCouponTypeView(onScreenChange:_onScreenSelected, couponList: couponList,),
                         SelectedCouponDetailsView(onScreenChange: _onScreenSelected)
                       ] // Screens to switch between
                   ),

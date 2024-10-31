@@ -1,3 +1,4 @@
+import 'package:bs_educativo/model/response/tips/tips.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -8,7 +9,8 @@ import '../agendaScreen/2.0_agendaCalendarView.dart';
 
 class TipsDetailsView extends StatefulWidget {
   final Function(int) onScreenChange;
-  const TipsDetailsView({super.key, required this.onScreenChange});
+  final TipResponse? tipResponse;
+  const TipsDetailsView({super.key, required this.onScreenChange, required this.tipResponse});
 
   @override
   State<TipsDetailsView> createState() => _TipsDetailsViewState();
@@ -20,7 +22,7 @@ class _TipsDetailsViewState extends State<TipsDetailsView> {
     return Container(
       decoration: deco(),
       child: Column(children: [
-        titleCard("Utiliza 100% el APP"),
+        titleCard(widget.tipResponse?.titulo ?? ""),
         gapH(10.h),
         Expanded(
           child: SingleChildScrollView(
@@ -28,13 +30,14 @@ class _TipsDetailsViewState extends State<TipsDetailsView> {
             child: Column(
               children: [
                 Align(alignment: Alignment.centerLeft,
-                  child: txtR("Utiliza El APP",15.sp,
+                  child: txtR(widget.tipResponse?.titulo ?? "",15.sp,
                       weight: FontWeight.w600,textAlign: TextAlign.left),
                 ),
                 gapH(20.h),
-                txtR(demoText,15.sp,
+                txtR(widget.tipResponse?.contenido ?? "",15.sp,
                     weight: FontWeight.w400,textAlign: TextAlign.left,
                     maxLines: 9000000000000000000),
+                Image.network(widget.tipResponse?.imgDir ?? "")
 
               ],
             ),

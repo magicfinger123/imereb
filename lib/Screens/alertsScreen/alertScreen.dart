@@ -1,6 +1,10 @@
+import 'package:bs_educativo/cubit/Alert/alert_cubit.dart';
+import 'package:bs_educativo/model/request/GeneralRequest.dart';
 import 'package:bs_educativo/utility/AppConstant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 
 import '../../apiService/api_service.dart';
 import '../../utility/colors.dart';
@@ -19,58 +23,75 @@ class AlertScreen extends StatefulWidget {
 }
 
 class _AlertScreenState extends State<AlertScreen> {
+
+  late AlertCubit cubit;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      cubit.getAlerts(GeneralRequest(idxestudiante: int.parse((AppConstant.userLoginResponse?.idxMaestro ?? 0).toString())));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BgScaffold(
-        body: MenuDesign(
-          isAdmin: AppConstant.appUserType == "Admin",
-          institution: AppConstant.collegeName ?? "",
-          selectedUser: AppConstant.selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
-          selectUserTap: () {  },
-          container:
-          Expanded(
-            child: Column(
-              children: [
-                Container(
-                  decoration: deco(),
-                  child: Column(children: [
-                    heading(),
-                    gapH(10.h),
-                    SizedBox(height: 510.h,
-                      child:
-                      ListView.builder(
-                          padding: EdgeInsets.symmetric(horizontal: 18.w,vertical: 16.h),
-                          itemCount:disciplinaryRecords.length,
-                          itemBuilder: (context, index) {
-                            final rec = disciplinaryRecords?[index];
-                            return GestureDetector(onTap: (){
+    cubit = context.read();
+    return BlocBuilder<AlertCubit, AlertState>(
+      builder: (context, state) {
+        return LoadingOverlay(
+          isLoading: state is AlertLoading,
+          child: BgScaffold(
+              body: MenuDesign(
+                isAdmin: AppConstant.appUserType == "Admin",
+                institution: AppConstant.collegeName ?? "",
+                selectedUser: AppConstant.selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
+                // selectUserTap: () {  },
+                container:
+                Expanded(
+                  child: Column(
+                    children: [
+                      Container(
+                        decoration: deco(),
+                        child: Column(children: [
+                          heading(),
+                          gapH(10.h),
+                          SizedBox(height: 510.h,
+                            child:
+                            ListView.builder(
+                                padding: EdgeInsets.symmetric(horizontal: 18.w,vertical: 16.h),
+                                itemCount:cubit.alerts.length,
+                                itemBuilder: (context, index) {
+                                  final rec = cubit.alerts[index];
+                                  return GestureDetector(onTap: (){
 
-                            },
-                              child: alertWidget(title:rec?.description??"",
-                                  amount:rec?.date.toString()??"",
-                                  onIconTap: () {
+                                  },
+                                    child: alertWidget(studentAlert: rec,
+                                        onIconTap: () {
 
-                                  }),
-                            );
-                          }
+                                        }),
+                                  );
+                                }
+                            ),
+                          ),
+
+                        ],),
                       ),
-                    ),
+                      gapH(10.h),
+                      backAndIcon((){
+                        Navigator.pop(context);
+                      },
+                              ()
+                          {
 
-                  ],),
+                          },
+                          null,size: 61.0),
+                    ],
+                  ),
                 ),
-                gapH(10.h),
-                backAndIcon((){
-                  Navigator.pop(context);
-                },
-                        ()
-                    {
-
-                    },
-                    null,size: 61.0),
-              ],
-            ),
-          ),
-        ));
+              )),
+        );
+      },
+    );
   }
 
 

@@ -14,3 +14,57 @@ class MessageIdRequest {
     "idMensaje": idMensaje,
   };
 }
+
+
+MessageRequest messageRequestFromJson(String str) => MessageRequest.fromJson(json.decode(str));
+
+String messageRequestToJson(MessageRequest data) => json.encode(data.toJson());
+
+class MessageRequest {
+  String? idxMensaje;
+  String? idxMaestro;
+
+  MessageRequest({
+    this.idxMensaje,
+    this.idxMaestro,
+  });
+
+  factory MessageRequest.fromJson(Map<String, dynamic> json) => MessageRequest(
+    idxMensaje: json["idxMensaje"],
+    idxMaestro: json["idxMaestro"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "idxMensaje": idxMensaje,
+    "idxMaestro": idxMaestro,
+  };
+}
+
+
+MessageReadRequest messageReadRequestFromJson(String str) => MessageReadRequest.fromJson(json.decode(str));
+
+String messageReadRequestToJson(MessageReadRequest data) => json.encode(data.toJson());
+
+class MessageReadRequest {
+  int? idMensaje;
+  int? idxMaestro;
+  String? tipoMaestro;
+
+  MessageReadRequest({
+    this.idMensaje,
+    this.idxMaestro,
+    this.tipoMaestro,
+  });
+
+  factory MessageReadRequest.fromJson(Map<String, dynamic> json) => MessageReadRequest(
+    idMensaje: json["idMensaje"],
+    idxMaestro: json["idxMaestro"],
+    tipoMaestro: json["tipoMaestro"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "idMensaje": idMensaje,
+    "idxMaestro": idxMaestro,
+    "tipoMaestro": tipoMaestro,
+  };
+}

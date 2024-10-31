@@ -1,3 +1,4 @@
+import 'package:bs_educativo/model/response/Alert/Alert.dart';
 import 'package:bs_educativo/model/response/EC/PaymentData.dart';
 import 'package:bs_educativo/model/response/meet/MeetEliglibleList.dart';
 import 'package:bs_educativo/utility/app_util.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../main.dart';
 import '../model/response/LoginResponse.dart';
 import 'AppConstant.dart';
 import 'colors.dart';
@@ -395,10 +397,30 @@ Widget menuListItem(title, icon, onTap) {
   );
 }
 
+
+Widget menuListItem2(title, icon, onTap) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Column(
+      children: [
+        Image.network(
+          icon,
+          width: 150.w,
+          height: 100.h,
+          fit: BoxFit.fitHeight,
+        ),
+        SizedBox(
+            width: 125.w,
+            child: Center(child: txtR(title, 17.sp, weight: FontWeight.w600)))
+      ],
+    ),
+  );
+}
+
 class MenuDesign extends StatefulWidget {
   final Widget container;
   final String institution, selectedUser, group, counselor;
-  final Function() selectUserTap;
+ // final Function() selectUserTap;
   final bool isBiosLogo;
   final bool isAdmin;
   final String? userName;
@@ -411,7 +433,7 @@ class MenuDesign extends StatefulWidget {
     required this.selectedUser,
     required this.group,
     required this.counselor,
-    required this.selectUserTap,
+  //  required this.selectUserTap,
     this.isBiosLogo = true,
     required this.institution,
     this.isAdmin = false,
@@ -474,7 +496,9 @@ class _MenuDesignState extends State<MenuDesign> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 GestureDetector(
-                  onTap: widget.selectUserTap,
+                  onTap: (){
+                    selectStudent(context);
+                  },
                   child: Container(
                       width: 154.w,
                       height: 50.h,
@@ -719,8 +743,8 @@ Widget finEcWidget(
 }
 
 Widget alertWidget(
-    {required String title,
-    required String amount,
+    {
+      required StudentAlert studentAlert,
     required Function() onIconTap}) {
   return Column(
     children: [
@@ -728,14 +752,38 @@ Widget alertWidget(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-              width: 200.w, child: txtR(title, 15.sp, weight: FontWeight.w600)),
+              width: 200.w, child: txtR(studentAlert.asunto ?? "", 15.sp, weight: FontWeight.w600)),
           const Spacer(),
           SizedBox(
-              width: 90.w,
-              child: txtB(amount, 15.sp,
+              width: 105.w,
+              child: txtB( AppUtils.getDate(studentAlert.fechaCreacion.toString(), "yyyy-MM-dd"), 14.sp,
                   weight: FontWeight.w500, textAlign: TextAlign.right)),
-          GestureDetector(onTap: onIconTap,
-              child: Image.asset(AppAssets.info,width: 30.w,height: 30.h,fit: BoxFit.contain,))
+          // GestureDetector(onTap: onIconTap,
+          //     child: Image.asset(AppAssets.info,width: 30.w,height: 30.h,fit: BoxFit.contain,))
+          Tooltip(
+              padding: const EdgeInsets.all(5),
+              triggerMode: TooltipTriggerMode.tap,
+              decoration: const BoxDecoration(color: Colors.transparent),
+              richMessage: WidgetSpan(
+                alignment: PlaceholderAlignment.baseline,
+                baseline: TextBaseline.alphabetic,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5),
+                  constraints: const BoxConstraints(maxWidth: 300, minWidth: 200),
+                  child:  commentPopWidget(
+                    title: studentAlert.asunto ?? "",
+                    date: "Fecha: ${AppUtils.getDate(studentAlert.fechaCreacion.toString(), "yyyy-MM-dd")}",
+                    comment: "Content: ${studentAlert.contenido}" ?? "",
+                  ),
+                ),
+              ),
+              child: Image.asset(
+                AppAssets.info,
+                width: 30.w,
+                height: 30.h,
+                fit: BoxFit.contain,
+              )
+          ),
         ],
       ),
       gapH(10.h),

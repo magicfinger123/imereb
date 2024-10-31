@@ -1,8 +1,17 @@
 class AppUrls {
   static const baseUrl = "https://app.bseducativo.com";
   static const loginUser = '$baseUrl/pew_api/api/auth';
+
   static const getListOfMessageInboxUrl = '$baseUrl/pew_api/api/inbox';
   static const getInboxMessageData = '$baseUrl/pew_api/api/mensaje';
+  static const deletedMessages = '$baseUrl/pew_api/api/deleted';
+  static const sentMessages = '$baseUrl/pew_api/api/sent';
+  static const readMessages = '$baseUrl/pew_api/api/mensajeleido';
+  static const deleteMessages = '$baseUrl/pew_api/api/eliminarmensajeentrada';
+  static const deleteSentMessages = '$baseUrl/pew_api/api/eliminarmensajesalida';
+  static const getMessageAttachment = '$baseUrl/pew_api/api/getmsgattach';
+  static const getUnreadCount = '$baseUrl/pew_api/api/newmessagecount';
+
   static const getDocuments = '$baseUrl/pew_api/api/documents';
   static const getAgenda = '$baseUrl/pew_api/api/agenda';
   static const getAgendaDetail = '$baseUrl/pew_api/api/agendadetalle';
@@ -15,6 +24,8 @@ class AppUrls {
   static const tips = '$baseUrl/pew_api/api/estugettips';
   static const studentQR = '$baseUrl/pew_api/api/getstudentqr';
   static const studentAlerts = '$baseUrl/pew_api/api/getstudentalert';
+  static const couponCategory = '$baseUrl/pew_api/api/cuponcategoryget';
+  static const couponGet = '$baseUrl/pew_api/api/CuponGet';
 }
 class ApiResponseCodes {
   static const success = 200;

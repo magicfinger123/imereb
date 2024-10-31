@@ -3,11 +3,11 @@ List<StudentAlert> studentAlertFromJson(String str) => List<StudentAlert>.from(j
 String studentAlertToJson(List<StudentAlert> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class StudentAlert {
-  int? idxAlertaContenido;
-  int? idxMaestro;
-  int? idColegio;
+  num? idxAlertaContenido;
+  num? idxMaestro;
+  num? idColegio;
   String? medio;
-  int? codAlerta;
+  num? codAlerta;
   String? asunto;
   String? contenido;
   DateTime? fechaCreacion;
@@ -15,7 +15,7 @@ class StudentAlert {
   DateTime? fechaEnvio;
   bool? isFree;
   String? tipomaestro;
-  int? leida;
+  num? leida;
   DateTime? fechaleido;
 
   StudentAlert({

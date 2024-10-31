@@ -42,9 +42,9 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
 
         selectedUser: AppConstant.selectedMember?.nombreCompleto??"",
         group: "", counselor: "",
-        selectUserTap: () {
-          _selectStudent();
-        },
+        // selectUserTap: () {
+        //   _selectStudent();
+        // },
         isAdmin: AppConstant.appUserType == "Admin",
         userName: AppConstant.appUserType == "Admin"? AppConstant.userLoginResponse?.usuario??'':"",
         role: AppConstant.appUserType == "Admin"? 'Login: ${AppConstant.userLoginResponse?.nombre??''}':"",
@@ -154,24 +154,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
         isBiosLogo: true,
       ),);
   }
-  _selectStudent()async{
-    if(AppConstant.userLoginResponse?.familyMembers != null){
-      var result =  await showModalBottomSheet(
-          isDismissible: true,
-          isScrollControlled: true,
-          context: context,
-          builder: (context) => Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child:  SelectFamilyMemberBottomSheet(userFamilyMembers: AppConstant.userLoginResponse?.familyMembers??[],),
-          )
-      );
-      if(result is FamilyMember){
-        setState(() {
-          AppConstant.selectedMember = result;
-        });
-      }
-    }
+
 
     // var result =  await showModalBottomSheet(
     //     isDismissible: true,
@@ -200,7 +183,6 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   }
 
 
-}
 
 
 

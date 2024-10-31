@@ -42,7 +42,7 @@ class _DocumentScreenState extends State<DocumentScreen> {
           selectedUser: AppConstant.selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
           userName: AppConstant.appUserType == "Admin"? AppConstant.userLoginResponse?.usuario??'':"",
           role: AppConstant.appUserType == "Admin"? 'Login: ${AppConstant.userLoginResponse?.nombre??''}':"",
-          selectUserTap: () {  },
+          // selectUserTap: () {  },
           container:
           Expanded(
             child: Column(

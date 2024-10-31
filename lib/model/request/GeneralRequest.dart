@@ -6,7 +6,7 @@ class GeneralRequest {
   int? idColegio;
   int? idioma;
   String? cedula;
-  String? idxestudiante;
+  int? idxestudiante;
   GeneralRequest({
     this.idColegio,
     this.idioma,

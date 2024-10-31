@@ -1,3 +1,4 @@
+import 'package:bs_educativo/model/response/tips/tips.dart';
 import 'package:bs_educativo/utility/AppConstant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,11 +20,12 @@ class TipsScreen extends StatefulWidget {
 
 class _TipsScreenState extends State<TipsScreen> {
   String? secondIcon;
-  void _onScreenSelected(int index) {
+  TipResponse? tips;
+  void _onScreenSelected(int index, {TipResponse? tips}) {
     setState(() {
       _currentIndex = index;
     });
-
+    this.tips = tips;
     if(_currentIndex == 0){
       secondIcon = null;
     }else if(_currentIndex == 1){
@@ -42,7 +44,7 @@ class _TipsScreenState extends State<TipsScreen> {
           group: group, counselor: counselor,
           userName: AppConstant.appUserType == "Admin"? AppConstant.userLoginResponse?.usuario??'':"",
           role: AppConstant.appUserType == "Admin"? 'Login: ${AppConstant.userLoginResponse?.nombre??''}':"",
-          selectUserTap: () {  },
+          // selectUserTap: () {  },
           container:
           Expanded(
             child: Column(
@@ -52,8 +54,7 @@ class _TipsScreenState extends State<TipsScreen> {
                       index: _currentIndex, // Switch between screens
                       children: [
                         TipListView(onScreenChange: _onScreenSelected),
-                        TipsDetailsView(onScreenChange:_onScreenSelected)
-
+                        TipsDetailsView(onScreenChange:_onScreenSelected, tipResponse: tips,)
                       ] // Screens to switch between
                   ),
                 ),

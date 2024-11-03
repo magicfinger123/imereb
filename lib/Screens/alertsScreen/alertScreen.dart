@@ -45,7 +45,10 @@ class _AlertScreenState extends State<AlertScreen> {
                 isAdmin: AppConstant.appUserType == "Admin",
                 institution: AppConstant.collegeName ?? "",
                 selectedUser: AppConstant.selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
-                // selectUserTap: () {  },
+                selectUserTap: () {
+                  setState(() {
+                  });
+                },
                 container:
                 Expanded(
                   child: Column(

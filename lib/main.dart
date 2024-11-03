@@ -95,22 +95,3 @@ Widget splashScreen() {
 }
 
 
-selectStudent(BuildContext context)async{
-  if(AppConstant.userLoginResponse?.familyMembers != null){
-    var result =  await showModalBottomSheet(
-        isDismissible: true,
-        isScrollControlled: true,
-        context: context,
-        builder: (context) => Padding(
-          padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom),
-          child:  SelectFamilyMemberBottomSheet(userFamilyMembers: AppConstant.userLoginResponse?.familyMembers??[],),
-        )
-    );
-    if(result is FamilyMember){
-   //   setState(() {
-        AppConstant.selectedMember = result;
-  //    });
-    }
-  }
-  }

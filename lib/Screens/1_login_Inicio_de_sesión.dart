@@ -118,7 +118,7 @@ class _LoginScreenInicioState extends State<LoginScreenInicio> {
                       showIcon: true,
                       body: "¿Quieres utilizar tus datos biométricos la próxima vez que inicies sesión?",
                       proceedText: "Sí, habilitar",
-                      declineText: "No, no lo hagas",
+                      declineText: "No, inhabilitar",
                       proceed: () async {
                         Navigator.pop(context);
                         await SharedPref.saveBool(
@@ -155,7 +155,7 @@ class _LoginScreenInicioState extends State<LoginScreenInicio> {
                             iconTxt: AppAssets.user),
                         gapH(30.h),
                         CtmTextField(controller: controller2, title: "Contraseña",
-                            iconTxt: AppAssets.key),
+                            iconTxt: AppAssets.key, isPassword: true,),
                         gapH(40.h),
                         blueBtn("Ingresar", (){
                           if(controller1.text.isNotEmpty && controller1.text.isNotEmpty){
@@ -201,10 +201,6 @@ class _LoginScreenInicioState extends State<LoginScreenInicio> {
       });
     });
   }
-
-
-
-
 }
 
 

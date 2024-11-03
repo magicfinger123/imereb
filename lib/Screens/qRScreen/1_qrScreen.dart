@@ -33,7 +33,7 @@ class _QRScreenState extends State<QRScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_){
-      cubit.getQrS(GeneralRequest(idxestudiante: int.parse((AppConstant.userLoginResponse?.idxMaestro ?? 0).toString())));
+      cubit.getQrS(GeneralRequest(idxestudiante: int.parse((AppConstant.selectedMember?.idxEstudiante).toString())));
     });
   }
 
@@ -51,7 +51,9 @@ class _QRScreenState extends State<QRScreen> {
         selectedUser: AppConstant.selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
           userName: AppConstant.appUserType == "Admin"? AppConstant.userLoginResponse?.usuario??'':"",
           role: AppConstant.appUserType == "Admin"? 'Login: ${AppConstant.userLoginResponse?.nombre??''}':"",
-        // selectUserTap: () {  },
+         selectUserTap: () {
+            cubit.getQrS(GeneralRequest(idxestudiante: int.parse((AppConstant.selectedMember?.idxEstudiante).toString())));
+        },
         container:
         Expanded(child: Column(children: [
           Expanded(
@@ -80,10 +82,7 @@ class _QRScreenState extends State<QRScreen> {
             ],
           ),
         ),
-          
-         
-      
-          ),
+      ),
     );
   },
 ));

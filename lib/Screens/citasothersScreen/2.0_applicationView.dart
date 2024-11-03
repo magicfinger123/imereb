@@ -44,8 +44,8 @@ class _ApplicationViewState extends State<ApplicationView> {
     return BlocBuilder<MeetCubit, MeetState>(
       builder: (context, state) {
         if (state is MeetRequestSubmittedState){
-          AppUtils.showSuccessSnack("Solicitud enviada exitosamente", context);
           WidgetsBinding.instance.addPostFrameCallback((_) {
+            AppUtils.showSuccessSnack("Solicitud enviada exitosamente", context);
             cubit.resetState();
           });
         }

@@ -1,5 +1,7 @@
 import 'package:bs_educativo/model/request/NotasDetailer.dart';
+import 'package:bs_educativo/model/response/note/Boletin.dart';
 import 'package:bs_educativo/model/response/note/Notas.dart';
+import 'package:bs_educativo/model/response/note/NoteDetails.dart';
 import 'package:bs_educativo/repository/repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -25,8 +27,21 @@ class NoteRepository extends ApiRepository {
     var response = await postRequest(
         request, AppUrls.noteDetails, true, HttpMethods.get);
     if (response is String) {
-      var r = notasFromJson(response);
+      var r = noteDetailsFromJson(response);
       print("messages: ${r}");
+      return r;
+    }
+    else {
+      handleErrorResponse(response);
+      return errorResponse!;
+    }
+  }
+  Future<Object> getBoletin(NotasDetailerRequest request) async {
+    var response = await postRequest(
+        request, AppUrls.boletin, true, HttpMethods.post);
+    if (response is String) {
+      var r = boletinFromJson(response);
+      print("boletins: ${r}");
       return r;
     }
     else {

@@ -1,5 +1,6 @@
 import 'package:bs_educativo/cubit/Notes/note_cubit.dart';
 import 'package:bs_educativo/model/request/NotasDetailer.dart';
+import 'package:bs_educativo/model/response/note/Boletin.dart';
 import 'package:bs_educativo/utility/AppConstant.dart';
 import 'package:bs_educativo/utility/text_widgets.dart';
 import 'package:bs_educativo/utility/widgets.dart';
@@ -8,11 +9,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
+import '../../model/response/note/Notas.dart';
 import '../../utility/colors.dart';
 import '../../utility/demoInfos.dart';
 
 class MainRatingsView extends StatefulWidget {
-  final Function(int) onScreenChange;
+  final Function(int,  {Boletin? selectedNote}) onScreenChange;
   const MainRatingsView({super.key, required this.onScreenChange});
 
   @override
@@ -22,26 +24,21 @@ class MainRatingsView extends StatefulWidget {
 class _MainRatingsViewState extends State<MainRatingsView> {
 
   late NoteCubit cubit;
-  List<Subjects> subjectsItem = [
-    Subjects(name: 'Español', grade: "4.9"),
-    Subjects(name: 'Matemáticas', grade: "4.8"),
-    Subjects(name: 'Inglés', grade: "4.8"),
-    Subjects(name: 'Ciencias', grade: "4.9"),
-    Subjects(name: 'Educación Física', grade: "5.0"),
-    Subjects(name: 'Estudios Sociales', grade: "4.9"),
-  ];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_){
-      cubit.getNotes(NotasDetailerRequest(
+      cubit.getBoletins(
+          NotasDetailerRequest(
           ano: DateTime.now().year,
+          bimestre: AppConstant.userLoginResponse?.periodoPre,
           idColegio: AppConstant.userLoginResponse?.idColegio,
           idioma: 1,
           cedula: AppConstant.userLoginResponse?.cedula
-      ));
+      )
+      );
     });
   }
   @override
@@ -83,16 +80,15 @@ class _MainRatingsViewState extends State<MainRatingsView> {
                 child:
                 ListView.builder(
                     padding: EdgeInsets.symmetric(horizontal: 18.w,vertical: 16.h),
-                    itemCount:cubit.notes.length,
+                    itemCount:cubit.boletins.length,
                     itemBuilder: (context, index) {
-                      final sub= cubit.notes[index];
+                      final sub= cubit.boletins[index];
                       return GestureDetector(onTap: (){
-                        widget.onScreenChange(1);
-
+                        widget.onScreenChange(1, selectedNote: sub);
                       },
                         child: subjectAndRatingItemWidget(
-                            subject:sub.materia??"",
-                            rating: sub.codmat.toString()),
+                            subject:sub.nommat??"",
+                            rating: sub.getPromedio((AppConstant.userLoginResponse?.periodoPre ?? "").toString())),
                       );
                     }
                 ),

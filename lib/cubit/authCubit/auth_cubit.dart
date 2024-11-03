@@ -32,11 +32,11 @@ class AuthCubit extends Cubit<AuthState> {
         AppUtils.debug("Login Validated for regular user.");
       }
       else {
-        emit(AuthStateErrorState(response as String));
+        emit(AuthStateErrorState(AppUtils.defaultErrorResponse(msg: "Usuarios y password incorrecto")));
         AppUtils.debug("Error: Response not recognized as admin or parent.");
       }
     } catch (e) {
-      emit(AuthStateErrorState(AppUtils.defaultErrorResponse()));
+      emit(AuthStateErrorState(AppUtils.defaultErrorResponse(msg: "Usuarios y password incorrecto")));
       AppUtils.debug("Error caught: $e");
     }
   }

@@ -26,18 +26,18 @@ class BgScaffold extends StatelessWidget {
       },
       child: Scaffold(
           body: Container(
-        width: double.infinity,
-        decoration: const BoxDecoration(
-            color: Color(0xFFF7F7F7),
-            image: DecorationImage(
-                image: AssetImage(AppAssets.bg), fit: BoxFit.cover)),
-        child: SafeArea(
-            top: true,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: body,
-            )),
-      )),
+            width: double.infinity,
+            decoration: const BoxDecoration(
+                color: Color(0xFFF7F7F7),
+                image: DecorationImage(
+                    image: AssetImage(AppAssets.bg), fit: BoxFit.cover)),
+            child: SafeArea(
+                top: true,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: body,
+                )),
+          )),
     );
   }
 }
@@ -45,17 +45,19 @@ class BgScaffold extends StatelessWidget {
 class CtmTextField extends StatefulWidget {
   final TextEditingController controller;
   final String title, iconTxt;
-  const CtmTextField(
-      {super.key,
-      required this.controller,
-      required this.title,
-      required this.iconTxt});
+  bool? isPassword = false;
+  CtmTextField(
+      {super.key, this.isPassword,
+        required this.controller,
+        required this.title,
+        required this.iconTxt});
 
   @override
   State<CtmTextField> createState() => _CtmTextFieldState();
 }
 
 class _CtmTextFieldState extends State<CtmTextField> {
+  bool hidePassword = true;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -80,29 +82,38 @@ class _CtmTextFieldState extends State<CtmTextField> {
             ),
             gapH(15.h),
             SizedBox(
-                width: 280.w,
-                height: 42.h,
-                child: TextField(
-                  controller: widget.controller,
-                  cursorHeight: 15.sp,
-                  cursorColor: AppColors.border,
-                  style: GoogleFonts.inter(
-                    color: AppColors.txt1,
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.bold,
+              width: 280.w,
+              height: 42.h,
+              child: TextField(
+                controller: widget.controller,
+                cursorHeight: 15.sp,
+                cursorColor: AppColors.border,
+                obscureText: widget.isPassword == true && hidePassword,
+                style: GoogleFonts.inter(
+                  color: AppColors.txt1,
+                  fontSize: 17.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+                decoration: InputDecoration(
+                  fillColor: AppColors.d9,
+                  filled: true,
+                  contentPadding: EdgeInsets.only(
+                      bottom: 0, top: 0, left: 10.w, right: 10.w),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(7.r),
+                    borderSide:
+                    BorderSide(color: AppColors.border, width: 1.27.r),
                   ),
-                  decoration: InputDecoration(
-                    fillColor: AppColors.d9,
-                    filled: true,
-                    contentPadding: EdgeInsets.only(
-                        bottom: 0, top: 0, left: 10.w, right: 10.w),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(7.r),
-                      borderSide:
-                          BorderSide(color: AppColors.border, width: 1.27.r),
-                    ),
-                  ),
-                ))
+                  suffixIcon: widget.isPassword == true ? IconButton(
+                    icon: Icon(hidePassword? Icons.visibility: Icons.visibility_off),onPressed: () {
+                    setState(
+                          () {
+                        hidePassword = !hidePassword;
+                        });
+                    }) : const SizedBox(),alignLabelWithHint: false,
+                ),
+              ),
+            )
           ],
         ),
       ],
@@ -161,11 +172,11 @@ Container topLogoAndTxt3() {
 }
 
 SizedBox gapH(height) => SizedBox(
-      height: height,
-    );
+  height: height,
+);
 SizedBox gapW(width) => SizedBox(
-      width: width,
-    );
+  width: width,
+);
 
 Row fingerWidget() {
   return Row(
@@ -246,16 +257,16 @@ Center blueBtn(title, onTap) {
 
 Column menuItems(
     {required Function() qrTap,
-    required Function() messageTap,
-    required Function() threetap,
-    required Function() fourTap,
-    required Function() calendarTap,
-    required Function() clockTap,
-    required Function() documentTap,
-    required Function() matricTap,
-    required Function() alertTap,
-    required Function() tipsTap,
-    required Function() couponTap}) {
+      required Function() messageTap,
+      required Function() threetap,
+      required Function() fourTap,
+      required Function() calendarTap,
+      required Function() clockTap,
+      required Function() documentTap,
+      required Function() matricTap,
+      required Function() alertTap,
+      required Function() tipsTap,
+      required Function() couponTap}) {
   return Column(
     children: [
       Row(
@@ -286,24 +297,25 @@ Column menuItems(
         children: [
           menuListItem("Documentos", AppAssets.book, documentTap),
           const Spacer(),
-          menuListItem("Matrícula", AppAssets.matric, matricTap),
-        ],
-      ),
-      sp(),
-      Row(
-        children: [
+          // menuListItem("Matrícula", AppAssets.matric, matricTap),
           menuListItem("Alertas", AppAssets.bell, alertTap),
-          const Spacer(),
-          menuListItem("Tips", AppAssets.pointer, tipsTap)
         ],
       ),
       sp(),
       Row(
         children: [
-          menuListItem("Cupones", AppAssets.tag, couponTap),
+          menuListItem("Tips", AppAssets.pointer, tipsTap),
           const Spacer(),
+          menuListItem("Cupones", AppAssets.tag, couponTap),
         ],
       ),
+      // sp(),
+      // Row(
+      //   children: [
+      //
+      //     const Spacer(),
+      //   ],
+      // ),
       gapH(40.h),
     ],
   );
@@ -420,7 +432,7 @@ Widget menuListItem2(title, icon, onTap) {
 class MenuDesign extends StatefulWidget {
   final Widget container;
   final String institution, selectedUser, group, counselor;
- // final Function() selectUserTap;
+  final Function() selectUserTap;
   final bool isBiosLogo;
   final bool isAdmin;
   final String? userName;
@@ -433,7 +445,7 @@ class MenuDesign extends StatefulWidget {
     required this.selectedUser,
     required this.group,
     required this.counselor,
-  //  required this.selectUserTap,
+    required this.selectUserTap,
     this.isBiosLogo = true,
     required this.institution,
     this.isAdmin = false,
@@ -488,8 +500,8 @@ class _MenuDesignState extends State<MenuDesign> {
                 ? Row(children: [
               SizedBox(width: 250.w,
                   child:
-              txtR(widget.userName, 18.sp,weight: FontWeight.w600)),
-               gapW(10.w),
+                  txtR(widget.userName, 18.sp,weight: FontWeight.w600)),
+              gapW(10.w),
               txtR(widget.role, 15.sp,weight: FontWeight.w600),
             ],):
             Row(
@@ -497,7 +509,7 @@ class _MenuDesignState extends State<MenuDesign> {
               children: [
                 GestureDetector(
                   onTap: (){
-                    selectStudent(context);
+                    _selectStudent(context);
                   },
                   child: Container(
                       width: 154.w,
@@ -527,13 +539,14 @@ class _MenuDesignState extends State<MenuDesign> {
                     Row(
                       children: [
                         txtR("Grupo: ", 15.sp, weight: FontWeight.w600),
-                        txtR(widget.group, 15.sp)
+                        txtR(AppConstant.userLoginResponse?.grupoUsuario.toString(), 15.sp)
                       ],
                     ),
                     Row(
                       children: [
                         txtR("Consejero: ", 15.sp, weight: FontWeight.w600),
-                        txtR(widget.counselor, 15.sp)
+                        txtR("N/A", 15.sp)
+                        // txtR(AppConstant.userLoginResponse?.aviso ?? "", 15.sp)
                       ],
                     ),
                   ],
@@ -547,6 +560,26 @@ class _MenuDesignState extends State<MenuDesign> {
         gapH(5.h),
       ],
     );
+  }
+  _selectStudent(BuildContext context)async{
+    if(AppConstant.userLoginResponse?.familyMembers != null){
+      var result =  await showModalBottomSheet(
+          isDismissible: true,
+          isScrollControlled: true,
+          context: context,
+          builder: (context) => Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child:  SelectFamilyMemberBottomSheet(userFamilyMembers: AppConstant.userLoginResponse?.familyMembers??[],),
+          )
+      );
+      if(result is FamilyMember){
+        setState(() {
+          AppConstant.selectedMember = result;
+          widget.selectUserTap();
+        });
+      }
+    }
   }
 }
 
@@ -565,13 +598,13 @@ Padding backAndIcon(backTap, iconTap, icon, {double size = 48}) {
         const Spacer(),
         icon != null
             ? GestureDetector(
-                onTap: iconTap,
-                child: Image.asset(
-                  icon,
-                  width: size.h,
-                  height: size.h,
-                  fit: BoxFit.fitHeight,
-                ))
+            onTap: iconTap,
+            child: Image.asset(
+              icon,
+              width: size.h,
+              height: size.h,
+              fit: BoxFit.fitHeight,
+            ))
             : SizedBox(),
       ],
     ),
@@ -602,9 +635,9 @@ Widget msgDropListItemsWidget(title, icon, onTap) {
 
 Widget messageItemWidget(
     {required Function() onTap,
-    required String title,
-    required String description,
-    required String date}) {
+      required String title,
+      required String description,
+      required String date}) {
   return GestureDetector(
     onTap: onTap,
     child: Container(
@@ -665,9 +698,8 @@ Widget documentAndDates({required String title, required String date}) {
       Row(
         children: [
           Expanded(child: txtR(title, 15.sp, weight: FontWeight.w600)),
-          gapW(20.w),
-          Container(
-              width: 120.w,
+          const Spacer(),
+          SizedBox(
               child: txtB(date, 15.sp,
                   weight: FontWeight.w400, textAlign: TextAlign.left)),
         ],
@@ -687,8 +719,8 @@ Widget documentAndDates({required String title, required String date}) {
 Widget finEcWidget(
     { required PaymentData paymentData,
       required String amount,
-    isCredit = true,
-    required Function() onIconTap}) {
+      isCredit = true,
+      required Function() onIconTap}) {
   return Column(
     children: [
       Row(
@@ -705,28 +737,30 @@ Widget finEcWidget(
                   textAlign: TextAlign.right)),
           gapW(10.0),
           Tooltip(
-            padding: const EdgeInsets.all(5),
-            triggerMode: TooltipTriggerMode.tap,
-            decoration: const BoxDecoration(color: Colors.transparent),
-            richMessage: WidgetSpan(
-              alignment: PlaceholderAlignment.baseline,
-              baseline: TextBaseline.alphabetic,
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 5),
-                constraints: const BoxConstraints(maxWidth: 300, minWidth: 200),
-                child:  commentPopWidget(
+              showDuration: const Duration(minutes: 1),
+              enableFeedback: true,
+              padding: const EdgeInsets.all(5),
+              triggerMode: TooltipTriggerMode.tap,
+              decoration: const BoxDecoration(color: Colors.transparent),
+              richMessage: WidgetSpan(
+                alignment: PlaceholderAlignment.baseline,
+                baseline: TextBaseline.alphabetic,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5),
+                  constraints: const BoxConstraints(maxWidth: 300, minWidth: 200),
+                  child:  commentPopWidget(
                     title: paymentData.description ??"",
                     date: "Fecha: ${AppUtils.getDate(paymentData.date.toString(), "yyyy-MMM-dd")}",
                     comment: "Monto: ${paymentData.balance}",
+                  ),
                 ),
               ),
-            ),
-            child: Image.asset(
-                    AppAssets.info,
-                    width: 30.w,
-                    height: 30.h,
-                    fit: BoxFit.contain,
-                  )
+              child: Image.asset(
+                AppAssets.info,
+                width: 30.w,
+                height: 30.h,
+                fit: BoxFit.contain,
+              )
           ),
         ],
       ),
@@ -745,7 +779,7 @@ Widget finEcWidget(
 Widget alertWidget(
     {
       required StudentAlert studentAlert,
-    required Function() onIconTap}) {
+      required Function() onIconTap}) {
   return Column(
     children: [
       Row(
@@ -761,6 +795,8 @@ Widget alertWidget(
           // GestureDetector(onTap: onIconTap,
           //     child: Image.asset(AppAssets.info,width: 30.w,height: 30.h,fit: BoxFit.contain,))
           Tooltip(
+              showDuration: const Duration(minutes: 1),
+              enableFeedback: true,
               padding: const EdgeInsets.all(5),
               triggerMode: TooltipTriggerMode.tap,
               decoration: const BoxDecoration(color: Colors.transparent),
@@ -860,66 +896,66 @@ class _CollapsibleCategoryWidgetState extends State<CollapsibleCategoryWidget> {
   Widget build(BuildContext context) {
     return
       Container(
-      margin: EdgeInsets.only(bottom: 30.h),
-      padding: EdgeInsets.symmetric(horizontal: 13.w,vertical: 13.h),
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.blueBa, width: 2.5.r),
-        borderRadius: BorderRadius.circular(6.3.r),
-        color: AppColors.bgDc,
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.black.withOpacity(0.25),
-            spreadRadius: 0,
-            blurRadius: 4.h,
-            offset: Offset(0, 4.h),
-          )
-        ],
-      ),
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                _isExpanded = !_isExpanded;
-              });
-            },
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(widget.category.name ?? "", style: TextStyle(fontWeight: FontWeight.bold)),
-                const Spacer(),
-                Icon(
-                  _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                  color: AppColors.blueBa,
-                  size: 30.r,
-                )
-              ],
-            ),
-          ),
-          if (_isExpanded)
-            Container(height: 150.h,
-              child: ListView.builder(
-                padding: EdgeInsets.symmetric(vertical: 10.h),
-                //shrinkWrap: true,
-                //physics: NeverScrollableScrollPhysics(),
-                itemCount: widget.category.list.length,
-                itemBuilder: (context, index) {
-                  return _selectUserWidget(
-                    userName: widget.category.list[index].nombre ?? "",
-                    isSelected: _selectedUsers[index],
-                    onTap: () {
-                      setState(() {
-                        _selectedUsers[index] = !_selectedUsers[index];
-                        Navigator.pop(context, widget.category.list[index]);
-                      });
-                    },
-                  );
-                },
+        margin: EdgeInsets.only(bottom: 30.h),
+        padding: EdgeInsets.symmetric(horizontal: 13.w,vertical: 13.h),
+        decoration: BoxDecoration(
+          border: Border.all(color: AppColors.blueBa, width: 2.5.r),
+          borderRadius: BorderRadius.circular(6.3.r),
+          color: AppColors.bgDc,
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.black.withOpacity(0.25),
+              spreadRadius: 0,
+              blurRadius: 4.h,
+              offset: Offset(0, 4.h),
+            )
+          ],
+        ),
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  _isExpanded = !_isExpanded;
+                });
+              },
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(widget.category.name ?? "", style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Spacer(),
+                  Icon(
+                    _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                    color: AppColors.blueBa,
+                    size: 30.r,
+                  )
+                ],
               ),
             ),
-        ],
-      ),
-    );
+            if (_isExpanded)
+              Container(height: 150.h,
+                child: ListView.builder(
+                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                  //shrinkWrap: true,
+                  //physics: NeverScrollableScrollPhysics(),
+                  itemCount: widget.category.list.length,
+                  itemBuilder: (context, index) {
+                    return _selectUserWidget(
+                      userName: widget.category.list[index].nombre ?? "",
+                      isSelected: _selectedUsers[index],
+                      onTap: () {
+                        setState(() {
+                          _selectedUsers[index] = !_selectedUsers[index];
+                          Navigator.pop(context, widget.category.list[index]);
+                        });
+                      },
+                    );
+                  },
+                ),
+              ),
+          ],
+        ),
+      );
   }
 
   Widget _selectUserWidget({required String userName, required bool isSelected, required VoidCallback onTap}) {

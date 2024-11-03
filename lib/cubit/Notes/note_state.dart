@@ -20,6 +20,18 @@ class NoteFetchedState extends NoteState {
   List<Object> get props => [];
 }
 class NoteDetailFetchedState extends NoteState {
+  List<NoteDetails> notes;
+
+  NoteDetailFetchedState(this.notes);
+
+  @override
+  List<Object> get props => [];
+}
+
+class BoletinFetchedState extends NoteState {
+  List<Boletin> notes;
+
+  BoletinFetchedState(this.notes);
 
   @override
   List<Object> get props => [];

@@ -42,9 +42,10 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
 
         selectedUser: AppConstant.selectedMember?.nombreCompleto??"",
         group: "", counselor: "",
-        // selectUserTap: () {
-        //   _selectStudent();
-        // },
+        selectUserTap: () {
+          setState(() {
+          });
+        },
         isAdmin: AppConstant.appUserType == "Admin",
         userName: AppConstant.appUserType == "Admin"? AppConstant.userLoginResponse?.usuario??'':"",
         role: AppConstant.appUserType == "Admin"? 'Login: ${AppConstant.userLoginResponse?.nombre??''}':"",

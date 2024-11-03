@@ -21,11 +21,13 @@ class AppUrls {
   static const ec = '$baseUrl/pew_api/api/estado';
   static const note = '$baseUrl/pew_api/api/notas';
   static const noteDetails = '$baseUrl/pew_api/api/notasdetalle';
+  static const boletin = '$baseUrl/pew_api/api/boletin';
   static const tips = '$baseUrl/pew_api/api/estugettips';
   static const studentQR = '$baseUrl/pew_api/api/getstudentqr';
   static const studentAlerts = '$baseUrl/pew_api/api/getstudentalert';
   static const couponCategory = '$baseUrl/pew_api/api/cuponcategoryget';
   static const couponGet = '$baseUrl/pew_api/api/CuponGet';
+
 }
 class ApiResponseCodes {
   static const success = 200;

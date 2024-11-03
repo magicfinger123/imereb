@@ -1,5 +1,8 @@
 import 'package:bs_educativo/Screens/detailedRatingsScreen/2.0_mainRatingsView.dart';
 import 'package:bs_educativo/Screens/detailedRatingsScreen/2.1_ratingsDetailsView.dart';
+import 'package:bs_educativo/model/response/note/Boletin.dart';
+import 'package:bs_educativo/model/response/note/Notas.dart';
+import 'package:bs_educativo/model/response/note/NoteDetails.dart';
 import 'package:bs_educativo/utility/AppConstant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +21,9 @@ class RatingsScreen extends StatefulWidget {
 }
 
 class _RatingsScreenState extends State<RatingsScreen> {
-  void _onScreenSelected(int index) {
+  Boletin? selectedNote;
+  void _onScreenSelected(int index,{Boletin? selectedNote}) {
+    this.selectedNote = selectedNote;
     setState(() {
       _currentIndex = index;
     });
@@ -34,7 +39,10 @@ class _RatingsScreenState extends State<RatingsScreen> {
           selectedUser: AppConstant.selectedMember?.nombreCompleto??"", group: group, counselor: counselor,
           userName: AppConstant.appUserType == "Admin"? AppConstant.userLoginResponse?.usuario??'':"",
           role: AppConstant.appUserType == "Admin"? 'Login: ${AppConstant.userLoginResponse?.nombre??''}':"",
-          // selectUserTap: () {  },
+          selectUserTap: () {
+            setState(() {
+            });
+          },
           container:
           Expanded(
             child: Column(
@@ -44,7 +52,7 @@ class _RatingsScreenState extends State<RatingsScreen> {
                       index: _currentIndex, // Switch between screens
                       children: [
                         MainRatingsView(onScreenChange: _onScreenSelected),
-                        RatingsDetailView(onScreenChange: _onScreenSelected,)
+                        RatingsDetailView(onScreenChange: _onScreenSelected, note: selectedNote,)
                       ] // Screens to switch between
                   ),
                 ),

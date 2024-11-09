@@ -17,6 +17,15 @@ class MessageInboxState extends MessageState {
   @override
   List<Object> get props => [response];
 }
+
+class MessageSortState extends MessageState {
+  final List<Messages> response;
+  const MessageSortState(this.response);
+  @override
+  List<Object> get props => [response];
+}
+
+
 class MessageInboxDataState extends MessageState {
   final List<MessageData> response;
   const MessageInboxDataState(this.response);

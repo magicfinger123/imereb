@@ -612,32 +612,38 @@ Padding backAndIcon(backTap, iconTap, icon, {double size = 48}) {
 }
 
 Widget msgDropListItemsWidget(title, icon, onTap) {
-  return GestureDetector(
+  return InkWell(
     onTap: onTap,
-    child: Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            icon,
-            width: 25.w,
-            height: 24.h,
-            fit: BoxFit.contain,
-          ),
-          gapW(10.w),
-          txtR(title, 15.sp),
-        ],
+    child: Container(
+      height: 40,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              icon,
+              width: 25.w,
+              height: 24.h,
+              fit: BoxFit.contain,
+            ),
+            gapW(10.w),
+            txtR(title, 15.sp),
+          ],
+        ),
       ),
     ),
   );
 }
 
 Widget messageItemWidget(
-    {required Function() onTap,
+    {
+      required Function() onTap,
       required String title,
       required String description,
-      required String date}) {
+      required bool isRead,
+      required String date
+    }){
   return GestureDetector(
     onTap: onTap,
     child: Container(
@@ -656,13 +662,13 @@ Widget messageItemWidget(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                txtB(title, 12.sp),
-                txtR(description, 12.sp),
+                txtB(title, 12.sp, color: isRead ? AppColors.txt1.withOpacity(0.5) : AppColors.txt1),
+                txtR(description, 12.sp, color: isRead ? AppColors.txt1.withOpacity(0.5) : AppColors.txt1),
               ],
             ),
           ),
           const Spacer(),
-          txtB(date, 12.sp, textAlign: TextAlign.end),
+          txtB(date, 12.sp, textAlign: TextAlign.end,  color: isRead ? AppColors.txt1.withOpacity(0.5) : AppColors.txt1),
         ],
       ),
     ),
@@ -1149,6 +1155,13 @@ class _SelectFamilyMemberBottomSheetState extends State<SelectFamilyMemberBottom
       filteredList = widget.userFamilyMembers.where((item) =>
           item.nombreCompleto!.toLowerCase().contains(query.toLowerCase())).toList();
     });
+  }
+  void getUnreadItems(String query) {
+    setState(() {
+      filteredList = widget.userFamilyMembers.where((item) =>
+          item.nombreCompleto!.toLowerCase().contains(query.toLowerCase())).toList();
+     }
+    );
   }
   @override
   Widget build(BuildContext context) {

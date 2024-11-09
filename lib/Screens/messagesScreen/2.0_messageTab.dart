@@ -14,8 +14,8 @@ import 'package:flutter_page_lifecycle/flutter_page_lifecycle.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-
 import '../../utility/text_widgets.dart';
+
 class MessageTab extends StatefulWidget {
   final Function(int, {MessageData? message}) onScreenChange;
   const MessageTab({super.key, required this.onScreenChange});
@@ -25,16 +25,15 @@ class MessageTab extends StatefulWidget {
 }
 
 class _MessageTabState extends State<MessageTab> {
-  int unreadMessages = 5; // Example count for unread messages
   String selectedCategory = 'Entrada'; // Default category
   final List<String> categories = ['Entrada', 'Salida','Eliminados', 'No leídos', 'Leídos'];
   bool _isDropdownVisible = false;
   String selectedMsgType = "Entrada";
   late MessageCubit cubit;
   List<Messages> messages = [];
+  List<Messages> sortedMessaages = [];
   List<Messages> filteredMessages = [];
   var searchController = TextEditingController();
-
 
   @override
   void initState() {
@@ -47,13 +46,28 @@ class _MessageTabState extends State<MessageTab> {
 
   void filterItems() {
     setState(() {
-      filteredMessages = messages
+      filteredMessages = sortedMessaages
           .where((item) {
             return (item.asunto ?? "").toLowerCase().contains(searchController.text.toLowerCase()) || (item.remitenteNombre ?? "").toLowerCase().contains(searchController.text.toLowerCase()) ;
-          })
-          .toList();
+          }).toList();
     });
   }
+
+  void getReadItems() {
+      var nm = messages
+          .where((item) {
+        return (item.checkRead());
+      }).toList();
+      cubit.setUnreadReadMessages(nm);
+  }
+  void getUnReadItems() {
+    var nm = messages
+          .where((item) {
+        return (item.checkRead() == false);
+      }).toList();
+    cubit.setUnreadReadMessages(nm);
+  }
+
   @override
   Widget build(BuildContext context) {
     cubit = context.read<MessageCubit>();
@@ -61,7 +75,15 @@ class _MessageTabState extends State<MessageTab> {
       builder: (context, state) {
         if (state is MessageInboxState){
           messages = state.response;
-          filteredMessages = messages;
+          sortedMessaages = state.response;
+          filteredMessages = state.response;
+          selectedMsgType = "Entrada";
+          cubit.getMessageCount(GetMessageListRequest(idColegio: (AppConstant.userLoginResponse!.idColegio!).toString(), cedula: AppConstant.userLoginResponse!.cedula!));
+
+        }
+        if (state is MessageSortState){
+          sortedMessaages = state.response;
+          filteredMessages = state.response;
           cubit.resetState();
         }
         if (state is MessageInboxDataState){
@@ -76,7 +98,6 @@ class _MessageTabState extends State<MessageTab> {
           stateChanged: (bool appeared) {
             if(appeared){
               cubit.fetchInbox(GetMessageListRequest(idColegio: (AppConstant.userLoginResponse!.idColegio!).toString(), cedula: AppConstant.userLoginResponse!.cedula!));
-              cubit.getMessageCount(GetMessageListRequest(idColegio: (AppConstant.userLoginResponse!.idColegio!).toString(), cedula: AppConstant.userLoginResponse!.cedula!));
             }
           },
           child: LoadingOverlay(
@@ -182,10 +203,11 @@ class _MessageTabState extends State<MessageTab> {
                                 child: messageItemWidget(onTap:
                                     (){
                                  // widget.onScreenChange(1);
-                                      cubit.markMessageAsRead(MessageReadRequest(idMensaje: msgs.idmensaje!.toInt()));
+                                      cubit.markMessageAsRead(MessageReadRequest(idMensaje: msgs.idmensaje!.toInt(), idxMaestro: AppConstant.userLoginResponse?.idxMaestro?.toInt() , tipoMaestro: AppConstant.userLoginResponse?.tipoMaestro));
                                       cubit.readInboxMessage(MessageIdRequest(idMensaje: msgs.idmensaje!.toInt().toString()));
                                 },title:msgs.asunto??'',
-                                    description: msgs.remitenteNombre??'',date: AppUtils.getDate(msgs.fechaenvio.toString(),"HH:mm MMM, dd")
+                                    description: msgs.remitenteNombre??'',date: AppUtils.getDate(msgs.fechaenvio.toString(),"HH:mm MMM, dd"),
+                                  isRead: msgs.checkRead()
                                 ),
                               );}
                         ),
@@ -232,12 +254,14 @@ class _MessageTabState extends State<MessageTab> {
                             setState(() {
                               selectedMsgType = "No leídos";
                               _isDropdownVisible = !_isDropdownVisible;
+                              getUnReadItems();
                             });
                           }),
                           msgDropListItemsWidget("Leídos",AppAssets.openInbox,(){
                             setState(() {
                               selectedMsgType = "Leídos";
                               _isDropdownVisible = !_isDropdownVisible;
+                              getReadItems();
                             });
                           }),
 
@@ -250,23 +274,5 @@ class _MessageTabState extends State<MessageTab> {
         );
       },
     );
-  }
-
-  // Function to return icons based on category
-  Widget _getCategoryIcon(String category) {
-    switch (category) {
-      case 'Entrada':
-        return Icon(Icons.inbox, color: Colors.blue);
-      case 'Salida':
-        return Icon(Icons.send, color: Colors.blue);
-      case 'Eliminados':
-        return Icon(Icons.delete, color: Colors.blue);
-      case 'No leídos':
-        return Icon(Icons.markunread, color: Colors.blue);
-      case 'Leídos':
-        return Icon(Icons.read_more, color: Colors.blue);
-      default:
-        return Icon(Icons.mail, color: Colors.blue);
-    }
   }
 }

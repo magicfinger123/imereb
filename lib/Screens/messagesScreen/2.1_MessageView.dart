@@ -1,6 +1,7 @@
 
 
 import 'package:bs_educativo/cubit/Message/message_cubit.dart';
+import 'package:bs_educativo/model/request/MessageIdRequest.dart';
 import 'package:bs_educativo/model/response/message/MessageData.dart';
 import 'package:bs_educativo/model/response/message/MsgAttachment.dart';
 import 'package:bs_educativo/utility/iconsAndImages.dart';
@@ -40,12 +41,6 @@ class _MessageViewState extends State<MessageView> with WidgetsBindingObserver {
     cubit = context.read();
     return BlocBuilder<MessageCubit, MessageState>(
       builder: (context, state) {
-        // if (state is MessageAttachmentState){
-        //   attachment = state.response;
-        //   WidgetsBinding.instance.addPostFrameCallback((_){
-        //     cubit.resetState();
-        //   });
-        // }
         return LoadingOverlay(
           isLoading: state is MessageLoading,
           child: Container(height: 600.h,width: double.infinity,

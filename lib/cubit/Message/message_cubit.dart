@@ -138,7 +138,7 @@ class MessageCubit extends Cubit<MessageState> {
 
   void getMessageCount(GetMessageListRequest request) async {
     try {
-      emit(MessageLoading());
+   //   emit(MessageLoading());
       final response = await repository.getUnreadMessageCount(request);
       if (response is List<MessageCount>) {
         messageCounts = response;
@@ -154,5 +154,8 @@ class MessageCubit extends Cubit<MessageState> {
   }
   void resetState() {
     emit(MessageInitial());
+  }
+  void setUnreadReadMessages(List<Messages> msg){
+    emit(MessageSortState(msg));
   }
 }

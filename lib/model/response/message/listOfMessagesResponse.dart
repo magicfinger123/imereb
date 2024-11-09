@@ -51,5 +51,10 @@ class Messages {
     "estado": estado,
   };
 
-
+  bool checkRead(){
+    if ((estado ?? "").contains("leído")){
+      return true;
+    }
+    return false;
+  }
 }

@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -81,11 +83,27 @@ class AppUtils{
   }
 
 
-
+  static String getLast10Characters(String input) {
+    // Ensure the string has at least 10 characters
+    if (input.length <= 10) {
+      return input; // Return the whole string if it's less than or equal to 10 characters
+    }
+    return input.substring(input.length - 10); // Get the last 10 characters
+  }
   static String getDate(String isoDate, String outFormat) {
     DateTime dateTime = DateTime.parse(isoDate);
     DateFormat formatter = DateFormat(outFormat);
     return formatter.format(dateTime);
+  }
+ static Future<double> getFileSize(File file) async {
+    if (await file.exists()) {
+      final sizeInBytes = await file.length();
+      final sizeInKB = sizeInBytes / 1024;
+       return sizeInKB;
+    } else {
+      print('File does not exist.');
+      return 0.0;
+    }
   }
 // static String? parseHtmlString(String htmlString) {
 //   final document = parse(htmlString);

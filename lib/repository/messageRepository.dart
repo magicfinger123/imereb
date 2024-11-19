@@ -1,16 +1,24 @@
 
 import 'dart:developer';
-
 import 'package:bs_educativo/ApiService/api_url.dart';
+import 'package:bs_educativo/model/request/ContactRequest.dart';
 import 'package:bs_educativo/model/request/MessageIdRequest.dart';
+import 'package:bs_educativo/model/request/SendMessageAttachRequest.dart';
+import 'package:bs_educativo/model/request/SendMessageRequest.dart';
+import 'package:bs_educativo/model/response/message/ArchiveRequest.dart';
+import 'package:bs_educativo/model/response/message/ContactList.dart';
 import 'package:bs_educativo/model/response/message/MessageCount.dart';
 import 'package:bs_educativo/model/response/message/MessageData.dart';
 import 'package:bs_educativo/model/response/message/MsgAttachment.dart';
+import 'package:bs_educativo/model/response/message/SendMessageResponse.dart';
 import 'package:bs_educativo/model/response/message/listOfMessagesResponse.dart';
 import 'package:bs_educativo/repository/repository.dart';
 import 'package:injectable/injectable.dart';
 import '../apiService/api_service.dart';
 import '../model/request/getMsgRequest.dart';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 @Injectable()
 class MessageRepository extends ApiRepository {
@@ -114,6 +122,68 @@ class MessageRepository extends ApiRepository {
     else {
       handleErrorResponse(response);
       return errorResponse!;
+    }
+  }
+  Future<Object> getContacts(ContactRequest request) async {
+    var response = await postRequest(request, AppUrls.getContact, true, HttpMethods.get);
+    if(response is String) {
+      var r = contactFromJson(response);
+      print("contact List: $r");
+      return r;
+    }
+    else {
+      handleErrorResponse(response);
+      return errorResponse!;
+    }
+  }
+  Future<Object> sendMessage(SendMessageRequest request) async {
+    var response = await postRequest(request, AppUrls.postSendMessage, true, HttpMethods.post);
+    if(response is String) {
+      var r = sendMessageResponseFromJson(response);
+      print("send message response: $r");
+      return r;
+    }
+    else {
+      handleErrorResponse(response);
+      return errorResponse!;
+    }
+  }
+  Future<Object> postArchive(ArchiveRequest request) async {
+    var response = await postRequest(request, AppUrls.postArchiveImage, true, HttpMethods.post);
+    if(response is String) {
+      return response;
+    }
+    else {
+      handleErrorResponse(response);
+      return errorResponse!;
+    }
+  }
+  Future<Object> postSendArchive(SentMsgArchiveRequest request) async {
+    var response = await postRequest(request, AppUrls.sendArchive, true, HttpMethods.post);
+    if(response is String) {
+      var r = sendMessageResponseFromJson(response);
+      print("send message response: $r");
+      return r;
+    }
+    else {
+      handleErrorResponse(response);
+      return errorResponse!;
+    }
+  }
+  Future<bool> downloadFile(String url, String fileName) async {
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final directory = await getApplicationDocumentsDirectory();
+        final filePath = '${directory.path}/$fileName';
+        final file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes);
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
     }
   }
 }

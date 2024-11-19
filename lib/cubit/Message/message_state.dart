@@ -62,6 +62,39 @@ class MessageAttachmentState extends MessageState {
   @override
   List<Object> get props => [response];
 }
+
+class MessageContactState extends MessageState {
+  final List<Contact> response;
+  const MessageContactState(this.response);
+  @override
+  List<Object> get props => [response];
+}
+class MessageSentState extends MessageState {
+  final SendMessageResponse response;
+  const MessageSentState(this.response);
+  @override
+  List<Object> get props => [response];
+}
+class MessageSentAttachState extends MessageState {
+  final SendMessageResponse response;
+  const MessageSentAttachState(this.response);
+  @override
+  List<Object> get props => [response];
+}
+
+class AttachmentDownloadedState extends MessageState {
+  final bool response;
+  const AttachmentDownloadedState(this.response);
+  @override
+  List<Object> get props => [response];
+}
+
+class ArchiveState extends MessageState {
+  final String response;
+  const ArchiveState(this.response);
+  @override
+  List<Object> get props => [response];
+}
 class MessageErrorState extends MessageState {
   @override
   List<Object> get props => [];

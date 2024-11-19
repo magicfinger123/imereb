@@ -11,6 +11,10 @@ class AppUrls {
   static const deleteSentMessages = '$baseUrl/pew_api/api/eliminarmensajesalida';
   static const getMessageAttachment = '$baseUrl/pew_api/api/getmsgattach';
   static const getUnreadCount = '$baseUrl/pew_api/api/newmessagecount';
+  static const postSendMessage = '$baseUrl/pew_api/api/enviarmensaje';
+  static const postArchiveImage = '$baseUrl/pew_api/api/subirarchivo';
+  static const getContact = '$baseUrl/pew_api/api/allContacts';
+  static const sendArchive = '$baseUrl/pew_api/api/sentmsgattach';
 
   static const getDocuments = '$baseUrl/pew_api/api/documents';
   static const getAgenda = '$baseUrl/pew_api/api/agenda';

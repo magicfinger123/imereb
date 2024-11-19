@@ -57,6 +57,7 @@ class MyApp extends StatelessWidget {
           splitScreenMode: false,
           builder: (context, child) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             title: 'Bs Educativo',
             home: splashScreen(),
           );

@@ -6,6 +6,8 @@ import 'package:bs_educativo/model/request/ContactRequest.dart';
 import 'package:bs_educativo/model/request/SendMessageRequest.dart';
 import 'package:bs_educativo/model/response/message/ArchiveRequest.dart';
 import 'package:bs_educativo/model/response/message/ContactList.dart';
+import 'package:bs_educativo/model/response/message/MessageData.dart';
+import 'package:bs_educativo/model/response/message/MsgAttachment.dart';
 import 'package:bs_educativo/utility/AppConstant.dart';
 import 'package:bs_educativo/utility/app_util.dart';
 import 'package:bs_educativo/utility/iconsAndImages.dart';
@@ -22,23 +24,26 @@ import '../../utility/widgets.dart';
 import 'package:path/path.dart' as path;
 
 
-class ComposeMessageView extends StatefulWidget {
+class ReplyMessageView extends StatefulWidget {
   final Function(int) onScreenChange;
   final ValueChanged<SendMessageRequest> onSelectionChanged;
-  const ComposeMessageView({super.key, required this.onScreenChange, required this.onSelectionChanged});
-
+  final MessageData? messageData;
+  final List<MsgAttachment> attachment;
+  const ReplyMessageView({super.key, required this.onScreenChange, required this.onSelectionChanged, required this.messageData, required this.attachment});
   @override
-  State<ComposeMessageView> createState() => _ComposeMessageViewState();
+  State<ReplyMessageView> createState() => _ReplyMessageViewState();
 }
 
-class _ComposeMessageViewState extends State<ComposeMessageView> {
+class _ReplyMessageViewState extends State<ReplyMessageView> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController msgController = TextEditingController();
+  TextEditingController msg2Controller = TextEditingController();
   late MessageCubit cubit;
   List<Contact> contacts = [];
   Map<String, String> selectedContact = {};
   Map<String, String> selectedCCContact = {};
   Map<String, String> selectedCCOContact = {};
+
   File? file;
   double fileSize = 0.0;
   String imageUploaded = "";
@@ -46,6 +51,7 @@ class _ComposeMessageViewState extends State<ComposeMessageView> {
   @override
   void initState() {
     super.initState();
+    // widget.onSendMessage {sendMessage();}
   }
 
   @override
@@ -62,11 +68,17 @@ class _ComposeMessageViewState extends State<ComposeMessageView> {
         return PageLifecycle(
           stateChanged: (bool appeared) {
             if (appeared) {
+              if (descriptionController.text.isEmpty) {
+                descriptionController.text = widget.messageData?.asunto ?? "";
+                msg2Controller.text =
+                    "\n\n______\n${widget.messageData?.contenido}" ?? "";
+              }
               cubit.getContacts(ContactRequest(
                   idxMaestro: AppConstant.userLoginResponse?.idxMaestro
                       ?.toInt(),
                   idcolegio: AppConstant.userLoginResponse?.idColegio,
                   tipoMaestro: AppConstant.userLoginResponse?.tipoMaestro));
+              buildSendMessageRequest();
             }
           },
           child: LoadingOverlay(
@@ -98,10 +110,10 @@ class _ComposeMessageViewState extends State<ComposeMessageView> {
                         gapH(10.h),
                         SizedBox(width: double.infinity, height: 30.h,
                           child: TextField(
-                            onChanged: (value){
-                              descriptionController.text = value;
-                              buildSendMessageRequest();
-                            },
+                              onChanged: (value){
+                                descriptionController.text = value;
+                                buildSendMessageRequest();
+                              },
                               controller: descriptionController,
                               style: GoogleFonts.inter(
                                 color: AppColors.txt1,
@@ -141,26 +153,23 @@ class _ComposeMessageViewState extends State<ComposeMessageView> {
                         ),
                         gapH(10.h),
                         threeOptionWidget(
-                            title: "Para: ", content: selectedContact.isEmpty == false ? selectedContact['name'] ?? "" : "",
+                            title: "Para: ", content: selectedContact.isEmpty == false ? "${widget.messageData?.desNombre}, ${selectedContact['name'] ?? ""}" : "${widget.messageData?.desNombre}",
                             onTap: () async{
-                            showUserSelectionDialog(context, contacts, 1);
-
+                              showUserSelectionDialog(context, contacts, 1);
                             }
                         ),
                         gapH(3.h),
                         threeOptionWidget(
-                            title: "CC: ", content: selectedCCContact.isEmpty == false ? selectedCCContact['name'] ?? "" : "",
+                            title: "CC: ", content: selectedCCContact.isEmpty == false ? "${widget.messageData?.desNombreCc}, ${selectedCCContact['name'] ?? ""}" : "${widget.messageData?.desNombreCc}",
                             onTap: () async{
-                             showUserSelectionDialog(context, contacts, 2);
-
+                              showUserSelectionDialog(context, contacts, 2);
                             }
                         ),
                         gapH(3.h),
                         threeOptionWidget(
-                            title: "CC0: ",content: selectedCCOContact.isEmpty == false ? selectedCCOContact['name'] ?? "" : "",
+                            title: "CC0: ",content: selectedCCOContact.isEmpty == false ? "${widget.messageData?.desNombreCco}, ${selectedCCOContact['name'] ?? ""}" : "${widget.messageData?.desNombreCco}",
                             onTap: () async {
-                             showUserSelectionDialog(context, contacts, 3);
-
+                              showUserSelectionDialog(context, contacts, 3);
                             }
                         ),
                       ],),
@@ -177,32 +186,65 @@ class _ComposeMessageViewState extends State<ComposeMessageView> {
                         borderRadius: BorderRadius.circular(6.r),
                         color: AppColors.bgDc,
                       ),
-                      child: TextField(
-                        onChanged: (value){
-                          msgController.text = value;
-                          buildSendMessageRequest();
-                        },
-                        controller: msgController,
-                        maxLines: null,
-                        style: GoogleFonts.inter(
-                          color: AppColors.black,
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        cursorHeight: 14.h,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              onChanged: (value){
+                                msgController.text = value;
+                                buildSendMessageRequest();
+                              },
+                              controller: msgController,
+                              maxLines: null,
+                              style: GoogleFonts.inter(
+                                color: AppColors.black,
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              cursorHeight: 14.h,
 
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(
-                              bottom: 5.h, top: 5.h, left: 5.w, right: 5.w),
-                          border: InputBorder.none,
-                          hintMaxLines: null,
-                          hintText: "Escribir Mensaje",
-                          hintStyle: GoogleFonts.inter(
-                            color: AppColors.txt1,
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.w400,
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                    bottom: 5.h, top: 5.h, left: 5.w, right: 5.w),
+                                border: InputBorder.none,
+                                hintMaxLines: null,
+                                hintText: "Escribir Mensaje",
+                                hintStyle: GoogleFonts.inter(
+                                  color: AppColors.txt1,
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                          SizedBox(
+                            height: 200,
+                            child: TextField(
+                              enabled: false,
+                              controller: msg2Controller,
+                              maxLines: null,
+                              style: GoogleFonts.inter(
+                                color: AppColors.black,
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              cursorHeight: 14.h,
+
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                    bottom: 5.h, top: 5.h, left: 5.w, right: 5.w),
+                                border: InputBorder.none,
+                                hintMaxLines: null,
+                                hintText: "Escribir Mensaje",
+                                hintStyle: GoogleFonts.inter(
+                                  color: AppColors.txt1,
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     gapH(3.h),
@@ -248,9 +290,10 @@ class _ComposeMessageViewState extends State<ComposeMessageView> {
     ],);
   }
 
-void showUserSelectionDialog(BuildContext context,
-    List<Contact> contacts, int type)  {
+  void showUserSelectionDialog(BuildContext context,
+      List<Contact> contacts, int type)  {
     Set<Contact> selectedContacts = {};
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -302,20 +345,20 @@ void showUserSelectionDialog(BuildContext context,
                         onSelectionChanged: (selection) {
                           selectedContacts = selection;
                           setState(() {
-                          switch (type){
-                            case 1:
-                              selectedContact =
-                                  Contact.appendAllNombrecontactoAndCodigoContacto(selectedContacts.toList());
-                            case 2:
-                              selectedCCContact =
-                                  Contact.appendAllNombrecontactoAndCodigoContacto(selectedContacts.toList());
-                            case 3:
-                              selectedCCOContact =
-                                  Contact.appendAllNombrecontactoAndCodigoContacto(selectedContacts.toList());
+                            switch (type){
+                              case 1:
+                                selectedContact =
+                                    Contact.appendAllNombrecontactoAndCodigoContacto(selectedContacts.toList());
+                              case 2:
+                                selectedCCContact =
+                                    Contact.appendAllNombrecontactoAndCodigoContacto(selectedContacts.toList());
+                              case 3:
+                                selectedCCOContact =
+                                    Contact.appendAllNombrecontactoAndCodigoContacto(selectedContacts.toList());
                             }
-                           buildSendMessageRequest();
+                            buildSendMessageRequest();
                           });
-                        //  cubit.resetState();
+                          //  cubit.resetState();
                           // Update selection
                         },
                       );
@@ -330,18 +373,18 @@ void showUserSelectionDialog(BuildContext context,
     );
   }
 
-  void buildSendMessageRequest() async{
+  void buildSendMessageRequest() {
     var request = SendMessageRequest(
         idColegio: AppConstant.userLoginResponse!.idColegio!,
         remidxMaestro:  AppConstant.userLoginResponse!.idxMaestro!.toInt(),
         remTipoMaestro:  AppConstant.userLoginResponse!.tipoMaestro!,
         remCedula:  AppConstant.userLoginResponse!.cedula!,
         remNombre:  AppConstant.userLoginResponse!.nombre!,
-        respondeAidxMsg: 0,
-        desidxMaestro: selectedContact['id'] ?? "",
-        desNombre: selectedContact['name'] ?? "",
-        desidxMaestroCc: selectedCCContact['id'] ?? "",
-        desNombreCc: selectedCCContact['name'] ?? "",
+        respondeAidxMsg: widget.messageData!.idxMensaje!.toInt(),
+        desidxMaestro: selectedContact.isEmpty == false ? "${widget.messageData?.desidxMaestro},${selectedContact['id'] ?? ""}" : "${widget.messageData?.desidxMaestro}",
+        desNombre: selectedContact.isEmpty == false ? "${widget.messageData?.desNombre},${selectedContact['id'] ?? ""}" : "${widget.messageData?.desNombre}",
+        desidxMaestroCc: selectedCCContact.isEmpty == false ? "${widget.messageData?.desidxMaestroCc},${selectedCCContact['id'] ?? ""}" : "${widget.messageData?.desidxMaestroCc}",
+        desNombreCc: selectedCCContact.isEmpty == false ? "${widget.messageData?.desNombreCc}, ${selectedCCContact['name'] ?? ""}" : "${widget.messageData?.desNombreCc}",
         asunto: descriptionController.text,
         contenido: msgController.text,
         urgente: false,
@@ -350,18 +393,19 @@ void showUserSelectionDialog(BuildContext context,
         importante: false,
         paraApps: false,
         background: "",
-        desidxMaestroCco: selectedCCOContact['id'] ?? "",
-        desNombreCco: selectedCCOContact['name'] ?? "",
+        desidxMaestroCco: selectedCCOContact.isEmpty == false ? "${widget.messageData?.desIdxMaestroCco}, ${selectedCCOContact['id'] ?? ""}" : "${widget.messageData?.desIdxMaestroCco}",
+        desNombreCco: selectedCCOContact.isEmpty == false ? "${widget.messageData?.desNombreCco}, ${selectedCCOContact['name'] ?? ""}" : "${widget.messageData?.desNombreCco}",
         fileName: AppUtils.getLast10Characters(path.basename(file?.path ?? "")),
-        fileSize: fileSize.toString());
+        fileSize: fileSize.toString()
+    );
     widget.onSelectionChanged(request);
   }
   filePicker() async {
     print("file picker");
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
+        type: FileType.image,
         allowCompression: true,
-      compressionQuality: 50
+        compressionQuality: 50
     );
     if (result != null) {
       file = File(result.files.single.path ?? "");
@@ -382,6 +426,7 @@ void showUserSelectionDialog(BuildContext context,
       return '';
     }
   }
+
   void _uploadFile() async {
     String base64 = await fileToBase64(file!);
     buildSendMessageRequest();

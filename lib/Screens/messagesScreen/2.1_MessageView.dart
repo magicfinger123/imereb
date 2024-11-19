@@ -1,9 +1,7 @@
-
-
 import 'package:bs_educativo/cubit/Message/message_cubit.dart';
-import 'package:bs_educativo/model/request/MessageIdRequest.dart';
 import 'package:bs_educativo/model/response/message/MessageData.dart';
 import 'package:bs_educativo/model/response/message/MsgAttachment.dart';
+import 'package:bs_educativo/utility/app_util.dart';
 import 'package:bs_educativo/utility/iconsAndImages.dart';
 import 'package:bs_educativo/utility/text_widgets.dart';
 import 'package:bs_educativo/utility/widgets.dart';
@@ -14,6 +12,9 @@ import 'package:loading_overlay/loading_overlay.dart';
 import '../../utility/colors.dart';
 import 'package:html/parser.dart' as html_parser;
 import 'package:html/dom.dart' as dom;
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 
 class MessageView extends StatefulWidget {
@@ -41,6 +42,16 @@ class _MessageViewState extends State<MessageView> with WidgetsBindingObserver {
     cubit = context.read();
     return BlocBuilder<MessageCubit, MessageState>(
       builder: (context, state) {
+        if (state is AttachmentDownloadedState){
+          WidgetsBinding.instance.addPostFrameCallback((_){
+            if (state.response == true){
+              AppUtils.showSuccessSnack("Attachment saved to files", context);
+            }else{
+              AppUtils.showErrSnack("Unable to save attachment", context);
+            }
+            cubit.resetState();
+          });
+        }
         return LoadingOverlay(
           isLoading: state is MessageLoading,
           child: Container(height: 600.h,width: double.infinity,
@@ -58,10 +69,21 @@ class _MessageViewState extends State<MessageView> with WidgetsBindingObserver {
                 copiedAddresses: widget.messageData?.desNombreCc ?? "",
                 message: widget.messageData?.contenido ?? "",
                 fileTitle: widget.attachment.isEmpty ? "" : widget.attachment[0].fileName ?? "",
-                replyAllTap: (){},
-                replyLeftTap: (){},
-                replyRightTap: (){},
-                fileTap: (){},
+                replyAllTap: (){
+                  widget.onScreenChange(3);
+                },
+                replyLeftTap: (){
+                  widget.onScreenChange(3);
+                },
+                replyRightTap: (){
+                  widget.onScreenChange(3);
+                },
+                fileTap: (){
+                  if(widget.attachment.isNotEmpty){
+                    cubit.downloadAttachment(widget.attachment[0].url ?? "", widget.attachment[0].fileName ?? "");
+                  }
+                  AppUtils.showSuccessSnack("Descargando archivo adjunto", context);
+                },
               ),
             ),
           ),
@@ -150,5 +172,25 @@ class _MessageViewState extends State<MessageView> with WidgetsBindingObserver {
   String parseHtmlString(String htmlString) {
     dom.Document document = html_parser.parse(htmlString);
     return document.body?.text ?? ''; // Extracts text content
+  }
+
+  Future<void> downloadFile(String url, String fileName) async {
+    try {
+      // Send HTTP GET request to the URL
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        // Get the directory to save the file
+        final directory = await getApplicationDocumentsDirectory();
+        final filePath = '${directory.path}/$fileName';
+        // Save the file
+        final file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes);
+        print('File downloaded and saved to $filePath');
+      } else {
+        print('Failed to download file: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error downloading file: $e');
+    }
   }
 }

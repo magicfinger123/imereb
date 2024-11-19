@@ -36,6 +36,8 @@ class LoginResponse {
   int? loginXFamilia;
   String? imagenUrl;
   String? tokenapp;
+  String? grupo;
+  String? consejero;
 
   LoginResponse({
     this.usuario,
@@ -65,6 +67,8 @@ class LoginResponse {
     this.loginXFamilia,
     this.imagenUrl,
     this.tokenapp,
+    this.grupo,
+    this.consejero,
   });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
@@ -95,6 +99,8 @@ class LoginResponse {
     loginXFamilia: json["LoginXFamilia"],
     imagenUrl: json["imagenUrl"],
     tokenapp: json["tokenapp"],
+    consejero: json["Consejero"],
+    grupo: json["Grupo"],
   );
 
   Map<String, dynamic> toJson() => {

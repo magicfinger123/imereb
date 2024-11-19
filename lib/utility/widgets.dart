@@ -1,6 +1,7 @@
 import 'package:bs_educativo/model/response/Alert/Alert.dart';
 import 'package:bs_educativo/model/response/EC/PaymentData.dart';
 import 'package:bs_educativo/model/response/meet/MeetEliglibleList.dart';
+import 'package:bs_educativo/model/response/message/ContactList.dart';
 import 'package:bs_educativo/utility/app_util.dart';
 import 'package:bs_educativo/utility/text_widgets.dart';
 import 'package:flutter/material.dart';
@@ -539,14 +540,13 @@ class _MenuDesignState extends State<MenuDesign> {
                     Row(
                       children: [
                         txtR("Grupo: ", 15.sp, weight: FontWeight.w600),
-                        txtR(AppConstant.userLoginResponse?.grupoUsuario.toString(), 15.sp)
+                        txtR(AppConstant.userLoginResponse?.grupo.toString(), 15.sp)
                       ],
                     ),
                     Row(
                       children: [
                         txtR("Consejero: ", 15.sp, weight: FontWeight.w600),
-                        txtR("N/A", 15.sp)
-                        // txtR(AppConstant.userLoginResponse?.aviso ?? "", 15.sp)
+                        txtR(AppConstant.userLoginResponse?.consejero.toString(), 15.sp)
                       ],
                     ),
                   ],
@@ -888,6 +888,7 @@ class CollapsibleCategoryWidget extends StatefulWidget {
   _CollapsibleCategoryWidgetState createState() => _CollapsibleCategoryWidgetState();
 }
 
+
 class _CollapsibleCategoryWidgetState extends State<CollapsibleCategoryWidget> {
   bool _isExpanded = false;
   List<bool> _selectedUsers = [];
@@ -1000,6 +1001,282 @@ class _CollapsibleCategoryWidgetState extends State<CollapsibleCategoryWidget> {
   }
 }
 
+
+// class CollapsibleContactWidget extends StatefulWidget {
+//   final GroupCroupContact contact;
+//
+//   const CollapsibleContactWidget({required this.contact});
+//
+//   @override
+//   _CollapsibleContactWidgetState createState() => _CollapsibleContactWidgetState();
+// }
+//
+// class _CollapsibleContactWidgetState extends State<CollapsibleContactWidget> {
+//   bool _isExpanded = false;
+//   List<bool> _selectedUsers = [];
+//   Set<Contact> selectionList = {};
+//   @override
+//   void initState() {
+//     super.initState();
+//     _selectedUsers = List<bool>.filled(widget.contact.list.length, false);
+//   }
+//   @override
+//   Widget build(BuildContext context) {
+//     return
+//       Container(
+//         margin: EdgeInsets.only(bottom: 30.h),
+//         padding: EdgeInsets.symmetric(horizontal: 13.w,vertical: 13.h),
+//         decoration: BoxDecoration(
+//           border: Border.all(color: AppColors.blueBa, width: 2.5.r),
+//           borderRadius: BorderRadius.circular(6.3.r),
+//           color: AppColors.bgDc,
+//           boxShadow: [
+//             BoxShadow(
+//               color: AppColors.black.withOpacity(0.25),
+//               spreadRadius: 0,
+//               blurRadius: 4.h,
+//               offset: Offset(0, 4.h),
+//             )
+//           ],
+//         ),
+//         child: Column(
+//           children: [
+//             GestureDetector(
+//               onTap: () {
+//                 setState(() {
+//                   _isExpanded = !_isExpanded;
+//                 });
+//               },
+//               child: Row(
+//                 crossAxisAlignment: CrossAxisAlignment.center,
+//                 children: [
+//                   Text(widget.contact.name ?? "", style: TextStyle(fontWeight: FontWeight.bold)),
+//                   const Spacer(),
+//                   Icon(
+//                     _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+//                     color: AppColors.blueBa,
+//                     size: 30.r,
+//                   )
+//                 ],
+//               ),
+//             ),
+//             if (_isExpanded)
+//               Container(
+//                 constraints: BoxConstraints(maxHeight: 150.h),
+//                 child: ListView.builder(
+//                   padding: EdgeInsets.symmetric(vertical: 10.h),
+//                   //shrinkWrap: true,
+//                   //physics: NeverScrollableScrollPhysics(),
+//                   itemCount: widget.contact.list.length,
+//                   itemBuilder: (context, index) {
+//                     return InkWell(
+//                       onTap: () {
+//                         setState(() {
+//                           _selectedUsers[index] = !_selectedUsers[index];
+//                           if (_selectedUsers[index]) {
+//                             selectionList.add(widget.contact.list[index]);
+//                           } else {
+//                             selectionList.remove(widget.contact.list[index]);
+//                           }
+//                           //  Navigator.pop(context, widget.contact.list[index]);
+//                         });
+//                       },
+//                       child: _selectUserWidget(
+//                         userName: widget.contact.list[index].nombrecontacto ?? "",
+//                         isSelected: _selectedUsers[index], onTap: () {  },
+//
+//                       ),
+//                     );
+//                   },
+//                 ),
+//               ),
+//           ],
+//         ),
+//       );
+//   }
+//
+//   Widget _selectUserWidget({required String userName, required bool isSelected, required VoidCallback onTap}) {
+//     return GestureDetector(
+//       onTap: onTap,
+//       child: Container(margin: EdgeInsets.only(bottom: 10.h),
+//         child: Row(crossAxisAlignment: CrossAxisAlignment.center,
+//           children: [
+//             Image.asset(AppAssets.profile,width: 20.h,height: 20.h,fit: BoxFit.contain,), // Replace with your custom asset
+//             gapW(10.w),
+//             Expanded(child: txtR(userName,15.sp, weight: FontWeight.w400)),
+//             Container(
+//               width: 15.w,
+//               height: 15.w,
+//               decoration: BoxDecoration(
+//                 shape: BoxShape.circle,
+//                 border: Border.all(color: AppColors.black, width: 1.5.r),
+//               ),
+//               child: isSelected
+//                   ? Center(
+//                 child: Container(
+//                   width: 7.w,
+//                   height: 7.w,
+//                   decoration: BoxDecoration(
+//                     shape: BoxShape.circle,
+//                     color: AppColors.black,
+//                   ),
+//                 ),
+//               )
+//                   : const SizedBox(),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+class CollapsibleContactWidget extends StatefulWidget {
+  final GroupCroupContact contact;
+  final ValueChanged<Set<Contact>> onSelectionChanged;
+
+  const CollapsibleContactWidget({
+    required this.contact,
+    required this.onSelectionChanged,
+  });
+
+  @override
+  _CollapsibleContactWidgetState createState() =>
+      _CollapsibleContactWidgetState();
+}
+
+class _CollapsibleContactWidgetState extends State<CollapsibleContactWidget> {
+  bool _isExpanded = false;
+  List<bool> _selectedUsers = [];
+  Set<Contact> selectionList = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedUsers = List<bool>.filled(widget.contact.list.length, false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 30.h),
+      padding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 13.h),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.blueBa, width: 2.5.r),
+        borderRadius: BorderRadius.circular(6.3.r),
+        color: AppColors.bgDc,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.black.withOpacity(0.25),
+            spreadRadius: 0,
+            blurRadius: 4.h,
+            offset: Offset(0, 4.h),
+          )
+        ],
+      ),
+      child: Column(
+        children: [
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _isExpanded = !_isExpanded;
+              });
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  widget.contact.name ?? "",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const Spacer(),
+                Icon(
+                  _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                  color: AppColors.blueBa,
+                  size: 30.r,
+                ),
+              ],
+            ),
+          ),
+          if (_isExpanded)
+            Container(
+              constraints: BoxConstraints(maxHeight: 150.h),
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(vertical: 10.h),
+                itemCount: widget.contact.list.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    child: _selectUserWidget(
+                      userName: widget.contact.list[index].nombrecontacto ?? "",
+                      isSelected: _selectedUsers[index],
+                      onTap: () {
+                        setState(() {
+                          _selectedUsers[index] = !_selectedUsers[index];
+                          if (_selectedUsers[index]) {
+                            selectionList.add(widget.contact.list[index]);
+                          } else {
+                            selectionList.remove(widget.contact.list[index]);
+                          }
+                          widget.onSelectionChanged(selectionList); // Notify parent
+                        });
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _selectUserWidget({
+    required String userName,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.only(bottom: 10.h),
+        height: 40.h,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              AppAssets.profile,
+              width: 20.h,
+              height: 20.h,
+              fit: BoxFit.contain,
+            ),
+            gapW(10.w),
+            Expanded(child: txtR(userName, 15.sp, weight: FontWeight.w400)),
+            Container(
+              width: 15.w,
+              height: 15.w,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: AppColors.black, width: 1.5.r),
+              ),
+              child: isSelected
+                  ? Center(
+                child: Container(
+                  width: 7.w,
+                  height: 7.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.black,
+                  ),
+                ),
+              )
+                  : const SizedBox(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 Row reToWidget({required String recipientName,required Function()addTap,required Function()refreshTap}) {
   return Row(children: [
     txtB("Solicitar a: ",17.sp,weight: FontWeight.w700),

@@ -144,7 +144,7 @@ Container topLogoAndTxt2() {
     child: Column(
       children: [
         Image.asset(
-          AppAssets.logoSmall,
+          AppAssets.logo1,
           width: 150.w,
           height: 100.h,
           fit: BoxFit.cover,
@@ -447,7 +447,7 @@ class MenuDesign extends StatefulWidget {
     required this.group,
     required this.counselor,
     required this.selectUserTap,
-    this.isBiosLogo = true,
+    this.isBiosLogo = false,
     required this.institution,
     this.isAdmin = false,
     this.userName = "",

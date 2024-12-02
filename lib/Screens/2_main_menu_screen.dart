@@ -152,7 +152,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
             ),),
           ),
         ),
-        isBiosLogo: true,
+        isBiosLogo: false,
       ),);
   }
 

@@ -45,9 +45,9 @@ class _MessageViewState extends State<MessageView> with WidgetsBindingObserver {
         if (state is AttachmentDownloadedState){
           WidgetsBinding.instance.addPostFrameCallback((_){
             if (state.response == true){
-              AppUtils.showSuccessSnack("Attachment saved to files", context);
+              AppUtils.showSuccessSnack("Archivo adjunto guardado en archivos", context);
             }else{
-              AppUtils.showErrSnack("Unable to save attachment", context);
+              AppUtils.showErrSnack("No se puede guardar el archivo adjunto", context);
             }
             cubit.resetState();
           });

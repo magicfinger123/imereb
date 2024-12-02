@@ -2,7 +2,7 @@ import 'dart:convert';
 RequestAppointment requestAppointmentFromJson(String str) => RequestAppointment.fromJson(json.decode(str));
 String requestAppointmentToJson(RequestAppointment data) => json.encode(data.toJson());
 class RequestAppointment {
-  int idxCita;
+  int? idxCita;
   int idxMaestro;
   String fecha;
   int hora;
@@ -15,7 +15,7 @@ class RequestAppointment {
   bool zoom;
   String zoomurl;
   RequestAppointment({
-    required this.idxCita,
+     this.idxCita,
     required this.idxMaestro,
     required this.fecha,
     required this.hora,
@@ -43,7 +43,7 @@ class RequestAppointment {
     zoomurl: json["zoomurl"],
   );
   Map<String, dynamic> toJson() => {
-    "idxCita": idxCita,
+   // "idxCita": idxCita,
     "idxMaestro": idxMaestro,
     "fecha": fecha,
     "hora": hora,

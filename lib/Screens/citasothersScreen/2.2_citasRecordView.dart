@@ -4,6 +4,7 @@ import 'package:bs_educativo/utility/AppConstant.dart';
 import 'package:bs_educativo/utility/demoInfos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_page_lifecycle/flutter_page_lifecycle.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:popover/popover.dart';
@@ -27,9 +28,6 @@ class _CitasRecordViewState extends State<CitasRecordView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      cubit.fetchMeetRecords(MeetRequest(idxEstudiante: AppConstant.selectedMember?.idxEstudiante ?? 0, idColegio: AppConstant.userLoginResponse?.idColegio ));
-    });
   }
 
 
@@ -38,44 +36,52 @@ class _CitasRecordViewState extends State<CitasRecordView> {
     cubit = context.read<MeetCubit>();
     return  BlocBuilder<MeetCubit, MeetState>(
       builder: (context, state) {
-        return LoadingOverlay(
-          isLoading: state is MeetLoadingState,
-          child: Container(
-            child: ListView.builder(
-                padding: EdgeInsets.symmetric(vertical: 20.h),
-                itemCount: cubit.meetRecords.length,
-                itemBuilder: (context, index) {
-                  final user = cubit.meetRecords[index];
+        return PageLifecycle(
 
-                  return GestureDetector(
-                    onTap: () {
-                      // showPopover(
-                      //     context: context,
-                      //     bodyBuilder: (context) =>
-                      //         commentPopWidget(
-                      //             title: "title",
-                      //             date: "date",
-                      //             comment: "comment"
-                      //         ),
-                      //
-                      //     // onPop: () => print('Popover was popped!'),
-                      //     direction: PopoverDirection.left,
-                      //     width: 254.w,
-                      //     height: 170.h,
-                      //     arrowHeight: 10.h,
-                      //     arrowWidth: 12.w,
-                      //     radius: 20.r,
-                      //     barrierColor: Colors.transparent,
-                      // );
-                    },
-                    child: statusWidget(
-                        title: user.nombre ?? "",
-                        date: user.fecha.toString(),
-                        color: (user.aprobada ?? false) ? Color(0xFF92AE79) :
-                        user.cancelada == false ? Color(0xFFFFFF00): Color(0xFF950707).withOpacity(0.47)
-                    ),
-                  );
-                }
+          stateChanged: (bool appeared) {
+            if (appeared){
+              cubit.fetchMeetRecords(MeetRequest(idxEstudiante: AppConstant.selectedMember?.idxEstudiante ?? 0, idColegio: AppConstant.userLoginResponse?.idColegio ));
+            }
+          },
+          child: LoadingOverlay(
+            isLoading: state is MeetLoadingState,
+            child: Container(
+              child: ListView.builder(
+                  padding: EdgeInsets.symmetric(vertical: 20.h),
+                  itemCount: cubit.meetRecords.length,
+                  itemBuilder: (context, index) {
+                    final user = cubit.meetRecords[index];
+
+                    return GestureDetector(
+                      onTap: () {
+                        // showPopover(
+                        //     context: context,
+                        //     bodyBuilder: (context) =>
+                        //         commentPopWidget(
+                        //             title: "title",
+                        //             date: "date",
+                        //             comment: "comment"
+                        //         ),
+                        //
+                        //     // onPop: () => print('Popover was popped!'),
+                        //     direction: PopoverDirection.left,
+                        //     width: 254.w,
+                        //     height: 170.h,
+                        //     arrowHeight: 10.h,
+                        //     arrowWidth: 12.w,
+                        //     radius: 20.r,
+                        //     barrierColor: Colors.transparent,
+                        // );
+                      },
+                      child: statusWidget(
+                          title: user.nombre ?? "",
+                          date: user.fecha.toString(),
+                          color: (user.aprobada ?? false) ? Color(0xFF92AE79) :
+                          user.cancelada == false ? Color(0xFFFFFF00): Color(0xFF950707).withOpacity(0.47)
+                      ),
+                    );
+                  }
+              ),
             ),
           ),
         );

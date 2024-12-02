@@ -77,9 +77,24 @@ class _MessageTabState extends State<MessageTab> {
           messages = state.response;
           sortedMessaages = state.response;
           filteredMessages = state.response;
-          selectedMsgType = "Entrada";
+        //  selectedMsgType = "Entrada";
+          if (selectedMsgType == "Leídos" ){
+            getReadItems();
+          }
+          if (selectedMsgType == "No leídos" ){
+            getUnReadItems();
+          }
+          // switch (selectedMsgType) {
+          //   case "Leídos":
+          //     getReadItems();
+          //     break;
+          //   case "No leídos":
+          //     getUnReadItems();
+          //     break;
+          //   default:
+          //     break;
+          // }
           cubit.getMessageCount(GetMessageListRequest(idColegio: (AppConstant.userLoginResponse!.idColegio!).toString(), cedula: AppConstant.userLoginResponse!.cedula!));
-
         }
         if (state is MessageSortState){
           sortedMessaages = state.response;
@@ -97,6 +112,7 @@ class _MessageTabState extends State<MessageTab> {
         return PageLifecycle(
           stateChanged: (bool appeared) {
             if(appeared){
+              selectedMsgType = "Entrada";
               cubit.fetchInbox(GetMessageListRequest(idColegio: (AppConstant.userLoginResponse!.idColegio!).toString(), cedula: AppConstant.userLoginResponse!.cedula!));
             }
           },
@@ -254,14 +270,15 @@ class _MessageTabState extends State<MessageTab> {
                             setState(() {
                               selectedMsgType = "No leídos";
                               _isDropdownVisible = !_isDropdownVisible;
-                              getUnReadItems();
+                              cubit.fetchInbox(GetMessageListRequest(idColegio: (AppConstant.userLoginResponse!.idColegio!).toString(), cedula: AppConstant.userLoginResponse!.cedula!));
+
                             });
                           }),
                           msgDropListItemsWidget("Leídos",AppAssets.openInbox,(){
                             setState(() {
                               selectedMsgType = "Leídos";
                               _isDropdownVisible = !_isDropdownVisible;
-                              getReadItems();
+                              cubit.fetchInbox(GetMessageListRequest(idColegio: (AppConstant.userLoginResponse!.idColegio!).toString(), cedula: AppConstant.userLoginResponse!.cedula!));
                             });
                           }),
 

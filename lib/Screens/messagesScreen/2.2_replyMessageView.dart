@@ -260,7 +260,7 @@ class _ReplyMessageViewState extends State<ReplyMessageView> {
                             filePicker();
                           },
                               child: SizedBox(child: txtB(
-                                  file != null ? AppUtils.getLast10Characters(path.basename(file!.path)) : "Cargar archivo adjunto", 13.sp,
+                                  file != null ? AppUtils.getLast10Characters(path.basename(file!.path)) : widget.attachment.isNotEmpty ? widget.attachment[0].fileName : "Cargar archivo adjunto", 13.sp,
                                   textAlign: TextAlign.left))),
                         ],
                       ),

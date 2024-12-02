@@ -82,7 +82,11 @@ class AppUtils{
     return date2;
   }
 
-
+  static String convertDate(DateTime now) {
+    final DateFormat formatter = DateFormat('yyyyMMdd');
+    final String formatted = formatter.format(now);
+    return formatted;
+  }
   static String getLast10Characters(String input) {
     // Ensure the string has at least 10 characters
     if (input.length <= 10) {

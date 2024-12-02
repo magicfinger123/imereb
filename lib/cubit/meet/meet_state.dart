@@ -26,8 +26,8 @@ class MeetError extends MeetState {
 }
 
 class MeetRequestSubmittedState extends MeetState {
-  int success;
-  MeetRequestSubmittedState(this.success);
+  CitasResponse response;
+  MeetRequestSubmittedState(this.response);
   @override
   List<Object> get props => [];
 }

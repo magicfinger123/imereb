@@ -3,6 +3,7 @@ import 'package:bs_educativo/model/request/CitaRequest.dart';
 import 'package:bs_educativo/model/request/MeetRequest.dart';
 import 'package:bs_educativo/model/response/meet/MeetAllResponse.dart';
 import 'package:bs_educativo/model/response/meet/MeetEliglibleList.dart';
+import 'package:bs_educativo/model/response/meet/MeetSubittedResponse.dart';
 import 'package:bs_educativo/repository/MeetRepository.dart';
 import 'package:bs_educativo/utility/app_util.dart';
 import 'package:equatable/equatable.dart';
@@ -34,17 +35,20 @@ class MeetCubit extends Cubit<MeetState> {
     try {
       emit(MeetLoadingState());
       final response = await repository.postMeetRequest(request);
-      if (response is int) {
-        emit(MeetRequestSubmittedState(response));
-        AppUtils.debug("successfully submitted a request");
+      if (response is CitasResponse) {
+        if (response.flag?.toLowerCase() == "True".toLowerCase()) {
+          emit(MeetRequestSubmittedState(response));
+          AppUtils.debug("successfully submitted a request");
+        }else{
+          emit(MeetError(response.msg ?? ""));
+        }
       } else {
-        // emit(MeetError("error"));
-        emit(MeetRequestSubmittedState(1));
+        emit(MeetError("error"));
         AppUtils.debug("error");
       }
     } catch (e) {
-      // emit(MeetError("error"));
-      emit(MeetRequestSubmittedState(1));
+       emit(MeetError("error"));
+      AppUtils.debug("error");
     }
   }
   void fetchMeetRecords(MeetRequest request) async {

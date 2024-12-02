@@ -3,6 +3,7 @@ import 'package:bs_educativo/ApiService/api_status.dart';
 import 'package:bs_educativo/model/request/MeetRequest.dart';
 import 'package:bs_educativo/model/response/meet/MeetAllResponse.dart';
 import 'package:bs_educativo/model/response/meet/MeetEliglibleList.dart';
+import 'package:bs_educativo/model/response/meet/MeetSubittedResponse.dart';
 import 'package:bs_educativo/repository/repository.dart';
 import 'package:injectable/injectable.dart';
 import '../ApiService/api_url.dart';
@@ -25,17 +26,11 @@ class MeetRepository extends ApiRepository {
     }
   }
   Future<Object> postMeetRequest(RequestAppointment request) async {
-    var response = await ApiService.makeApiCall(request, AppUrls.meetapllyfor, true, isAdmin : true, method:  HttpMethods.post);
-    if(response is Success) {
-      if (response.response is String){
-        if (response.response == ""){
-          return 1;
-        }
-      }
-      var  r = response.response as int;
-      return r;
-    }
-    else {
+    var response = await postRequest(request, AppUrls.meetapllyfor, true,  HttpMethods.post);
+      if (response is String){
+        var r = citasResponseFromJson(response);
+        return r;
+    } else {
       handleErrorResponse(response);
       return errorResponse!;
     }

@@ -45,7 +45,14 @@ class _ApplicationViewState extends State<ApplicationView> {
       builder: (context, state) {
         if (state is MeetRequestSubmittedState){
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            AppUtils.showSuccessSnack("Solicitud enviada exitosamente", context);
+            AppUtils.showSuccessSnack(state.response.msg ?? "", context);
+            widget.onScreenChange(2);
+            cubit.resetState();
+          });
+        }
+        if (state is MeetError){
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            AppUtils.showErrSnack(state.error, context);
             cubit.resetState();
           });
         }
@@ -74,15 +81,15 @@ class _ApplicationViewState extends State<ApplicationView> {
                   const Spacer(),
                   smallBtn(title: "Solicitar", onTap: () {
                     if (controller.text.isNotEmpty && selectedItem != null){
-                      RequestAppointment request = RequestAppointment(idxCita: AppConstant.selectedMember?.idxEstudiante ?? 0,
+                      RequestAppointment request = RequestAppointment(
                           idxMaestro: (selectedItem?.idxMaestro ?? 0).toInt(),
-                          fecha: DateTime.now().toString(),
+                          fecha: AppUtils.convertDate(DateTime.now()),
                           hora: DateTime.now().hour,
                           minutos: DateTime.now().minute,
                           idColegio: AppConstant.userLoginResponse?.idColegio ?? 0,
                           idxEstudiante: AppConstant.selectedMember?.idxEstudiante ?? 0,
                           observacion: controller.text,
-                          tipo: selectedItem?.tipoMaestro ?? "",
+                          tipo:selectedItem?.tipoMaestro ?? "",
                           lado: "",
                           zoom: false,
                           zoomurl: ""
